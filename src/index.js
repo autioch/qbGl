@@ -1,6 +1,3 @@
-import './libs/gl-matrix-min.js';
-import './libs/qbGl.js';
-
 import './glass.gif';
 import './ceiling.jpg';
 import './moon.gif';

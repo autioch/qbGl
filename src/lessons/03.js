@@ -1,81 +1,80 @@
-import qbGl from '../libs/qbGl';
-(function(qb) {
-  const triangleDef = {
-    vertices: [
-      0.0, 1.0, 0.0,
-      -1.0, -1.0, 0.0,
-      1.0, -1.0, 0.0
-    ],
-    colors: [
-      1.0, 0.0, 0.0, 1.0,
-      0.0, 1.0, 0.0, 1.0,
-      0.0, 0.0, 1.0, 1.0
-    ]
-  };
-  const squareDef = {
-    vertices: [
-      1.0, 1.0, 0.0,
-      -1.0, 1.0, 0.0,
-      1.0, -1.0, 0.0,
-      -1.0, -1.0, 0.0
-    ],
-    colors: []
-  };
+import Lib from '../lib';
 
-  for (let i = 0; i < 4; i++) {
-    squareDef.colors = squareDef.colors.concat([0.5, 0.5, 1.0, 1.0]);
-  }
+const triangleDef = {
+  vertices: [
+    0.0, 1.0, 0.0,
+    -1.0, -1.0, 0.0,
+    1.0, -1.0, 0.0
+  ],
+  colors: [
+    1.0, 0.0, 0.0, 1.0,
+    0.0, 1.0, 0.0, 1.0,
+    0.0, 0.0, 1.0, 1.0
+  ]
+};
+const squareDef = {
+  vertices: [
+    1.0, 1.0, 0.0,
+    -1.0, 1.0, 0.0,
+    1.0, -1.0, 0.0,
+    -1.0, -1.0, 0.0
+  ],
+  colors: []
+};
 
-  const scene = new qb.Scene('webgl03');
-  const context = scene.get();
+for (let i = 0; i < 4; i++) {
+  squareDef.colors = squareDef.colors.concat([0.5, 0.5, 1.0, 1.0]);
+}
 
-  const program = new qb.Program(context);
+const scene = new Lib.Scene('webgl03');
+const context = scene.get();
 
-  program.setShader('shader-vs02');
-  program.setShader('shader-fs02');
-  scene.setProgram(program.use());
+const program = new Lib.Program(context);
 
-  const triangle = new qb.Shape(context);
+program.setShader('shader-vs02');
+program.setShader('shader-fs02');
+scene.setProgram(program.use());
 
-  triangle.setBuffer('vertices', new Float32Array(triangleDef.vertices), context.ARRAY_BUFFER, 3, 3);
-  triangle.setBuffer('colors', new Float32Array(triangleDef.colors), context.ARRAY_BUFFER, 3, 4);
-  triangle.rotate = 0;
+const triangle = new Lib.Shape(context);
 
-  const square = new qb.Shape(context);
+triangle.setBuffer('vertices', new Float32Array(triangleDef.vertices), context.ARRAY_BUFFER, 3, 3);
+triangle.setBuffer('colors', new Float32Array(triangleDef.colors), context.ARRAY_BUFFER, 3, 4);
+triangle.rotate = 0;
 
-  square.setBuffer('vertices', new Float32Array(squareDef.vertices), context.ARRAY_BUFFER, 4, 3);
-  square.setBuffer('colors', new Float32Array(squareDef.colors), context.ARRAY_BUFFER, 4, 4);
-  square.rotate = 0;
+const square = new Lib.Shape(context);
 
-  scene.render = function(context, modelViewMatrix, program) {
-    modelViewMatrix
-      .translate([-1.5, 0.0, -6.0])
-      .push()
-      .rotate(triangle.rotate, [0, 1, 0]);
-    var vertices = triangle.getBuffer('vertices', program.getAttrib('aVertexPosition'));
+square.setBuffer('vertices', new Float32Array(squareDef.vertices), context.ARRAY_BUFFER, 4, 3);
+square.setBuffer('colors', new Float32Array(squareDef.colors), context.ARRAY_BUFFER, 4, 4);
+square.rotate = 0;
 
-    triangle.getBuffer('colors', program.getAttrib('aVertexColor'));
-    this.setMatrixUniforms();
-    context.drawArrays(context.TRIANGLES, 0, vertices.count);
+scene.render = function render(context, modelViewMatrix, program) {
+  modelViewMatrix
+    .translate([-1.5, 0.0, -6.0])
+    .push()
+    .rotate(triangle.rotate, [0, 1, 0]);
+  var vertices = triangle.getBuffer('vertices', program.getAttrib('aVertexPosition'));
 
-    modelViewMatrix.pop();
+  triangle.getBuffer('colors', program.getAttrib('aVertexColor'));
+  this.setMatrixUniforms();
+  context.drawArrays(context.TRIANGLES, 0, vertices.count);
 
-    modelViewMatrix.translate([3, 0, 0])
-      .push()
-      .rotate(square.rotate, [1, 0, 0]);
-    var vertices = square.getBuffer('vertices', program.getAttrib('aVertexPosition'));
+  modelViewMatrix.pop();
 
-    square.getBuffer('colors', program.getAttrib('aVertexColor'));
-    this.setMatrixUniforms();
-    context.drawArrays(context.TRIANGLE_STRIP, 0, vertices.count);
+  modelViewMatrix.translate([3, 0, 0])
+    .push()
+    .rotate(square.rotate, [1, 0, 0]);
+  var vertices = square.getBuffer('vertices', program.getAttrib('aVertexPosition'));
 
-    modelViewMatrix.pop();
-  };
+  square.getBuffer('colors', program.getAttrib('aVertexColor'));
+  this.setMatrixUniforms();
+  context.drawArrays(context.TRIANGLE_STRIP, 0, vertices.count);
 
-  scene.update = function(elapsedTime) {
-    triangle.rotate += (90 * elapsedTime) / 1000.0;
-    square.rotate += (75 * elapsedTime) / 1000.0;
-  };
+  modelViewMatrix.pop();
+};
 
-  scene.animate();
-})(qbGl);
+scene.update = function(elapsedTime) {
+  triangle.rotate += (90 * elapsedTime) / 1000.0;
+  square.rotate += (75 * elapsedTime) / 1000.0;
+};
+
+scene.animate();
