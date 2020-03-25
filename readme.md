@@ -1,4 +1,30 @@
-# qbGL
-Yet another graphics library attempt.
+# qb-gl
 
-This is some of my old code wrap for WebGL. Currently I believe this is not a valid way of doing this, but I'm going to store this code for future reference.
+*Work in progress.*
+
+
+## Installation
+`npm i qb-gl`
+
+## Usage
+
+```javascript
+
+const QbGl = require('qb-gl');
+
+import  QbGl  from 'qb-gl';
+
+```
+
+## Adding Preact
+1. Install packages:
+`npm i preact babel-plugin-transform-react-jsx`
+`npm i -D eslint-plugin-react`
+2. Modify `tools/webpack.config.js`. Add option to javascript loader:
+```javascript
+  plugins: [
+    ['transform-react-jsx', {
+      pragma: 'h'
+    }]
+]
+```
