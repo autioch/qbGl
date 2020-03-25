@@ -1,4 +1,4 @@
-import Lib from '../lib';
+import Lib from '../../lib';
 
 const scene = new Lib.Scene('webgl10');
 
@@ -74,8 +74,8 @@ view.handleKeyboard = function() {
   }
 };
 
-scene.render = function render(context, modelViewMatrix, program) {
-  modelViewMatrix
+scene.render = function render() {
+  this.mMatrix
     .rotate(-pitch, [1, 0, 0])
     .rotate(-yaw, [0, 1, 0])
     .translate([-xPos, -yPos, -zPos]);

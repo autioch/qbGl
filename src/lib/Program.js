@@ -7,9 +7,7 @@ function cacheScriptAttributes(scriptEl, scriptAttribute, arrayCache) {
   const value = scriptEl.getAttribute(`data-${scriptAttribute}`);
 
   if (value && value.length) {
-    value.split(',').forEach((attribName) => {
-      arrayCache.push(attribName);
-    });
+    value.split(',').forEach((attribName) => arrayCache.push(attribName));
   }
 }
 
@@ -39,9 +37,11 @@ export default class Program {
 
     this.context.shaderSource(Shader, shaderScript.textContent);
     this.context.compileShader(Shader);
+
     if (!this.context.getShaderParameter(Shader, this.context.COMPILE_STATUS)) {
       throw `Shader compile error.${this.context.getShaderInfoLog(Shader)}`;
     }
+
     this.context.attachShader(this.program, Shader);
 
     cacheScriptAttributes(shaderScript, 'uniforms', this.uniformsToSet);
@@ -51,9 +51,11 @@ export default class Program {
   /* maybe move this to Scene? */
   use() {
     this.context.linkProgram(this.program);
+
     if (!this.context.getProgramParameter(this.program, this.context.LINK_STATUS)) {
       throw 'Shader program error.';
     }
+
     this.context.useProgram(this.program);
     this.attribsToSet.forEach(this.setAttrib.bind(this));
     this.uniformsToSet.forEach(this.setUniform.bind(this));
@@ -72,6 +74,7 @@ export default class Program {
     }
     this.uniforms[uniformName] = uniform;
   }
+
   getUniform(uniformName) {
     const uniform = this.uniforms[uniformName];
 
@@ -81,6 +84,7 @@ export default class Program {
 
     return uniform;
   }
+
   setAttrib(attribName) {
     if (this.attribs[attribName]) {
       throw `Attrib already exsists: ${attribName}`;
@@ -93,6 +97,7 @@ export default class Program {
     this.attribs[attribName] = attrib;
     this.context.enableVertexAttribArray(attrib);
   }
+
   getAttrib(attribName) {
     const attrib = this.attribs[attribName];
 

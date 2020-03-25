@@ -1,5 +1,3 @@
-import Lib from '../lib';
-
 const cubeDef = {
   vertices: [
     // Front face
@@ -99,50 +97,44 @@ const cubeDef = {
     1.0, 0.0,
     1.0, 1.0,
     0.0, 1.0
+  ],
+  normals: [
+    // Front face
+    0.0, 0.0, 1.0,
+    0.0, 0.0, 1.0,
+    0.0, 0.0, 1.0,
+    0.0, 0.0, 1.0,
+
+    // Back face
+    0.0, 0.0, -1.0,
+    0.0, 0.0, -1.0,
+    0.0, 0.0, -1.0,
+    0.0, 0.0, -1.0,
+
+    // Top face
+    0.0, 1.0, 0.0,
+    0.0, 1.0, 0.0,
+    0.0, 1.0, 0.0,
+    0.0, 1.0, 0.0,
+
+    // Bottom face
+    0.0, -1.0, 0.0,
+    0.0, -1.0, 0.0,
+    0.0, -1.0, 0.0,
+    0.0, -1.0, 0.0,
+
+    // Right face
+    1.0, 0.0, 0.0,
+    1.0, 0.0, 0.0,
+    1.0, 0.0, 0.0,
+    1.0, 0.0, 0.0,
+
+    // Left face
+    -1.0, 0.0, 0.0,
+    -1.0, 0.0, 0.0,
+    -1.0, 0.0, 0.0,
+    -1.0, 0.0, 0.0
   ]
 };
 
-const scene = new Lib.Scene('webgl05');
-
-const context = scene.get();
-
-const program = new Lib.Program(context);
-
-program.setShader('shader-vs05');
-program.setShader('shader-fs05');
-
-scene.setProgram(program.use());
-
-const texture = new Lib.Texture(context, {
-  url: 'podloga.jpg'
-});
-const cube = new Lib.Shape(context);
-
-cube.setBuffer('vertices', new Float32Array(cubeDef.vertices), context.ARRAY_BUFFER, 24, 3);
-cube.setBuffer('textures', new Float32Array(cubeDef.textures), context.ARRAY_BUFFER, 24, 2);
-cube.setBuffer('indices', new Uint16Array(cubeDef.indices), context.ELEMENT_ARRAY_BUFFER, 36, 1);
-cube.setTexture('podloga', texture);
-cube.rotate = 0;
-
-scene.render = function render(context, modelViewMatrix, program) {
-  modelViewMatrix
-    .translate(cubeDef.translate)
-    .push()
-    .rotate(cube.rotate, cubeDef.rotateVertex);
-
-  cube.getBuffer('vertices', program.getAttrib('aVertexPosition'));
-  cube.getBuffer('textures', program.getAttrib('aTextureCoord'));
-  cube.getTexture('podloga', program.getUniform('uSampler'));
-  const indices = cube.getBuff('indices');
-
-  this.setMatrixUniforms();
-  context.drawElements(context.TRIANGLES, indices.count, context.UNSIGNED_SHORT, 0);
-
-  modelViewMatrix.pop();
-};
-
-scene.update = function(timeSinceLastUpdate) {
-  cube.rotate += ((cubeDef.rotateSpeed * timeSinceLastUpdate) / 1000.0) * cubeDef.rotateDirection;
-};
-
-scene.animate();
+export { cubeDef };

@@ -1,8 +1,3 @@
-/* Texture
-     -------
-     TODO maybe return webGl texture with extra properties, instead of extra object?
-     */
-
 export default class Texture {
   constructor(webGlContext, options) {
     this.context = webGlContext;

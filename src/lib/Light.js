@@ -2,8 +2,8 @@
 import './gl-matrix-min.js';
 
 export default class Light {
-  constructor(webGlContext) {
-    this.context = webGlContext;
+  constructor(context) {
+    this.context = context;
   }
 
   get3f(programAttrib, red, green, blue) {

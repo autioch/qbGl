@@ -7,5 +7,8 @@ module.exports = {
     'no-underscore-dangle': ['off'],
     'no-undefined': ['off'],
     'max-params': ['off'],
+    'id-length': ['off'],
+    'line-comment-position': ['off'],
+    'no-inline-comments': ['off'],
   }
 };

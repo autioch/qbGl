@@ -1,4 +1,4 @@
-import Lib from '../lib';
+import Lib from '../../lib';
 
 const scene = new Lib.Scene('webgl09', true);
 
@@ -78,8 +78,8 @@ class Star {
     }
   }
 
-  render(context, modelViewMatrix, program, tilt, spin, twinkle, uniforms) {
-    modelViewMatrix
+  render(context, mMatrix, program, tilt, spin, twinkle, uniforms) {
+    mMatrix
       .push()
       .rotate(this.angle, [0.0, 1.0, 0.0])
       .translate([this.dist, 0.0, 0.0])
@@ -91,12 +91,12 @@ class Star {
       drawStar(uniforms);
     }
 
-    modelViewMatrix.rotate(spin, [0.0, 0.0, 1.0]);
+    mMatrix.rotate(spin, [0.0, 0.0, 1.0]);
 
     context.uniform3f(program.getUniform('uColor'), this.r, this.g, this.b);
     drawStar(uniforms);
 
-    modelViewMatrix.pop();
+    mMatrix.pop();
   }
 }
 
@@ -104,18 +104,18 @@ for (let i = 0; i < shapeCount; i++) {
   shapes.push(new Star((i / shapeCount) * 5.0, i / shapeCount));
 }
 
-scene.render = function render(context, modelViewMatrix, program) {
+scene.render = function render() {
   context.blendFunc(context.SRC_ALPHA, context.ONE);
   context.enable(context.BLEND);
 
-  modelViewMatrix
+  this.mMatrix
     .translate([0.0, 0.0, zoom])
     .rotate(tilt, [1, 0, 0]);
 
   const twinkle = document.getElementById('twinkle').checked;
 
   shapes.forEach((shape) => {
-    shape.render(context, modelViewMatrix, program, tilt, spin, twinkle, this.setMatrixUniforms.bind(this));
+    shape.render(context, this.mMatrix, program, tilt, spin, twinkle, this.setMatrixUniforms.bind(this));
     spin += 0.1;
   });
 };

@@ -1,4 +1,4 @@
-import Lib from '../lib';
+import Lib from '../../lib';
 
 const scene = new Lib.Scene('webgl11');
 
@@ -102,7 +102,7 @@ bufferStash.setBuffer('positions', new Float32Array(vertexPositionData), context
 bufferStash.setBuffer('indices', new Uint16Array(indexData), context.ELEMENT_ARRAY_BUFFER, indexData.length, 1);
 bufferStash.setTexture('moon', textureMoon);
 
-scene.render = function render(context, modelViewMatrix, program) {
+scene.render = function render() {
   const lighting = document.getElementById('lighting').checked;
 
   context.uniform1i(program.getUniform('uUseLighting'), false);
@@ -113,7 +113,7 @@ scene.render = function render(context, modelViewMatrix, program) {
   //            light.get3fv(program.getUniform("uLightingDirection"), getVal("lightDirectionX"), getVal("lightDirectionY"), getVal("lightDirectionZ"));
   //            light.get3f(program.getUniform("uDirectionalColor"), getVal("directionalR"), getVal("directionalG"), getVal("directionalB"));
   //        }
-  modelViewMatrix
+  this.mMatrix
     .translate([0, 0, -6])
     .multiply(moonRotationMatrix);
 
@@ -126,7 +126,7 @@ scene.render = function render(context, modelViewMatrix, program) {
 
   context.bindBuffer(context.ELEMENT_ARRAY_BUFFER, indices);
   this.setMatrixUniforms();
-  context.uniformMatrix3fv(program.getUniform('uNMatrix'), false, modelViewMatrix.toInvTraMat3());
+  context.uniformMatrix3fv(program.getUniform('uNMatrix'), false, this.mMatrix.toInvTraMat3());
 
   context.drawElements(context.TRIANGLES, indices.count, context.UNSIGNED_SHORT, 0);
 };

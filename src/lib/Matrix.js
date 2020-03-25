@@ -23,7 +23,7 @@ export default class Matrix {
 
   pop() {
     if (this.stack.length === 0) {
-      throw Error('Invalid popMatrix!');
+      throw Error('Matrix stack empty, can\'t pop!');
     }
     this.current = this.stack.pop();
 
