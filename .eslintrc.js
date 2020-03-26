@@ -10,5 +10,6 @@ module.exports = {
     'id-length': ['off'],
     'line-comment-position': ['off'],
     'no-inline-comments': ['off'],
+    'no-return-assign': ['off'],
   }
 };

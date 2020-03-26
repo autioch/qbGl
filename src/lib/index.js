@@ -6,6 +6,9 @@ import Shape from './Shape';
 import Texture from './Texture';
 import View from './View';
 import { degToRad } from './utils';
+import mouse from './mouse';
+import keyboard from './keyboard';
+import loadTextures from './loadTextures';
 
 export {
   Light,
@@ -15,7 +18,10 @@ export {
   Shape,
   Texture,
   View,
-  degToRad
+  degToRad,
+  mouse,
+  keyboard,
+  loadTextures
 };
 
 export default {
@@ -26,5 +32,8 @@ export default {
   Shape,
   Texture,
   View,
-  degToRad
+  degToRad,
+  mouse,
+  keyboard,
+  loadTextures
 };

@@ -4,7 +4,9 @@ export default class Texture {
     this.texture = this.context.createTexture();
     this.image = new Image();
     this.image.onerror = (options.onerror || this.onerror).bind(this);
-    this.image.onload = (options.onload || this.onload).bind(this);
+    this.image.onload = this.onload.bind(this);
+
+    this.loadCallback = options.onload;
 
     // ask for CORS permission
     this.image.crossOrigin = '';
@@ -35,6 +37,7 @@ export default class Texture {
     this.mipmap && context.generateMipmap(context.TEXTURE_2D);
     context.bindTexture(context.TEXTURE_2D, null);
     this.loaded = true;
+    this.loadCallback && this.loadCallback();
   }
 
   onerror() {
