@@ -55,8 +55,6 @@ export default class App {
 
     !this.config.skipDepthTest && this.context.enable(this.context.DEPTH_TEST);
 
-    this._lastAnimate = 0;
-
     this.pMatrix = new Matrix();
     this.mMatrix = new Matrix();
 
@@ -83,6 +81,7 @@ export default class App {
 
   start() {
     this._focused = true;
+    this._lastAnimate = 0;
     this._raf = requestAnimationFrame(this.loop);
   }
 

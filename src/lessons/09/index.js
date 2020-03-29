@@ -5,6 +5,7 @@ import template from './template.html';
 
 export default {
   title: 'light',
+  skipDepthTest: true,
   vsh: {
     source: vsh,
     uniforms: ['uMVMatrix', 'uPMatrix'],
