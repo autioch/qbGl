@@ -15,5 +15,6 @@ module.exports = {
     'no-console': ['off'],
     'max-statements': ['off'],
     'max-len': ['off'],
+    'guard-for-in': ['off'],
   }
 };

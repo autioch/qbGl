@@ -28,32 +28,6 @@
             <p>Uses controls from example 7.</p>
             <p>Moon texture courtesy of <a href="http://maps.jpl.nasa.gov/">the Jet Propulsion Laboratory</a>.</p>
         </div>
-        <!-- Lesson 10 -->
-        <script id="shader-fs10" type="x-shader/x-fragment" data-uniforms="uSampler" data-attribs="">
-            precision mediump float;
-
-            varying vec2 vTextureCoord;
-
-            uniform sampler2D uSampler;
-
-            void main(void) {
-            gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
-            }
-        </script>
-        <script id="shader-vs10" type="x-shader/x-vertex" data-uniforms="uMVMatrix,uPMatrix" data-attribs="aVertexPosition,aTextureCoord">
-            attribute vec3 aVertexPosition;
-            attribute vec2 aTextureCoord;
-
-            uniform mat4 uMVMatrix;
-            uniform mat4 uPMatrix;
-
-            varying vec2 vTextureCoord;
-
-            void main(void) {
-            gl_Position = uPMatrix * uMVMatrix * vec4(aVertexPosition, 1.0);
-            vTextureCoord = aTextureCoord;
-            }
-        </script>
         <!-- Lesson 11 -->
         <script id="shader-fs11" type="x-shader/x-fragment" data-uniforms="uSampler" data-attribs="">
             precision mediump float;

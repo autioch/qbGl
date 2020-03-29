@@ -8,6 +8,7 @@ import six from './06';
 import seven from './07';
 import eight from './08';
 import nine from './09';
+import ten from './10';
 
 const lessons = [
   one,
@@ -18,7 +19,8 @@ const lessons = [
   six,
   seven,
   eight,
-  nine
+  nine,
+  ten
 ];
 
 lessons.forEach((lesson) => {

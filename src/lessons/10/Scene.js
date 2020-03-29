@@ -1,196 +1,152 @@
 import Lib from '../../lib';
+import world from './world.txt';
+import { floorVertices, floorTextures, ceilingVertices, ceilingTextures } from './consts';
+import './wall.jpg';
+import './ceiling.jpg';
 
-const scene = new Lib.Scene('webgl10');
+export default class extends Lib.Scene2 {
+  initialize({ context, el }) {
+    this.effectiveFPMS = 60 / 1000;
 
-scene.effectiveFPMS = 60 / 1000;
-const context = scene.get();
-const program = new Lib.Program(context);
+    this.textureWall = new Lib.Texture(context, {
+      url: 'wall.jpg'
+    });
+    this.textureFloor = new Lib.Texture(context, {
+      url: 'podloga.jpg'
+    });
+    this.textureCeiling = new Lib.Texture(context, {
+      url: 'ceiling.jpg'
+    });
 
-program.setShader('shader-vs10');
-program.setShader('shader-fs10');
-scene.setProgram(program.use());
+    this.wallsShape = new Lib.Shape(context);
+    this.floorShape = new Lib.Shape(context);
+    this.ceilingShape = new Lib.Shape(context);
 
-const textureWall = new Lib.Texture(context, {
-  url: 'wall.jpg'
-});
-const textureFloor = new Lib.Texture(context, {
-  url: 'podloga.jpg'
-});
-const textureCeiling = new Lib.Texture(context, {
-  url: 'ceiling.jpg'
-});
+    this.pitch = 0;
+    this.pitchRate = 0;
+    this.yaw = 0;
+    this.yawRate = 0;
+    this.xPos = 0;
+    this.yPos = 0.4;
+    this.zPos = 0;
+    this.speed = 0;
+    this.joggingAngle = 0;
 
-let pitch = 0;
-let pitchRate = 0;
+    this.keyboard = Lib.keyboard({
+      selector: el
+    });
 
-let yaw = 0;
-let yawRate = 0;
-
-let xPos = 0;
-let yPos = 0.4;
-let zPos = 0;
-
-let speed = 0;
-
-let joggingAngle = 0;
-
-const wallsShape = new Lib.Shape(context);
-const floorShape = new Lib.Shape(context);
-const ceilingShape = new Lib.Shape(context);
-
-const view = new Lib.View('#container10');
-
-view.handleKeyboard = function() {
-  const keys = this.currentKeys;
-
-  if (keys[33]) {
-    // Page Up
-    pitchRate = 0.1;
-  } else if (keys[34]) {
-    // Page Down
-    pitchRate = -0.1;
-  } else {
-    pitchRate = 0;
+    this.loadWorld(context);
   }
 
-  if (keys[37] || keys[65]) {
-    // Left cursor key or A
-    yawRate = 0.1;
-  } else if (keys[39] || keys[68]) {
-    // Right cursor key or D
-    yawRate = -0.1;
-  } else {
-    yawRate = 0;
+  render({ context, program, mMatrix, setMatrixUniforms }) {
+    mMatrix
+      .rotate(-this.pitch, [1, 0, 0])
+      .rotate(-this.yaw, [0, 1, 0])
+      .translate([-this.xPos, -this.yPos, -this.zPos]);
+
+    this.ceilingShape.getTexture('floor', program.getUniform('uSampler'));
+    this.ceilingShape.getBuffer('textures', program.getAttrib('aTextureCoord'));
+
+    const ceilVerticesBuffer = this.ceilingShape.getBuffer('vertices', program.getAttrib('aVertexPosition'));
+
+    setMatrixUniforms();
+    context.drawArrays(context.TRIANGLES, 0, ceilVerticesBuffer.count);
+
+    this.floorShape.getTexture('floor', program.getUniform('uSampler'));
+    this.floorShape.getBuffer('textures', program.getAttrib('aTextureCoord'));
+
+    const floorVerticesBuffer = this.floorShape.getBuffer('vertices', program.getAttrib('aVertexPosition'));
+
+    setMatrixUniforms();
+    context.drawArrays(context.TRIANGLES, 0, floorVerticesBuffer.count);
+
+    this.wallsShape.getTexture('wall', program.getUniform('uSampler'));
+    this.wallsShape.getBuffer('textures', program.getAttrib('aTextureCoord'));
+
+    const wallVerticesBuffer = this.wallsShape.getBuffer('vertices', program.getAttrib('aVertexPosition'));
+
+    setMatrixUniforms();
+    context.drawArrays(context.TRIANGLES, 0, wallVerticesBuffer.count);
   }
 
-  if (keys[38] || keys[87]) {
-    // Up cursor key or W
-    speed = 0.003;
-  } else if (keys[40] || keys[83]) {
-    // Down cursor key
-    speed = -0.003;
-  } else {
-    speed = 0;
+  update(timeSinceLastUpdate) {
+    if (this.speed !== 0) {
+      this.xPos -= Math.sin(Lib.degToRad(this.yaw)) * this.speed * timeSinceLastUpdate;
+      this.zPos -= Math.cos(Lib.degToRad(this.yaw)) * this.speed * timeSinceLastUpdate;
+      this.joggingAngle += timeSinceLastUpdate * 0.6; // 0.6 "fiddle factor" - makes it feel more realistic :-)
+      this.yPos = (Math.sin(Lib.degToRad(this.joggingAngle)) / 20) + 0.4;
+    }
+    this.yaw += this.yawRate * timeSinceLastUpdate;
+    this.pitch += this.pitchRate * timeSinceLastUpdate;
+    this.handleKeys();
   }
-};
 
-scene.render = function render() {
-  mMatrix
-    .rotate(-pitch, [1, 0, 0])
-    .rotate(-yaw, [0, 1, 0])
-    .translate([-xPos, -yPos, -zPos]);
+  handleKeys() {
+    const keys = this.keyboard;
 
-  ceilingShape.getTexture('floor', program.getUniform('uSampler'));
-  ceilingShape.getBuffer('textures', program.getAttrib('aTextureCoord'));
-  var vertices = ceilingShape.getBuffer('vertices', program.getAttrib('aVertexPosition'));
+    if (keys[33]) {
+      // Page Up
+      this.pitchRate = 0.1;
+    } else if (keys[34]) {
+      // Page Down
+      this.pitchRate = -0.1;
+    } else {
+      this.pitchRate = 0;
+    }
 
-  setMatrixUniforms();
-  context.drawArrays(context.TRIANGLES, 0, vertices.count);
+    if (keys[37] || keys[65]) {
+      // Left cursor key or A
+      this.yawRate = 0.1;
+    } else if (keys[39] || keys[68]) {
+      // Right cursor key or D
+      this.yawRate = -0.1;
+    } else {
+      this.yawRate = 0;
+    }
 
-  floorShape.getTexture('floor', program.getUniform('uSampler'));
-  floorShape.getBuffer('textures', program.getAttrib('aTextureCoord'));
-  var vertices = floorShape.getBuffer('vertices', program.getAttrib('aVertexPosition'));
-
-  setMatrixUniforms();
-  context.drawArrays(context.TRIANGLES, 0, vertices.count);
-
-  wallsShape.getTexture('wall', program.getUniform('uSampler'));
-  wallsShape.getBuffer('textures', program.getAttrib('aTextureCoord'));
-  var vertices = wallsShape.getBuffer('vertices', program.getAttrib('aVertexPosition'));
-
-  setMatrixUniforms();
-  context.drawArrays(context.TRIANGLES, 0, vertices.count);
-};
-
-scene.update = function update(elapsedTime) {
-  if (speed !== 0) {
-    xPos -= Math.sin(Lib.degToRad(yaw)) * speed * elapsedTime;
-    zPos -= Math.cos(Lib.degToRad(yaw)) * speed * elapsedTime;
-    joggingAngle += elapsedTime * 0.6; // 0.6 "fiddle factor" - makes it feel more realistic :-)
-    yPos = Math.sin(Lib.degToRad(joggingAngle)) / 20 + 0.4;
-  }
-  yaw += yawRate * elapsedTime;
-  pitch += pitchRate * elapsedTime;
-  view.handleKeyboard();
-};
-
-function handleLoadedWorld(data) {
-  const lines = data.split('\n');
-  let vertexCount = 0;
-  const vertexPositions = [];
-  const vertexTextures = [];
-
-  for (const i in lines) {
-    const vals = lines[i].replace(/^\s+/, '').split(/\s+/);
-
-    if (vals.length == 5 && vals[0] != '//') {
-      // It is a line describing a vertex; get X, Y and Z first
-      vertexPositions.push(parseFloat(vals[0]));
-      vertexPositions.push(parseFloat(vals[1]));
-      vertexPositions.push(parseFloat(vals[2]));
-
-      // And then the texture coords
-      vertexTextures.push(parseFloat(vals[3]));
-      vertexTextures.push(parseFloat(vals[4]));
-      vertexCount += 1;
+    if (keys[38] || keys[87]) {
+      // Up cursor key or W
+      this.speed = 0.003;
+    } else if (keys[40] || keys[83]) {
+      // Down cursor key
+      this.speed = -0.003;
+    } else {
+      this.speed = 0;
     }
   }
-  wallsShape.setBuffer('vertices', new Float32Array(vertexPositions), context.ARRAY_BUFFER, vertexCount, 3);
-  wallsShape.setBuffer('textures', new Float32Array(vertexTextures), context.ARRAY_BUFFER, vertexCount, 2);
-  wallsShape.setTexture('wall', textureWall);
 
-  const floorVertices = [
-    -3.0, 0.0, -3.0,
-    -3.0, 0.0, 3.0,
-    3.0, 0.0, 3.0,
-    -3.0, 0.0, -3.0,
-    3.0, 0.0, -3.0,
-    3.0, 0.0, 3.0
-  ];
-  const floorTextures = [
-    0.0, 6.0,
-    0.0, 0.0,
-    6.0, 0.0,
-    0.0, 6.0,
-    6.0, 6.0,
-    6.0, 0.0
-  ];
+  loadWorld(context) {
+    const lines = world.split('\n');
+    let vertexCount = 0;
+    const vertexPositions = [];
+    const vertexTextures = [];
 
-  floorShape.setBuffer('vertices', new Float32Array(floorVertices), context.ARRAY_BUFFER, 6, 3);
-  floorShape.setBuffer('textures', new Float32Array(floorTextures), context.ARRAY_BUFFER, 6, 2);
-  floorShape.setTexture('floor', textureFloor);
+    for (const i in lines) {
+      const vals = lines[i].replace(/^\s+/, '').split(/\s+/);
 
-  const ceilingVertices = [
-    -3.0, 1.0, -3.0,
-    -3.0, 1.0, 3.0,
-    3.0, 1.0, 3.0,
-    -3.0, 1.0, -3.0,
-    3.0, 1.0, -3.0,
-    3.0, 1.0, 3.0
-  ];
-  const ceilingTextures = [
-    0.0, 6.0,
-    0.0, 0.0,
-    6.0, 0.0,
-    0.0, 6.0,
-    6.0, 6.0,
-    6.0, 0.0
-  ];
+      if (vals.length === 5 && vals[0] !== '//') {
+        // It is a line describing a vertex; get X, Y and Z first
+        vertexPositions.push(parseFloat(vals[0]));
+        vertexPositions.push(parseFloat(vals[1]));
+        vertexPositions.push(parseFloat(vals[2]));
 
-  ceilingShape.setBuffer('vertices', new Float32Array(ceilingVertices), context.ARRAY_BUFFER, 6, 3);
-  ceilingShape.setBuffer('textures', new Float32Array(ceilingTextures), context.ARRAY_BUFFER, 6, 2);
-  ceilingShape.setTexture('floor', textureCeiling);
+        // And then the texture coords
+        vertexTextures.push(parseFloat(vals[3]));
+        vertexTextures.push(parseFloat(vals[4]));
+        vertexCount += 1;
+      }
+    }
+    this.wallsShape.setBuffer('vertices', new Float32Array(vertexPositions), context.ARRAY_BUFFER, vertexCount, 3);
+    this.wallsShape.setBuffer('textures', new Float32Array(vertexTextures), context.ARRAY_BUFFER, vertexCount, 2);
+    this.wallsShape.setTexture('wall', this.textureWall);
 
-  document.getElementById('loadingtext').textContent = '';
-  scene.animate();
-}
+    this.floorShape.setBuffer('vertices', new Float32Array(floorVertices), context.ARRAY_BUFFER, 6, 3);
+    this.floorShape.setBuffer('textures', new Float32Array(floorTextures), context.ARRAY_BUFFER, 6, 2);
+    this.floorShape.setTexture('floor', this.textureFloor);
 
-const request = new XMLHttpRequest();
-
-request.open('GET', 'world.txt');
-request.onreadystatechange = function() {
-  if (request.readyState == 4) {
-    handleLoadedWorld(request.responseText);
+    this.ceilingShape.setBuffer('vertices', new Float32Array(ceilingVertices), context.ARRAY_BUFFER, 6, 3);
+    this.ceilingShape.setBuffer('textures', new Float32Array(ceilingTextures), context.ARRAY_BUFFER, 6, 2);
+    this.ceilingShape.setTexture('floor', this.textureCeiling);
   }
-};
-request.send();
+}
