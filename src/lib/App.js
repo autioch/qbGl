@@ -9,7 +9,8 @@ const CONFIG_DEFAULT = {
   Scene: null,
   vsh: {},
   fsh: {},
-  title: ''
+  title: '',
+  template: ''
 };
 
 function checkConfig(config) {
@@ -62,13 +63,22 @@ export default class App {
     this.scene = new this.config.Scene();
 
     this.scene.initialize({
-      context: this.context
+      context: this.context,
+      el: this.el
     });
 
     this.program = new Program(this.context);
     this.program.setShaderFromConfig(this.config.vsh, this.context.VERTEX_SHADER);
     this.program.setShaderFromConfig(this.config.fsh, this.context.FRAGMENT_SHADER);
     this.program.use();
+
+    const wrapper = document.createElement('div');
+
+    wrapper.innerHTML = this.config.template;
+
+    while (wrapper.childNodes.length > 0) {
+      this.el.appendChild(wrapper.childNodes[0]);
+    }
   }
 
   start() {
@@ -81,15 +91,13 @@ export default class App {
       return;
     }
     this.render();
-    this._lastAnimate !== 0 && this.update();
-    this._raf = requestAnimationFrame(this.loop);
-  }
 
-  update() {
     const timeNow = new Date().getTime();
 
-    this.scene.update(timeNow - this._lastAnimate);
+    this._lastAnimate !== 0 && this.scene.update(timeNow - this._lastAnimate);
     this._lastAnimate = timeNow;
+
+    this._raf = requestAnimationFrame(this.loop);
   }
 
   render() {

@@ -1,3 +1,16 @@
-import Scene from './scene';
+import Scene from './Scene';
+import fsh from './main.fsh';
+import vsh from './main.vsh';
 
-new Scene().animate();
+export default {
+  title: 'Rotate',
+  vsh: {
+    source: vsh,
+    uniforms: ['uMVMatrix', 'uPMatrix'],
+    attributes: ['aVertexPosition', 'aVertexColor']
+  },
+  fsh: {
+    source: fsh
+  },
+  Scene
+};

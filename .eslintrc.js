@@ -14,5 +14,6 @@ module.exports = {
     'camelcase': ['off'],
     'no-console': ['off'],
     'max-statements': ['off'],
+    'max-len': ['off'],
   }
 };

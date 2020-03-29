@@ -75,7 +75,7 @@ view.handleKeyboard = function() {
 };
 
 scene.render = function render() {
-  this.mMatrix
+  mMatrix
     .rotate(-pitch, [1, 0, 0])
     .rotate(-yaw, [0, 1, 0])
     .translate([-xPos, -yPos, -zPos]);
@@ -84,21 +84,21 @@ scene.render = function render() {
   ceilingShape.getBuffer('textures', program.getAttrib('aTextureCoord'));
   var vertices = ceilingShape.getBuffer('vertices', program.getAttrib('aVertexPosition'));
 
-  this.setMatrixUniforms();
+  setMatrixUniforms();
   context.drawArrays(context.TRIANGLES, 0, vertices.count);
 
   floorShape.getTexture('floor', program.getUniform('uSampler'));
   floorShape.getBuffer('textures', program.getAttrib('aTextureCoord'));
   var vertices = floorShape.getBuffer('vertices', program.getAttrib('aVertexPosition'));
 
-  this.setMatrixUniforms();
+  setMatrixUniforms();
   context.drawArrays(context.TRIANGLES, 0, vertices.count);
 
   wallsShape.getTexture('wall', program.getUniform('uSampler'));
   wallsShape.getBuffer('textures', program.getAttrib('aTextureCoord'));
   var vertices = wallsShape.getBuffer('vertices', program.getAttrib('aVertexPosition'));
 
-  this.setMatrixUniforms();
+  setMatrixUniforms();
   context.drawArrays(context.TRIANGLES, 0, vertices.count);
 };
 

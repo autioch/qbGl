@@ -72,7 +72,7 @@ module.exports = {
       }
     },
     {
-      test: /\.(fsh|vsh)$/i,
+      test: /\.(fsh|vsh|html)$/i,
       use: 'raw-loader'
     },
     {

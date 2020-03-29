@@ -113,7 +113,7 @@ scene.render = function render() {
   //            light.get3fv(program.getUniform("uLightingDirection"), getVal("lightDirectionX"), getVal("lightDirectionY"), getVal("lightDirectionZ"));
   //            light.get3f(program.getUniform("uDirectionalColor"), getVal("directionalR"), getVal("directionalG"), getVal("directionalB"));
   //        }
-  this.mMatrix
+  mMatrix
     .translate([0, 0, -6])
     .multiply(moonRotationMatrix);
 
@@ -125,8 +125,8 @@ scene.render = function render() {
   const indices = bufferStash.getBuff('indices');
 
   context.bindBuffer(context.ELEMENT_ARRAY_BUFFER, indices);
-  this.setMatrixUniforms();
-  context.uniformMatrix3fv(program.getUniform('uNMatrix'), false, this.mMatrix.toInvTraMat3());
+  setMatrixUniforms();
+  context.uniformMatrix3fv(program.getUniform('uNMatrix'), false, mMatrix.toInvTraMat3());
 
   context.drawElements(context.TRIANGLES, indices.count, context.UNSIGNED_SHORT, 0);
 };
