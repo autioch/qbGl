@@ -3,7 +3,7 @@ import Star from './Star';
 import { vertices, textures } from './consts';
 import './star.gif';
 
-export default class extends Lib.Scene2 {
+export default class extends Lib.Scene {
   initialize({ context, el }) {
     this.zoom = -15;
     this.tilt = 90;

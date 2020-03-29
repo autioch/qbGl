@@ -1,18 +1,3 @@
-const shaderTypes = {
-  'x-shader/x-fragment': 'FRAGMENT_SHADER',
-  'x-shader/x-vertex': 'VERTEX_SHADER'
-};
-
-function parseAttribute(attributeText = '') {
-  if (!attributeText || !attributeText.length) {
-    return [];
-  }
-
-  return attributeText.split(',');
-}
-
-// https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/WebGL_best_practices
-
 export default class Program {
   constructor(context) {
     this.context = context;
@@ -21,29 +6,6 @@ export default class Program {
     this.uniforms = {};
     this.attribsToSet = [];
     this.uniformsToSet = [];
-  }
-
-  setShader(shaderId) {
-    const shaderScript = document.getElementById(shaderId);
-
-    if (!shaderScript) {
-      throw Error('Shader script not found.');
-    }
-
-    const shaderType = this.context[shaderTypes[shaderScript.type]];
-
-    if (!shaderType) {
-      throw `Invalid shader type.${shaderScript.type}`;
-    }
-    const Shader = this.context.createShader(shaderType);
-
-    this.context.shaderSource(Shader, shaderScript.textContent);
-    this.context.compileShader(Shader);
-
-    this.context.attachShader(this.program, Shader);
-
-    this.uniformsToSet.push(...parseAttribute(shaderScript.getAttribute(`data-uniforms`)));
-    this.attribsToSet.push(...parseAttribute(shaderScript.getAttribute(`data-attribs`)));
   }
 
   setShaderFromConfig(config, type) {

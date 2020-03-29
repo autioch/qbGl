@@ -1,6 +1,5 @@
 import Matrix from './Matrix';
 import Program from './Program';
-import './App.scss';
 
 const CONFIG_DEFAULT = {
   width: 300,

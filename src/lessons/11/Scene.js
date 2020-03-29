@@ -2,7 +2,7 @@ import Lib from '../../lib';
 import { normalData, textureCoordData, vertexPositionData, indexData } from './consts';
 import './moon.gif';
 
-export default class extends Lib.Scene2 {
+export default class extends Lib.Scene {
   initialize({ context, el }) {
     this.light = new Lib.Light(context);
     this.effectiveFPMS = 60 / 1000;

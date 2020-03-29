@@ -1,7 +1,7 @@
 import Lib from '../../lib';
 import { triangleDef, squareDef } from './consts';
 
-export default class extends Lib.Scene2 {
+export default class extends Lib.Scene {
   initialize({ context }) {
     this.triangle = new Lib.Shape(context);
     this.triangle.setBuffer('vertices', new Float32Array(triangleDef.vertices), context.ARRAY_BUFFER, 3, 3);

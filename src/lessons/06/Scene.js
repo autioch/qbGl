@@ -1,7 +1,7 @@
 import Lib from '../../lib';
 import { cubeDef } from './consts';
 
-export default class extends Lib.Scene2 {
+export default class extends Lib.Scene {
   initialize({ context, el }) {
     this.cube = new Lib.Shape(context);
     this.textures = Lib.loadTextures(context, ['podloga.jpg', 'podloga.jpg', 'podloga.jpg'], (textures) => {

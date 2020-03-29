@@ -4,7 +4,7 @@ import { floorVertices, floorTextures, ceilingVertices, ceilingTextures } from '
 import './wall.jpg';
 import './ceiling.jpg';
 
-export default class extends Lib.Scene2 {
+export default class extends Lib.Scene {
   initialize({ context, el }) {
     this.effectiveFPMS = 60 / 1000;
 

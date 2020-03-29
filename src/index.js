@@ -1,10 +1,11 @@
-// import './glass.gif';
-// import './ceiling.jpg';
-// import './moon.gif';
-// import './star.gif';
-// import './wall.jpg';
-// import './world.txt';
+import Lib from './lib';
+import lessons from './lessons';
+import './styles';
 
-import './lessons';
+lessons.forEach((lesson) => {
+  const app = new Lib.App(lesson);
 
-// import './circles';
+  document.body.append(app.el);
+  app.render();
+  app.el.focus();
+});

@@ -7,3 +7,42 @@ body {
   padding: 0;
   border: 0;
 }
+
+.app {
+  border: solid 2px #000;
+  background: #000;
+  color: #f1f1f1;
+  font-size:12px;
+  font-family: Arial;
+  position: relative;
+}
+
+.app:focus {
+  border: solid 2px #0f0;
+  outline: none;
+}
+
+.app-title {
+  text-align: center;
+}
+
+.app-canvas{
+  display:block
+}
+
+
+table{
+  width:100%;
+  border:0;
+  border-collapse:collapse;
+}
+.keybinds,.tooltip{position:absolute;color:#fff;font-size:12px;font-family: Arial}
+.keybinds{top:10px;left:10px}
+.keybinds::before{content:"Keybinds: "}
+.tooltip{top:200px;right:10px;}
+
+
+  html,body{margin:0;padding:0;border:0}
+  body{display:flex; flex-wrap: wrap;}
+  input{width:30px}
+  p{margin:0}

@@ -1,8 +1,18 @@
-import Circle01 from './01';
+import Scene from './Scene';
+import fsh from './main.fsh';
+import vsh from './main.vsh';
 
-const rectSize = Math.min(window.innerWidth, window.innerHeight);
-
-new Circle01(rectSize - 10, rectSize - 10);
+export default {
+  title: 'circle',
+  vsh: {
+    source: vsh,
+    attributes: ['pos']
+  },
+  fsh: {
+    source: fsh
+  },
+  Scene
+};
 
 // https://medium.com/@josecastrovaron/walking-in-circles-9f66aadbf4b4
 // https://community.khronos.org/t/circle-in-webgl/62227

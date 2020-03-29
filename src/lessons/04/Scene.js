@@ -1,7 +1,7 @@
 import Lib from '../../lib';
 import { pyramidDef, cubeDef } from './consts';
 
-export default class extends Lib.Scene2 {
+export default class extends Lib.Scene {
   initialize({ context }) {
     this.pyramid = new Lib.Shape(context);
 

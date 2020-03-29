@@ -1,4 +1,3 @@
-import Lib from '../lib';
 import one from './01';
 import two from './02';
 import three from './03';
@@ -10,8 +9,9 @@ import eight from './08';
 import nine from './09';
 import ten from './10';
 import eleven from './11';
+import circle from './circle';
 
-const lessons = [
+export default [
   one,
   two,
   three,
@@ -22,13 +22,6 @@ const lessons = [
   eight,
   nine,
   ten,
-  eleven
+  eleven,
+  circle
 ];
-
-lessons.forEach((lesson) => {
-  const app = new Lib.App(lesson);
-
-  document.body.append(app.el);
-  app.render();
-  app.el.focus();
-});

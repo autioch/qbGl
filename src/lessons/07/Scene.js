@@ -5,7 +5,7 @@ function getVal(id) {
   return parseFloat(document.getElementById(id).value);
 }
 
-export default class extends Lib.Scene2 {
+export default class extends Lib.Scene {
   initialize({ context, el }) {
     this.textures = Lib.loadTextures(context, ['podloga.jpg', 'podloga.jpg', 'podloga.jpg'], (textures) => {
       context.pixelStorei(context.UNPACK_FLIP_Y_WEBGL, true);

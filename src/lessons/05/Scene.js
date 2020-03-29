@@ -2,7 +2,7 @@ import Lib from '../../lib';
 import { cubeDef } from './consts';
 import './podloga.jpg';
 
-export default class extends Lib.Scene2 {
+export default class extends Lib.Scene {
   initialize({ context }) {
     const texture = new Lib.Texture(context, {
       url: 'podloga.jpg'

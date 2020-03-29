@@ -1,3 +1,8 @@
+body {
+  margin: 0;
+  padding: 0;
+  border: 0; }
+
 .app {
   border: solid 2px #000;
   background: #000;
@@ -37,4 +42,22 @@ table {
 .tooltip {
   top: 200px;
   right: 10px; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  border: 0; }
+
+body {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap; }
+
+input {
+  width: 30px; }
+
+p {
+  margin: 0; }
 

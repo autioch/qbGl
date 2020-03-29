@@ -4,7 +4,7 @@ import vsh from './main.vsh';
 import template from './template.html';
 
 export default {
-  title: 'light',
+  title: 'transparency',
   vsh: {
     source: vsh,
     uniforms: [
