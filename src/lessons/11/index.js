@@ -7,12 +7,15 @@ export default {
   title: 'light',
   vsh: {
     source: vsh,
-    uniforms: ['uMVMatrix', 'uPMatrix'],
-    attributes: ['aVertexPosition', 'aTextureCoord']
+    uniforms: [
+      'uMVMatrix', 'uPMatrix',
+      'uNMatrix', 'uAmbientColor', 'uLightingDirection', 'uDirectionalColor', 'uUseLighting'
+    ],
+    attributes: ['aVertexPosition', 'aVertexNormal', 'aTextureCoord']
   },
   fsh: {
     source: fsh,
-    uniforms: ['uSampler', 'uColor']
+    uniforms: ['uSampler']
   },
   Scene,
   template
