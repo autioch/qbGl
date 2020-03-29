@@ -1,0 +1,211 @@
+files:
+  include: 'src/**/*.scss'
+options:
+  formatter: stylish
+  merge-default-rules: false
+rules:
+  attribute-quotes:
+    - 0
+    - include: true
+  bem-depth:
+    - 0
+    - max-depth: 1
+  border-zero:
+    - 0
+    - convention: '0'
+  brace-style:
+    - 0
+    - style: '1tbs'
+    - allow-single-line: false
+  class-name-format:
+    - 0
+    - convention: ^((is|has|m|s|c)-)?([a-z]+-?)+[a-z]+(__([a-z]+-?)+[a-z]+)?(--([a-z0-9]+-?)+([a-z0-9]+)?)?$
+    - convention-explanation: 'Use namespaced hyphenated bem'
+  clean-import-paths:
+    - 0
+    - leading-underscore: false
+    - filename-extension: false
+  declarations-before-nesting:
+    - 0
+  empty-args:
+    - 0
+    - include: true
+  empty-line-between-blocks:
+    - 0
+    - include: true
+    - allow-single-line-rulesets: false
+  extends-before-declarations:
+    - 0
+  final-newline:
+    - 0
+    - include: true
+  force-attribute-nesting:
+    - 0
+  force-element-nesting:
+    - 0
+  force-pseudo-nesting:
+    - 0
+  function-name-format:
+    - 0
+    - convention: ^((is|has|m|s|c)-)?([a-z]+-?)+[a-z]+(__([a-z]+-?)+[a-z]+)?(--([a-z0-9]+-?)+([a-z0-9]+)?)?$
+    - convention-explanation: 'Use namespaced hyphenated bem'
+  hex-length:
+    - 0
+    - style: long
+  hex-notation:
+    - 0
+    - style: lowercase
+  id-name-format:
+    - 0
+    - convention: ^((is|has|m|s|c)-)?([a-z]+-?)+[a-z]+(__([a-z]+-?)+[a-z]+)?(--([a-z0-9]+-?)+([a-z0-9]+)?)?$
+    - convention-explanation: 'Use namespaced hyphenated bem'
+  indentation:
+    - 0
+    - size: 2
+  leading-zero:
+    - 0
+    - include: false
+  max-file-line-count:
+    - 0
+    - length: 150
+  max-line-length:
+    - 0
+    - length: 80
+  mixin-name-format:
+    - 0
+    - convention: ^((is|has|m|s|c)-)?([a-z]+-?)+[a-z]+(__([a-z]+-?)+[a-z]+)?(--([a-z0-9]+-?)+([a-z0-9]+)?)?$
+    - convention-explanation: 'Use namespaced hyphenated bem'
+  mixins-before-declarations:
+    - 0
+  nesting-depth:
+    - 0
+    - max-depth: 2
+  no-attribute-selectors:
+    - 0
+  no-color-hex:
+    - 0
+  no-color-keywords:
+    - 0
+  no-color-literals:
+    - 0
+    - allow-map-identifiers: true
+    - allow-rgba: false
+    - allow-variable-identifiers: true
+  no-combinators:
+    - 0
+  no-css-comments:
+    - 0
+  no-debug:
+    - 0
+  no-disallowed-properties:
+    - 0
+    -
+      'properties':
+        - 'z-index'
+  no-duplicate-properties:
+    - 0
+  no-empty-rulesets:
+    - 0
+  no-extends:
+    - 0
+  no-ids:
+    - 0
+  no-important:
+    - 0
+  no-invalid-hex:
+    - 0
+  no-mergeable-selectors:
+    - 0
+  no-misspelled-properties:
+    - 0
+  no-qualifying-elements:
+    - 0
+    - allow-element-with-attribute: false
+    - allow-element-with-class: false
+    - allow-element-with-id: false
+  no-trailing-whitespace:
+    - 0
+  no-trailing-zero:
+    - 0
+  no-transition-all:
+    - 0
+  no-universal-selectors:
+    - 0
+  no-url-domains:
+    - 0
+  no-url-protocols:
+    - 0
+  no-vendor-prefixes:
+    - 0
+  no-warn:
+    - 0
+  one-declaration-per-line:
+    - 0
+  placeholder-in-extend:
+    - 0
+  placeholder-name-format:
+    - 0
+    - convention: ^((is|has|m|s|c)-)?([a-z]+-?)+[a-z]+(__([a-z]+-?)+[a-z]+)?(--([a-z0-9]+-?)+([a-z0-9]+)?)?$
+    - convention-explanation: 'Use namespaced hyphenated bem'
+  property-sort-order:
+    - 0
+    - order: alphabetical
+    - ignore-custom-properties: false
+  property-units:
+    - 0
+    - global: ['px', 'rem', '%', 'em', 'ms']
+    -
+      'per-property':
+        - line-height: ['px', 'rem', '%', 'em']
+  pseudo-element:
+    - 0
+  quotes:
+    - 0
+    - style: single
+  shorthand-values:
+    - 0
+  single-line-per-selector:
+    - 0
+  space-after-bang:
+    - 0
+    - include: false
+  space-after-colon:
+    - 0
+    - include: true
+  space-after-comma:
+    - 0
+    - include: true
+  space-around-operator:
+    - 0
+    - include: true
+  space-before-bang:
+    - 0
+    - include: true
+  space-before-brace:
+    - 0
+    - include: true
+  space-before-colon:
+    - 0
+    - include: false
+  space-between-parens:
+    - 0
+    - include: false
+  trailing-semicolon:
+    - 0
+    - include: true
+  url-quotes:
+    - 0
+  variable-for-property:
+    - 0
+    -
+      'properties':
+        - 'color'
+        - 'background-color'
+        - 'border-color'
+  variable-name-format:
+    - 0
+    - convention: ^((is|has|m|s|c)-)?([a-z]+-?)+[a-z]+(__([a-z]+-?)+[a-z]+)?(--([a-z0-9]+-?)+([a-z0-9]+)?)?$
+    - convention-explanation: 'Use namespaced hyphenated bem'
+  zero-unit:
+    - 0
+    - include: false
