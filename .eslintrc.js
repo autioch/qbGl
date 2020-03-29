@@ -11,5 +11,8 @@ module.exports = {
     'line-comment-position': ['off'],
     'no-inline-comments': ['off'],
     'no-return-assign': ['off'],
+    'camelcase': ['off'],
+    'no-console': ['off'],
+    'max-statements': ['off'],
   }
 };

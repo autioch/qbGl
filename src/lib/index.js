@@ -2,6 +2,8 @@ import Light from './Light';
 import Matrix from './Matrix';
 import Program from './Program';
 import Scene from './Scene';
+import Scene2 from './Scene2';
+import App from './App';
 import Shape from './Shape';
 import Texture from './Texture';
 import View from './View';
@@ -15,6 +17,8 @@ export {
   Matrix,
   Program,
   Scene,
+  Scene2,
+  App,
   Shape,
   Texture,
   View,
@@ -29,6 +33,8 @@ export default {
   Matrix,
   Program,
   Scene,
+  Scene2,
+  App,
   Shape,
   Texture,
   View,

@@ -70,7 +70,12 @@ module.exports = {
           name: 'fonts/[name].[ext]'
         }
       }
-    }, {
+    },
+    {
+      test: /\.(fsh|vsh)$/i,
+      use: 'raw-loader'
+    },
+    {
       test: /\.(jpg|gif|txt)$/i,
       exclude: /node_modules/,
       use: {

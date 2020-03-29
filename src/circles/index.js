@@ -1,0 +1,12 @@
+import Circle01 from './01';
+
+const rectSize = Math.min(window.innerWidth, window.innerHeight);
+
+new Circle01(rectSize - 10, rectSize - 10);
+
+// https://medium.com/@josecastrovaron/walking-in-circles-9f66aadbf4b4
+// https://community.khronos.org/t/circle-in-webgl/62227
+// https://observablehq.com/@rreusser/instanced-webgl-circles
+// https://stackoverflow.com/questions/58354135/webgl-fastest-approach-to-drawing-many-circles
+// https://gamedev.stackexchange.com/questions/55615/how-to-draw-a-circle-with-webgl-using-gl-points
+// https://blog.scottlogic.com/2019/10/17/sculpting-shapes-with-webgl-fragment-shader.html

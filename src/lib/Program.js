@@ -3,18 +3,20 @@ const shaderTypes = {
   'x-shader/x-vertex': 'VERTEX_SHADER'
 };
 
-function cacheScriptAttributes(scriptEl, scriptAttribute, arrayCache) {
-  const value = scriptEl.getAttribute(`data-${scriptAttribute}`);
-
-  if (value && value.length) {
-    value.split(',').forEach((attribName) => arrayCache.push(attribName));
+function parseAttribute(attributeText = '') {
+  if (!attributeText || !attributeText.length) {
+    return [];
   }
+
+  return attributeText.split(',');
 }
 
+// https://developer.mozilla.org/en-US/docs/Web/API/WebGL_API/WebGL_best_practices
+
 export default class Program {
-  constructor(webGlContext) {
-    this.context = webGlContext;
-    this.program = webGlContext.createProgram();
+  constructor(context) {
+    this.context = context;
+    this.program = context.createProgram();
     this.attribs = {};
     this.uniforms = {};
     this.attribsToSet = [];
@@ -38,17 +40,25 @@ export default class Program {
     this.context.shaderSource(Shader, shaderScript.textContent);
     this.context.compileShader(Shader);
 
-    if (!this.context.getShaderParameter(Shader, this.context.COMPILE_STATUS)) {
-      throw `Shader compile error.${this.context.getShaderInfoLog(Shader)}`;
-    }
-
     this.context.attachShader(this.program, Shader);
 
-    cacheScriptAttributes(shaderScript, 'uniforms', this.uniformsToSet);
-    cacheScriptAttributes(shaderScript, 'attribs', this.attribsToSet);
+    this.uniformsToSet.push(...parseAttribute(shaderScript.getAttribute(`data-uniforms`)));
+    this.attribsToSet.push(...parseAttribute(shaderScript.getAttribute(`data-attribs`)));
   }
 
-  /* maybe move this to Scene? */
+  setShaderFromConfig(config, type) {
+    const { source, uniforms = [], attributes = [] } = config;
+
+    const Shader = this.context.createShader(type);
+
+    this.context.shaderSource(Shader, source);
+    this.context.compileShader(Shader);
+    this.context.attachShader(this.program, Shader);
+
+    this.uniformsToSet.push(...uniforms);
+    this.attribsToSet.push(...attributes);
+  }
+
   use() {
     this.context.linkProgram(this.program);
 
@@ -57,22 +67,33 @@ export default class Program {
     }
 
     this.context.useProgram(this.program);
-    this.attribsToSet.forEach(this.setAttrib.bind(this));
-    this.uniformsToSet.forEach(this.setUniform.bind(this));
+
+    this.attribsToSet.forEach((attributeName) => {
+      if (this.attribs[attributeName]) {
+        throw `Attrib already exsists: ${attributeName}`;
+      }
+      const attrib = this.context.getAttribLocation(this.program, attributeName);
+
+      if (attrib === undefined) {
+        throw `No location for attrib: ${attributeName}`;
+      }
+      this.attribs[attributeName] = attrib;
+      this.context.enableVertexAttribArray(attrib);
+    });
+
+    this.uniformsToSet.forEach((uniformName) => {
+      if (this.uniforms[uniformName]) {
+        throw `Uniform already exsists: ${uniformName}`;
+      }
+      const uniform = this.context.getUniformLocation(this.program, uniformName);
+
+      if (uniform === undefined) {
+        throw `No location for uniform: ${uniformName}`;
+      }
+      this.uniforms[uniformName] = uniform;
+    });
 
     return this;
-  }
-
-  setUniform(uniformName) {
-    if (this.uniforms[uniformName]) {
-      throw `Uniform already exsists: ${uniformName}`;
-    }
-    const uniform = this.context.getUniformLocation(this.program, uniformName);
-
-    if (uniform === undefined) {
-      throw `No location for uniform: ${uniformName}`;
-    }
-    this.uniforms[uniformName] = uniform;
   }
 
   getUniform(uniformName) {
@@ -85,26 +106,13 @@ export default class Program {
     return uniform;
   }
 
-  setAttrib(attribName) {
-    if (this.attribs[attribName]) {
-      throw `Attrib already exsists: ${attribName}`;
-    }
-    const attrib = this.context.getAttribLocation(this.program, attribName);
+  getAttrib(attributeName) {
+    const attribute = this.attribs[attributeName];
 
-    if (attrib === undefined) {
-      throw `No location for attrib: ${attribName}`;
-    }
-    this.attribs[attribName] = attrib;
-    this.context.enableVertexAttribArray(attrib);
-  }
-
-  getAttrib(attribName) {
-    const attrib = this.attribs[attribName];
-
-    if (attrib === undefined) {
-      throw `Undefined attrib: ${attribName}`;
+    if (attribute === undefined) {
+      throw `Undefined attribute: ${attributeName}`;
     }
 
-    return attrib;
+    return attribute;
   }
 }
