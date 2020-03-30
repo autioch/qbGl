@@ -3,7 +3,7 @@ import fsh from './main.fsh';
 import vsh from './main.vsh';
 
 export default {
-  title: 'texture',
+  Scene,
   vsh: {
     source: vsh,
     uniforms: ['uMVMatrix', 'uPMatrix'],
@@ -13,5 +13,7 @@ export default {
     source: fsh,
     uniforms: ['uSampler']
   },
-  Scene
+  ui: {
+    title: 'texture'
+  }
 };

@@ -2,10 +2,12 @@ import Lib from './lib';
 import lessons from './lessons';
 import './styles';
 
-lessons.forEach((lesson) => {
+function setupLesson(lesson) {
   const app = new Lib.App(lesson);
 
-  document.body.append(app.el);
+  document.body.append(app.ui.el);
   app.render();
-  app.el.focus();
-});
+  app.ui.el.focus();
+}
+
+lessons.forEach(setupLesson);

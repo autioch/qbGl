@@ -4,7 +4,7 @@ import vsh from './main.vsh';
 import template from './template.html';
 
 export default {
-  title: 'lots of items',
+  Scene,
   skipDepthTest: true,
   vsh: {
     source: vsh,
@@ -15,6 +15,8 @@ export default {
     source: fsh,
     uniforms: ['uSampler', 'uColor']
   },
-  Scene,
-  template
+  ui: {
+    title: 'lots of items',
+    template
+  }
 };

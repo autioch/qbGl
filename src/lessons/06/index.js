@@ -4,7 +4,7 @@ import vsh from './main.vsh';
 import template from './template.html';
 
 export default {
-  title: '3d objects',
+  Scene,
   vsh: {
     source: vsh,
     uniforms: ['uMVMatrix', 'uPMatrix'],
@@ -14,6 +14,8 @@ export default {
     source: fsh,
     uniforms: ['uSampler']
   },
-  Scene,
-  template
+  ui: {
+    title: '3d objects',
+    template
+  }
 };

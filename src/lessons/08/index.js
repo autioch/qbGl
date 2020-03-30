@@ -4,7 +4,7 @@ import vsh from './main.vsh';
 import template from './template.html';
 
 export default {
-  title: 'transparency',
+  Scene,
   vsh: {
     source: vsh,
     uniforms: [
@@ -16,6 +16,8 @@ export default {
     source: fsh,
     uniforms: ['uSampler', 'uAlpha']
   },
-  Scene,
-  template
+  ui: {
+    title: 'transparency',
+    template
+  }
 };

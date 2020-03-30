@@ -1,16 +1,19 @@
 import Matrix from './Matrix';
 import Program from './Program';
+import UI from './UI';
 import { configBuilder } from './utils';
 
 const buildConfig = configBuilder({
   width: 300,
   height: 225,
+  title: '',
+  template: '',
+
   skipDepthTest: false,
   Scene: null,
   vsh: {},
   fsh: {},
-  title: '',
-  template: ''
+  ui: {}
 });
 
 export default class App {
@@ -22,26 +25,12 @@ export default class App {
     this.stop = this.stop.bind(this);
     this.setMatrixUniforms = this.setMatrixUniforms.bind(this);
 
-    this.el = document.createElement('section');
-    this.el.classList.add('app');
-    this.el.setAttribute('tabindex', 0);
-    this.el.addEventListener('focus', this.start);
-    this.el.addEventListener('blur', this.stop);
+    this.ui = new UI(this.config.ui);
 
-    const title = document.createElement('header');
+    this.ui.el.addEventListener('focus', this.start);
+    this.ui.el.addEventListener('blur', this.stop);
 
-    title.textContent = this.config.title;
-    title.classList.add('app-title');
-    this.el.append(title);
-
-    this.canvas = document.createElement('canvas');
-    this.canvas.classList.add('app-canvas');
-    this.canvas.height = this.config.height;
-    this.canvas.width = this.config.width;
-
-    this.el.append(this.canvas);
-
-    this.context = this.canvas.getContext('webgl');
+    this.context = this.ui.canvas.getContext('webgl');
     this.context.clearColor(0.0, 0.0, 0.0, 1.0);
 
     !this.config.skipDepthTest && this.context.enable(this.context.DEPTH_TEST);
@@ -50,24 +39,15 @@ export default class App {
     this.mMatrix = new Matrix();
 
     this.scene = new this.config.Scene();
-
     this.scene.initialize({
       context: this.context,
-      el: this.el
+      el: this.ui.el
     });
 
     this.program = new Program(this.context);
     this.program.setShaderFromConfig(this.config.vsh, this.context.VERTEX_SHADER);
     this.program.setShaderFromConfig(this.config.fsh, this.context.FRAGMENT_SHADER);
     this.program.use();
-
-    const wrapper = document.createElement('div');
-
-    wrapper.innerHTML = this.config.template;
-
-    while (wrapper.childNodes.length > 0) {
-      this.el.appendChild(wrapper.childNodes[0]);
-    }
   }
 
   start() {

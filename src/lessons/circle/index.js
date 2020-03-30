@@ -3,7 +3,7 @@ import fsh from './main.fsh';
 import vsh from './main.vsh';
 
 export default {
-  title: 'circle',
+  Scene,
   vsh: {
     source: vsh,
     attributes: ['pos']
@@ -11,7 +11,9 @@ export default {
   fsh: {
     source: fsh
   },
-  Scene
+  ui: {
+    title: 'circle'
+  }
 };
 
 // https://medium.com/@josecastrovaron/walking-in-circles-9f66aadbf4b4

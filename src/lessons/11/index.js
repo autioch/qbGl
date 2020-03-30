@@ -4,7 +4,7 @@ import vsh from './main.vsh';
 import template from './template.html';
 
 export default {
-  title: 'mouse on the moon',
+  Scene,
   vsh: {
     source: vsh,
     uniforms: [
@@ -17,6 +17,8 @@ export default {
     source: fsh,
     uniforms: ['uSampler']
   },
-  Scene,
-  template
+  ui: {
+    title: 'mouse on the moon',
+    template
+  }
 };

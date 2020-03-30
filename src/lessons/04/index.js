@@ -1,10 +1,9 @@
 import Scene from './Scene';
-
 import fsh from './main.fsh';
 import vsh from './main.vsh';
 
 export default {
-  title: '3d objects',
+  Scene,
   vsh: {
     source: vsh,
     uniforms: ['uMVMatrix', 'uPMatrix'],
@@ -13,5 +12,7 @@ export default {
   fsh: {
     source: fsh
   },
-  Scene
+  ui: {
+    title: '3d objects'
+  }
 };

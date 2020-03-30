@@ -5,6 +5,7 @@ import Scene from './Scene';
 import App from './App';
 import Shape from './Shape';
 import Texture from './Texture';
+import UI from './UI';
 import { degToRad, mouse, keyboard, loadTextures, configBuilder } from './utils';
 
 export {
@@ -15,6 +16,7 @@ export {
   App,
   Shape,
   Texture,
+  UI,
   degToRad,
   mouse,
   keyboard,
@@ -30,6 +32,7 @@ export default {
   App,
   Shape,
   Texture,
+  UI,
   degToRad,
   mouse,
   keyboard,
