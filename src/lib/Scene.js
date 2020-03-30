@@ -4,7 +4,7 @@ export default class Scene {
     throw Error('Scene must implement initialize method');
   }
 
-  render({ context, program, mMatrix, pMatrix, setMatrixUniforms }) {
+  render({ context, program, mMatrix, setMatrixUniforms }) {
     throw Error('Scene must implement render method');
   }
 

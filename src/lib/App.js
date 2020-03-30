@@ -81,7 +81,6 @@ export default class App {
       context: this.context,
       program: this.program,
       mMatrix: this.mMatrix,
-      pMatrix: this.pMatrix,
       setMatrixUniforms: this.setMatrixUniforms
     });
   }
