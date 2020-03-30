@@ -5,10 +5,7 @@ import Scene from './Scene';
 import App from './App';
 import Shape from './Shape';
 import Texture from './Texture';
-import { degToRad } from './utils';
-import mouse from './mouse';
-import keyboard from './keyboard';
-import loadTextures from './loadTextures';
+import { degToRad, mouse, keyboard, loadTextures, configBuilder } from './utils';
 
 export {
   Light,
@@ -21,7 +18,8 @@ export {
   degToRad,
   mouse,
   keyboard,
-  loadTextures
+  loadTextures,
+  configBuilder
 };
 
 export default {
@@ -35,5 +33,6 @@ export default {
   degToRad,
   mouse,
   keyboard,
-  loadTextures
+  loadTextures,
+  configBuilder
 };

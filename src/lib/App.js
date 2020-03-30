@@ -1,7 +1,8 @@
 import Matrix from './Matrix';
 import Program from './Program';
+import { configBuilder } from './utils';
 
-const CONFIG_DEFAULT = {
+const buildConfig = configBuilder({
   width: 300,
   height: 225,
   skipDepthTest: false,
@@ -10,20 +11,11 @@ const CONFIG_DEFAULT = {
   fsh: {},
   title: '',
   template: ''
-};
-
-function checkConfig(config) {
-  Object.keys(config).forEach((key) => {
-    if (!CONFIG_DEFAULT.hasOwnProperty(key)) {
-      throw Error(`Unknown config key ${key}`);
-    }
-  });
-}
+});
 
 export default class App {
   constructor(config) {
-    checkConfig(config);
-    this.config = Object.assign({}, CONFIG_DEFAULT, config);
+    this.config = buildConfig(config);
 
     this.start = this.start.bind(this);
     this.loop = this.loop.bind(this);
