@@ -35,29 +35,29 @@ export default class extends Lib.Scene {
   render({ context, program, mMatrix, setMatrixUniforms }) {
     // const lighting = document.getElementById('lighting').checked;
 
-    context.uniform1i(program.getUniform('uUseLighting'), false);
+    context.uniform1i(program.locateUniform('uUseLighting'), false);
 
-    //        context.uniform1i(program.getUniform("uUseLighting"), lighting);
+    //        context.uniform1i(program.locateUniform("uUseLighting"), lighting);
     //        if (lighting) {
-    //            light.get3f(program.getUniform("uAmbientColor"), getVal("ambientR"), getVal("ambientG"), getVal("ambientB"));
-    //            light.get3fv(program.getUniform("uLightingDirection"), getVal("lightDirectionX"), getVal("lightDirectionY"), getVal("lightDirectionZ"));
-    //            light.get3f(program.getUniform("uDirectionalColor"), getVal("directionalR"), getVal("directionalG"), getVal("directionalB"));
+    //            light.get3f(program.locateUniform("uAmbientColor"), getVal("ambientR"), getVal("ambientG"), getVal("ambientB"));
+    //            light.get3fv(program.locateUniform("uLightingDirection"), getVal("lightDirectionX"), getVal("lightDirectionY"), getVal("lightDirectionZ"));
+    //            light.get3f(program.locateUniform("uDirectionalColor"), getVal("directionalR"), getVal("directionalG"), getVal("directionalB"));
     //        }
 
     mMatrix
       .translate([0, 0, -6])
       .multiply(this.moonRotationMatrix);
 
-    this.bufferStash.getTexture('moon', program.getUniform('uSampler'));
-    this.bufferStash.getBuffer('positions', program.getAttrib('aVertexPosition'));
-    this.bufferStash.getBuffer('textures', program.getAttrib('aTextureCoord'));
-    this.bufferStash.getBuffer('normals', program.getAttrib('aVertexNormal'));
+    this.bufferStash.getTexture('moon', program.locateUniform('uSampler'));
+    this.bufferStash.getBuffer('positions', program.locateAttribute('aVertexPosition'));
+    this.bufferStash.getBuffer('textures', program.locateAttribute('aTextureCoord'));
+    this.bufferStash.getBuffer('normals', program.locateAttribute('aVertexNormal'));
 
     const indices = this.bufferStash.getBuff('indices');
 
     context.bindBuffer(context.ELEMENT_ARRAY_BUFFER, indices);
     setMatrixUniforms();
-    context.uniformMatrix3fv(program.getUniform('uNMatrix'), false, mMatrix.toInvTraMat3());
+    context.uniformMatrix3fv(program.locateUniform('uNMatrix'), false, mMatrix.toInvTraMat3());
 
     context.drawElements(context.TRIANGLES, indices.count, context.UNSIGNED_SHORT, 0);
   }

@@ -22,9 +22,9 @@ export default class extends Lib.Scene {
       .translate([-1.5, 0.0, -6.0])
       .push()
       .rotate(this.pyramid.rotate, [0, 1, 0]);
-    const pyramidVertices = this.pyramid.getBuffer('vertices', program.getAttrib('aVertexPosition'));
+    const pyramidVertices = this.pyramid.getBuffer('vertices', program.locateAttribute('aVertexPosition'));
 
-    this.pyramid.getBuffer('colors', program.getAttrib('aVertexColor'));
+    this.pyramid.getBuffer('colors', program.locateAttribute('aVertexColor'));
     setMatrixUniforms();
     context.drawArrays(context.TRIANGLES, 0, pyramidVertices.count);
 
@@ -34,8 +34,8 @@ export default class extends Lib.Scene {
       .push()
       .rotate(this.cube.rotate, [1, 1, 1]);
 
-    this.cube.getBuffer('vertices', program.getAttrib('aVertexPosition'));
-    this.cube.getBuffer('colors', program.getAttrib('aVertexColor'));
+    this.cube.getBuffer('vertices', program.locateAttribute('aVertexPosition'));
+    this.cube.getBuffer('colors', program.locateAttribute('aVertexColor'));
 
     const indices = this.cube.getBuff('indices');
 

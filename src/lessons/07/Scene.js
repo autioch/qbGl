@@ -44,29 +44,29 @@ export default class extends Lib.Scene {
       .rotate(this.cube.xRot, [1, 0, 0])
       .rotate(this.cube.yRot, [0, 1, 0]);
 
-    this.cube.getBuffer('vertices', program.getAttrib('aVertexPosition'));
-    this.cube.getBuffer('normals', program.getAttrib('aVertexNormal'));
-    this.cube.getBuffer('textures', program.getAttrib('aTextureCoord'));
-    this.cube.getTexture(this.cube.filter, program.getUniform('uSampler'));
+    this.cube.getBuffer('vertices', program.locateAttribute('aVertexPosition'));
+    this.cube.getBuffer('normals', program.locateAttribute('aVertexNormal'));
+    this.cube.getBuffer('textures', program.locateAttribute('aTextureCoord'));
+    this.cube.getTexture(this.cube.filter, program.locateUniform('uSampler'));
 
     const lighting = document.getElementById('lighting').checked;
 
-    context.uniform1i(program.getUniform('uUseLighting'), lighting);
+    context.uniform1i(program.locateUniform('uUseLighting'), lighting);
     if (lighting) {
       this.light.get3f(
-        program.getUniform('uAmbientColor'),
+        program.locateUniform('uAmbientColor'),
         getVal('ambientR'),
         getVal('ambientG'),
         getVal('ambientB')
       );
       this.light.get3fv(
-        program.getUniform('uLightingDirection'),
+        program.locateUniform('uLightingDirection'),
         getVal('lightDirectionX'),
         getVal('lightDirectionY'),
         getVal('lightDirectionZ')
       );
       this.light.get3f(
-        program.getUniform('uDirectionalColor'),
+        program.locateUniform('uDirectionalColor'),
         getVal('directionalR'),
         getVal('directionalG'),
         getVal('directionalB')
@@ -77,7 +77,7 @@ export default class extends Lib.Scene {
 
     context.bindBuffer(context.ELEMENT_ARRAY_BUFFER, indices);
     setMatrixUniforms();
-    context.uniformMatrix3fv(program.getUniform('uNMatrix'), false, mMatrix.toInvTraMat3());
+    context.uniformMatrix3fv(program.locateUniform('uNMatrix'), false, mMatrix.toInvTraMat3());
 
     context.drawElements(context.TRIANGLES, indices.count, context.UNSIGNED_SHORT, 0);
   }

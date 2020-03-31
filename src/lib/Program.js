@@ -58,7 +58,7 @@ export default class Program {
     return this;
   }
 
-  getUniform(uniformName) {
+  locateUniform(uniformName) {
     const uniform = this.uniforms[uniformName];
 
     if (uniform === undefined) {
@@ -68,7 +68,7 @@ export default class Program {
     return uniform;
   }
 
-  getAttrib(attributeName) {
+  locateAttribute(attributeName) {
     const attribute = this.attribs[attributeName];
 
     if (attribute === undefined) {

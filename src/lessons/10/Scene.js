@@ -45,26 +45,26 @@ export default class extends Lib.Scene {
       .rotate(-this.yaw, [0, 1, 0])
       .translate([-this.xPos, -this.yPos, -this.zPos]);
 
-    this.ceilingShape.getTexture('floor', program.getUniform('uSampler'));
-    this.ceilingShape.getBuffer('textures', program.getAttrib('aTextureCoord'));
+    this.ceilingShape.getTexture('floor', program.locateUniform('uSampler'));
+    this.ceilingShape.getBuffer('textures', program.locateAttribute('aTextureCoord'));
 
-    const ceilVerticesBuffer = this.ceilingShape.getBuffer('vertices', program.getAttrib('aVertexPosition'));
+    const ceilVerticesBuffer = this.ceilingShape.getBuffer('vertices', program.locateAttribute('aVertexPosition'));
 
     setMatrixUniforms();
     context.drawArrays(context.TRIANGLES, 0, ceilVerticesBuffer.count);
 
-    this.floorShape.getTexture('floor', program.getUniform('uSampler'));
-    this.floorShape.getBuffer('textures', program.getAttrib('aTextureCoord'));
+    this.floorShape.getTexture('floor', program.locateUniform('uSampler'));
+    this.floorShape.getBuffer('textures', program.locateAttribute('aTextureCoord'));
 
-    const floorVerticesBuffer = this.floorShape.getBuffer('vertices', program.getAttrib('aVertexPosition'));
+    const floorVerticesBuffer = this.floorShape.getBuffer('vertices', program.locateAttribute('aVertexPosition'));
 
     setMatrixUniforms();
     context.drawArrays(context.TRIANGLES, 0, floorVerticesBuffer.count);
 
-    this.wallsShape.getTexture('wall', program.getUniform('uSampler'));
-    this.wallsShape.getBuffer('textures', program.getAttrib('aTextureCoord'));
+    this.wallsShape.getTexture('wall', program.locateUniform('uSampler'));
+    this.wallsShape.getBuffer('textures', program.locateAttribute('aTextureCoord'));
 
-    const wallVerticesBuffer = this.wallsShape.getBuffer('vertices', program.getAttrib('aVertexPosition'));
+    const wallVerticesBuffer = this.wallsShape.getBuffer('vertices', program.locateAttribute('aVertexPosition'));
 
     setMatrixUniforms();
     context.drawArrays(context.TRIANGLES, 0, wallVerticesBuffer.count);

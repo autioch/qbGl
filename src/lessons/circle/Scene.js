@@ -23,7 +23,7 @@ export default class extends Lib.Scene {
     context.vertexAttribPointer(attr, 3, context.FLOAT, false, 0, 0);
     context.drawArrays(context.LINES, 0, this.rotationradian.length / 3);
 
-    // const vertices = this.circle.getBuffer('circle', program.getAttrib('pos'));
+    // const vertices = this.circle.getBuffer('circle', program.locateAttribute('pos'));
 
     // context.drawArrays(context.TRIANGLE_STRIP, 0, this.rotationradian.length / 3);
   }

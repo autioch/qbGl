@@ -38,9 +38,9 @@ export default class extends Lib.Scene {
       .rotate(this.xRot, [1, 0, 0])
       .rotate(this.yRot, [0, 1, 0]);
 
-    this.cube.getBuffer('vertices', program.getAttrib('aVertexPosition'));
-    this.cube.getBuffer('textures', program.getAttrib('aTextureCoord'));
-    this.cube.getTexture(this.filter, program.getUniform('uSampler'));
+    this.cube.getBuffer('vertices', program.locateAttribute('aVertexPosition'));
+    this.cube.getBuffer('textures', program.locateAttribute('aTextureCoord'));
+    this.cube.getTexture(this.filter, program.locateUniform('uSampler'));
 
     const indices = this.cube.getBuff('indices');
 

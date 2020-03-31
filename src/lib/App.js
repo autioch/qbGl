@@ -92,7 +92,7 @@ export default class App {
   }
 
   setMatrixUniforms() {
-    this.context.uniformMatrix4fv(this.program.getUniform('uPMatrix'), false, this.pMatrix.get());
-    this.context.uniformMatrix4fv(this.program.getUniform('uMVMatrix'), false, this.mMatrix.get());
+    this.context.uniformMatrix4fv(this.program.locateUniform('uPMatrix'), false, this.pMatrix.get());
+    this.context.uniformMatrix4fv(this.program.locateUniform('uMVMatrix'), false, this.mMatrix.get());
   }
 }

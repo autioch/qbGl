@@ -12,13 +12,13 @@ export default class extends Lib.Scene {
 
   render({ context, program, mMatrix, setMatrixUniforms }) {
     mMatrix.translate([-1.5, 0.0, -6.0]);
-    const triangleVertices = this.triangle.getBuffer('vertices', program.getAttrib('aVertexPosition'));
+    const triangleVertices = this.triangle.getBuffer('vertices', program.locateAttribute('aVertexPosition'));
 
     setMatrixUniforms();
     context.drawArrays(context.TRIANGLES, 0, triangleVertices.count);
 
     mMatrix.translate([3, 0, 0]);
-    const squareVertices = this.square.getBuffer('vertices', program.getAttrib('aVertexPosition'));
+    const squareVertices = this.square.getBuffer('vertices', program.locateAttribute('aVertexPosition'));
 
     setMatrixUniforms();
     context.drawArrays(context.TRIANGLE_STRIP, 0, squareVertices.count);
