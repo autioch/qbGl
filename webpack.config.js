@@ -21,7 +21,7 @@ const { argv } = require('yargs').options({
     type: 'boolean'
   },
   port: {
-    'default': 8080, // eslint-disable-line no-magic-numbers
+    'default': 9090, // eslint-disable-line no-magic-numbers
     type: 'number'
   }
 });

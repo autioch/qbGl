@@ -1,13 +1,13 @@
 import Lib from './lib';
-import lessons from './lessons';
+import configs from './webglfundamentals.org';
 import './styles';
 
-function setupLesson(lesson) {
-  const app = new Lib.App(lesson);
+function setupApp(config) {
+  const app = new Lib.App(config.default);
 
   document.body.append(app.ui.el);
   app.render();
   app.ui.el.focus();
 }
 
-lessons.forEach(setupLesson);
+configs.forEach(setupApp);

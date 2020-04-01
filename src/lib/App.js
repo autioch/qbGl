@@ -41,7 +41,8 @@ export default class App {
     this.scene = new this.config.Scene();
     this.scene.initialize({
       context: this.context,
-      el: this.ui.el
+      el: this.ui.el,
+      canvas: this.ui.canvas
     });
 
     this.program = new Program(this.context);
@@ -81,7 +82,8 @@ export default class App {
       context: this.context,
       program: this.program,
       mMatrix: this.mMatrix,
-      setMatrixUniforms: this.setMatrixUniforms
+      setMatrixUniforms: this.setMatrixUniforms,
+      canvas: this.ui.canvas
     });
   }
 
