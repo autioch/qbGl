@@ -3,28 +3,23 @@ const { degToRad } = Lib;
 
 export default class extends Lib.Scene {
   initialize({ context }) {
-    this.rotationradian = [];
+    this.rotationRadian = [];
 
-    for (let i = 0; i <= 360; i += 0.1) { // 1, 5, 15 number of line draw
-      this.rotationradian.push(Math.cos(degToRad(i)), Math.sin(degToRad(i)), 0);
+    for (let i = 0; i <= 360; i += 10) { // 1, 5, 15 number of line draw
+      this.rotationRadian.push(Math.cos(degToRad(i)), Math.sin(degToRad(i)), 0);
     }
 
-    this.circle = new Lib.Shape(context);
-    this.circle.setBuffer('circle', new Float32Array(this.rotationradian), context.ARRAY_BUFFER, 3, 3);
+    this.circles = new Lib.ArrayDataBuffer(context, {
+      size: 3,
+      data: this.rotationRadian
+    });
   }
 
   render({ context, program }) {
-    context.bindBuffer(context.ARRAY_BUFFER, context.createBuffer());
-    context.bufferData(context.ARRAY_BUFFER, new Float32Array(this.rotationradian), context.STATIC_DRAW);
+    this.circles.fillBuffer(program.locateAttribute('pos'));
 
-    const attr = context.getAttribLocation(program.program, 'pos');
+    context.drawArrays(context.LINE_LOOP, 0, this.rotationRadian.length / 3);
 
-    context.enableVertexAttribArray(attr);
-    context.vertexAttribPointer(attr, 3, context.FLOAT, false, 0, 0);
-    context.drawArrays(context.LINES, 0, this.rotationradian.length / 3);
-
-    // const vertices = this.circle.getBuffer('circle', program.locateAttribute('pos'));
-
-    // context.drawArrays(context.TRIANGLE_STRIP, 0, this.rotationradian.length / 3);
+    // context.drawArrays(context.TRIANGLE_STRIP, 0, this.rotationRadian.length / 3);
   }
 }

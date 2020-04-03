@@ -1,5 +1,6 @@
 import Lib from './lib';
-import configs from './webglfundamentals.org';
+import webglfundamentals from './webglfundamentals.org';
+import tests from './tests';
 import './styles';
 
 function setupApp(config) {
@@ -10,4 +11,4 @@ function setupApp(config) {
   app.ui.el.focus();
 }
 
-configs.forEach(setupApp);
+[...webglfundamentals, ...tests].forEach(setupApp);
