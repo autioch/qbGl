@@ -3,10 +3,12 @@ import Matrix from './Matrix';
 import Program from './Program';
 import Scene from './Scene';
 import App from './App';
+import ArrayDataBuffer from './ArrayDataBuffer';
 import Shape from './Shape';
 import Texture from './Texture';
+import Texture2 from './Texture2';
 import UI from './UI';
-import { degToRad, mouse, keyboard, loadTextures, configBuilder } from './utils';
+import { degToRad, mouse, keyboard, loadTextures, configBuilder, loadImage } from './utils';
 
 export {
   Light,
@@ -14,14 +16,17 @@ export {
   Program,
   Scene,
   App,
+  ArrayDataBuffer,
   Shape,
   Texture,
+  Texture2,
   UI,
   degToRad,
   mouse,
   keyboard,
   loadTextures,
-  configBuilder
+  configBuilder,
+  loadImage
 };
 
 export default {
@@ -30,12 +35,15 @@ export default {
   Program,
   Scene,
   App,
+  ArrayDataBuffer,
   Shape,
   Texture,
+  Texture2,
   UI,
   degToRad,
   mouse,
   keyboard,
   loadTextures,
-  configBuilder
+  configBuilder,
+  loadImage
 };

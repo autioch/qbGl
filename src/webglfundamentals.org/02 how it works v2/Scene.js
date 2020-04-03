@@ -4,16 +4,18 @@ import { generateColor } from './utils';
 
 export default class extends Lib.Scene {
   initialize({ context }) {
-    this.triangle = context.createBuffer();
-    context.bindBuffer(context.ARRAY_BUFFER, this.triangle);
-    context.bufferData(context.ARRAY_BUFFER, new Float32Array([0, 0, 50, 50, 0, 50, 75, 75, 150, 75, 75, 150]), context.STATIC_DRAW);
+    this.position = new Lib.ArrayDataBuffer(context, {
+      size: 2,
+      data: [0, 0, 50, 50, 0, 50, 75, 75, 150, 75, 75, 150]
+    });
 
     const color1 = generateColor();
     const color2 = generateColor();
 
-    this.colors = context.createBuffer();
-    context.bindBuffer(context.ARRAY_BUFFER, this.colors);
-    context.bufferData(context.ARRAY_BUFFER, new Float32Array([...color1, ...color1, ...color1, ...color2, ...color2, ...color2]), context.STATIC_DRAW);
+    this.colors = new Lib.ArrayDataBuffer(context, {
+      size: 4,
+      data: [...color1, ...color1, ...color1, ...color2, ...color2, ...color2]
+    });
 
     this.translation = [10, 10];
     this.angleInRadians = 0;
@@ -21,17 +23,10 @@ export default class extends Lib.Scene {
   }
 
   render({ context, program, canvas }) { // eslint-disable-line class-methods-use-this
-    const position = program.locateAttribute('a_position');
-    const color = program.locateAttribute('a_color');
     const umatrix = program.locateUniform('u_matrix');
 
-    context.enableVertexAttribArray(position);
-    context.bindBuffer(context.ARRAY_BUFFER, this.triangle);
-    context.vertexAttribPointer(position, 2, context.FLOAT, false, 0, 0);
-
-    context.enableVertexAttribArray(color);
-    context.bindBuffer(context.ARRAY_BUFFER, this.colors);
-    context.vertexAttribPointer(color, 4, context.FLOAT, false, 0, 0);
+    this.position.fillBuffer(program.locateAttribute('a_position'));
+    this.colors.fillBuffer(program.locateAttribute('a_color'));
 
     // Compute the matrix
     let matrix = m3.projection(canvas.clientWidth, context.canvas.clientHeight);

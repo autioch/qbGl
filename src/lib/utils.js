@@ -86,3 +86,16 @@ export function configBuilder(defaultConfig) {
     return Object.assign({}, defaultConfig, contextDefaults, config);
   };
 }
+
+export function loadImage(url) {
+  const image = new Image();
+
+  image.crossOrigin = ''; // ask for CORS permission
+
+  return new Promise((resolve, reject) => {
+    image.onerror = reject;
+    image.onload = () => resolve(image);
+
+    image.src = url;
+  });
+}
