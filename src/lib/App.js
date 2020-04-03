@@ -39,11 +39,15 @@ export default class App {
     this.mMatrix = new Matrix();
 
     this.scene = new this.config.Scene();
-    this.scene.initialize({
-      context: this.context,
-      el: this.ui.el,
-      canvas: this.ui.canvas
-    });
+    this.initPromise = Promise
+      .resolve(this.scene.initialize({
+        context: this.context,
+        el: this.ui.el,
+        canvas: this.ui.canvas
+      }))
+      .then(() => this.scene.ready({
+        context: this.context
+      }));
 
     this.program = new Program(this.context);
     this.program.setShaderFromConfig(this.config.vsh, this.context.VERTEX_SHADER);
@@ -52,9 +56,11 @@ export default class App {
   }
 
   start() {
-    this._focused = true;
-    this._lastAnimate = 0;
-    this._raf = requestAnimationFrame(this.loop);
+    this.initPromise.then(() => {
+      this._focused = true;
+      this._lastAnimate = 0;
+      this._raf = requestAnimationFrame(this.loop);
+    });
   }
 
   loop() {

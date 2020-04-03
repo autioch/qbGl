@@ -25,6 +25,12 @@ export default class Texture {
     this.image.onerror = this.onerror.bind(this);
     this.image.onload = this.onload.bind(this);
     this.image.crossOrigin = ''; // ask for CORS permission
+
+    this.loadPromise = new Promise((resolve, reject) => {
+      this.loadResolve = resolve;
+      this.loadReject = reject;
+    });
+
     this.image.src = this.config.url;
   }
 
@@ -35,18 +41,18 @@ export default class Texture {
   onload() {
     const { context } = this;
 
-    context.pixelStorei(context.UNPACK_FLIP_Y_WEBGL, true);
-    context.bindTexture(context.TEXTURE_2D, this.texture);
-    context.texImage2D(context.TEXTURE_2D, 0, context.RGBA, context.RGBA, context.UNSIGNED_BYTE, this.image);
-    context.texParameteri(context.TEXTURE_2D, context.TEXTURE_MAG_FILTER, this.config.magFilter);
-    context.texParameteri(context.TEXTURE_2D, context.TEXTURE_MIN_FILTER, this.config.minFilter);
+    // context.pixelStorei(context.UNPACK_FLIP_Y_WEBGL, true);
+    this.bind(this.config.magFilter, this.config.minFilter);
+
     this.config.mipmap && context.generateMipmap(context.TEXTURE_2D);
     context.bindTexture(context.TEXTURE_2D, null);
     this.loaded = true;
     this.config.onload();
+    this.loadResolve();
   }
 
   onerror() {
+    this.loadReject();
     throw `Unable to load image for texture: ${this.config.url}`;
   }
 

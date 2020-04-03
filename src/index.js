@@ -6,7 +6,7 @@ function setupApp(config) {
   const app = new Lib.App(config.default);
 
   document.body.append(app.ui.el);
-  app.render();
+  app.initPromise.then(() => app.render());
   app.ui.el.focus();
 }
 
