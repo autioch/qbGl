@@ -17,5 +17,6 @@ module.exports = {
     'max-len': ['off'],
     'guard-for-in': ['off'],
     'id-blacklist': ['off'],
+    'no-plusplus': ['off'],
   }
 };

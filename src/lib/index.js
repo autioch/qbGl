@@ -4,6 +4,7 @@ import Program from './Program';
 import Scene from './Scene';
 import App from './App';
 import ArrayDataBuffer from './ArrayDataBuffer';
+import FrameBuffer from './FrameBuffer';
 import Shape from './Shape';
 import Texture from './Texture';
 import Texture2 from './Texture2';
@@ -17,6 +18,7 @@ export {
   Scene,
   App,
   ArrayDataBuffer,
+  FrameBuffer,
   Shape,
   Texture,
   Texture2,
@@ -36,6 +38,7 @@ export default {
   Scene,
   App,
   ArrayDataBuffer,
+  FrameBuffer,
   Shape,
   Texture,
   Texture2,

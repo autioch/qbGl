@@ -44,15 +44,17 @@ export default class App {
         context: this.context,
         el: this.ui.el,
         canvas: this.ui.canvas
-      }))
-      .then(() => this.scene.ready({
-        context: this.context
       }));
 
     this.program = new Program(this.context);
     this.program.setShaderFromConfig(this.config.vsh, this.context.VERTEX_SHADER);
     this.program.setShaderFromConfig(this.config.fsh, this.context.FRAGMENT_SHADER);
     this.program.use();
+
+    this.initPromise.then(() => this.scene.ready({
+      context: this.context,
+      program: this.program
+    }));
   }
 
   start() {
