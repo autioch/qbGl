@@ -321,11 +321,51 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony default export */ 
 
 /***/ }),
 
+/***/ "./src/webglfundamentals.org/06 2d scale 01/Scene.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n    value: true\n});\n\nvar _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if (\"value\" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();\n\nvar _lib = __webpack_require__(\"./src/lib/index.js\");\n\nvar _lib2 = _interopRequireDefault(_lib);\n\nvar _consts = __webpack_require__(\"./src/webglfundamentals.org/06 2d scale 01/consts.js\");\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nfunction _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError(\"Cannot call a class as a function\"); } }\n\nfunction _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError(\"this hasn't been initialised - super() hasn't been called\"); } return call && (typeof call === \"object\" || typeof call === \"function\") ? call : self; }\n\nfunction _inherits(subClass, superClass) { if (typeof superClass !== \"function\" && superClass !== null) { throw new TypeError(\"Super expression must either be null or a function, not \" + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }\n\n// Copy of 01 fundamentals v2\nvar _class = function (_Lib$Scene) {\n    _inherits(_class, _Lib$Scene);\n\n    function _class() {\n        _classCallCheck(this, _class);\n\n        return _possibleConstructorReturn(this, (_class.__proto__ || Object.getPrototypeOf(_class)).apply(this, arguments));\n    }\n\n    _createClass(_class, [{\n        key: 'initialize',\n        value: function initialize(_ref) {\n            var context = _ref.context;\n\n            var radians = _lib2.default.degToRad(30);\n\n            this.rotation = [Math.sin(radians), Math.cos(radians)];\n            this.translation = [100, 50];\n            this.scale = [2, 0.5];\n\n            this.width = 100;\n            this.height = 30;\n\n            this.color = [0, 255, 0, 1];\n\n            this.position = new _lib2.default.ArrayDataBuffer(context, {\n                size: 2,\n                data: _consts.positions\n            });\n        }\n    }, {\n        key: 'render',\n        value: function render(_ref2) {\n            var context = _ref2.context,\n                program = _ref2.program,\n                canvas = _ref2.canvas;\n\n            context.uniform2f(program.locateUniform('u_resolution'), canvas.width, canvas.height);\n            context.uniform4fv(program.locateUniform('u_color'), this.color);\n            context.uniform2fv(program.locateUniform('u_translation'), this.translation);\n            context.uniform2fv(program.locateUniform('u_rotation'), this.rotation);\n            context.uniform2fv(program.locateUniform('u_scale'), this.scale);\n\n            this.position.fillBuffer('a_position');\n\n            context.drawArrays(context.TRIANGLES, 0, 18);\n        }\n    }]);\n\n    return _class;\n}(_lib2.default.Scene);\n\nexports.default = _class;\n\n//# sourceURL=webpack:///./src/webglfundamentals.org/06_2d_scale_01/Scene.js?");
+
+/***/ }),
+
+/***/ "./src/webglfundamentals.org/06 2d scale 01/consts.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\nvar positions = [\n// left column\n0, 0, 30, 0, 0, 150, 0, 150, 30, 0, 30, 150,\n\n// top rung\n30, 0, 100, 0, 30, 30, 30, 30, 100, 0, 100, 30,\n\n// middle rung\n30, 60, 67, 60, 30, 90, 30, 90, 67, 60, 67, 90];\n\nexports.positions = positions;\n\n//# sourceURL=webpack:///./src/webglfundamentals.org/06_2d_scale_01/consts.js?");
+
+/***/ }),
+
+/***/ "./src/webglfundamentals.org/06 2d scale 01/index.js":
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+eval("\n\nObject.defineProperty(exports, \"__esModule\", {\n  value: true\n});\n\nvar _Scene = __webpack_require__(\"./src/webglfundamentals.org/06 2d scale 01/Scene.js\");\n\nvar _Scene2 = _interopRequireDefault(_Scene);\n\nvar _main = __webpack_require__(\"./src/webglfundamentals.org/06 2d scale 01/main.fsh\");\n\nvar _main2 = _interopRequireDefault(_main);\n\nvar _main3 = __webpack_require__(\"./src/webglfundamentals.org/06 2d scale 01/main.vsh\");\n\nvar _main4 = _interopRequireDefault(_main3);\n\nfunction _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }\n\nexports.default = {\n  Scene: _Scene2.default,\n  vsh: {\n    source: _main4.default,\n    attributes: ['a_position'],\n    uniforms: ['u_resolution', 'u_translation', 'u_rotation', 'u_scale']\n  },\n  fsh: {\n    source: _main2.default,\n    uniforms: ['u_color']\n  },\n  ui: {\n    title: '2d scale v1'\n  }\n};\n\n//# sourceURL=webpack:///./src/webglfundamentals.org/06_2d_scale_01/index.js?");
+
+/***/ }),
+
+/***/ "./src/webglfundamentals.org/06 2d scale 01/main.fsh":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony default export */ __webpack_exports__[\"default\"] = (\"precision mediump float;\\r\\n\\r\\nuniform vec4 u_color;\\r\\n\\r\\nvoid main() {\\r\\n   gl_FragColor = u_color;\\r\\n}\\r\\n\");\n\n//# sourceURL=webpack:///./src/webglfundamentals.org/06_2d_scale_01/main.fsh?");
+
+/***/ }),
+
+/***/ "./src/webglfundamentals.org/06 2d scale 01/main.vsh":
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony default export */ __webpack_exports__[\"default\"] = (\"attribute vec2 a_position;\\r\\n\\r\\nuniform vec2 u_resolution;\\r\\nuniform vec2 u_translation;\\r\\nuniform vec2 u_rotation;\\r\\nuniform vec2 u_scale;\\r\\n\\r\\nvoid main() {\\r\\n  vec2 scaledPosition = a_position * u_scale;\\r\\n\\r\\n  // Rotate the position\\r\\n  vec2 rotatedPosition = vec2(\\r\\n    scaledPosition.x * u_rotation.y + scaledPosition.y * u_rotation.x,\\r\\n    scaledPosition.y * u_rotation.y - scaledPosition.x * u_rotation.x\\r\\n  );\\r\\n\\r\\n  vec2 position = rotatedPosition + u_translation;\\r\\n\\r\\n  // convert the rectangle points from pixels to 0.0 to 1.0\\r\\n  vec2 zeroToOne = position / u_resolution;\\r\\n\\r\\n  // convert from 0->1 to 0->2\\r\\n  vec2 zeroToTwo = zeroToOne * 2.0;\\r\\n\\r\\n  // convert from 0->2 to -1->+1 (clipspace)\\r\\n  vec2 clipSpace = zeroToTwo - 1.0;\\r\\n\\r\\n  gl_Position = vec4(clipSpace * vec2(1, -1), 0, 1);\\r\\n}\\r\\n\");\n\n//# sourceURL=webpack:///./src/webglfundamentals.org/06_2d_scale_01/main.vsh?");
+
+/***/ }),
+
 /***/ "./src/webglfundamentals.org/index.js":
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-eval("\n\nmodule.exports = [\n// require('./01 fundamentals v1'),\n// require('./01 fundamentals v2'),\n// require('./01 fundamentals v3'),\n// require('./02 how it works v1'),\n// require('./02 how it works v2'),\n// require('./03 image processing 01'),\n// require('./03 image processing 02'),\n// require('./03 image processing 03'),\n// require('./03 image processing 04'),\n__webpack_require__(\"./src/webglfundamentals.org/04 2d translation 01/index.js\"), __webpack_require__(\"./src/webglfundamentals.org/04 2d translation 02/index.js\"), __webpack_require__(\"./src/webglfundamentals.org/05 2d rotation 01/index.js\")];\n\n//# sourceURL=webpack:///./src/webglfundamentals.org/index.js?");
+eval("\n\nmodule.exports = [\n// require('./01 fundamentals v1'),\n// require('./01 fundamentals v2'),\n// require('./01 fundamentals v3'),\n// require('./02 how it works v1'),\n// require('./02 how it works v2'),\n// require('./03 image processing 01'),\n// require('./03 image processing 02'),\n// require('./03 image processing 03'),\n// require('./03 image processing 04'),\n__webpack_require__(\"./src/webglfundamentals.org/04 2d translation 01/index.js\"), __webpack_require__(\"./src/webglfundamentals.org/04 2d translation 02/index.js\"), __webpack_require__(\"./src/webglfundamentals.org/05 2d rotation 01/index.js\"), __webpack_require__(\"./src/webglfundamentals.org/06 2d scale 01/index.js\")];\n\n//# sourceURL=webpack:///./src/webglfundamentals.org/index.js?");
 
 /***/ })
 
