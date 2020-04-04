@@ -1,6 +1,4 @@
 import Lib from './lib';
-import webglfundamentals from './webglfundamentals.org';
-import tests from './tests';
 import './styles';
 
 function setupApp(config) {
@@ -8,7 +6,17 @@ function setupApp(config) {
 
   document.body.append(app.ui.el);
   app.initPromise.then(() => app.render());
-  app.ui.el.focus();
+
+  return app;
 }
 
-[...webglfundamentals, ...tests].forEach(setupApp);
+const apps = [
+  ...require('./webglfundamentals.org')
+
+  // ...require('./lessons'),
+  // ...require('./tests')
+]
+  .slice(0, 16) // limit of webgl contexts
+  .map(setupApp);
+
+apps[0].ui.el.focus();

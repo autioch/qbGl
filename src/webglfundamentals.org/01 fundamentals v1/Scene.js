@@ -12,6 +12,6 @@ export default class extends Lib.Scene {
   render({ context, program }) {
     this.position.fillBuffer(program.locateAttribute('a_position'));
 
-    context.drawArrays(context.TRIANGLES, 0, 3);
+    context.drawArrays(context.TRIANGLES, 0, this.position.count);
   }
 }

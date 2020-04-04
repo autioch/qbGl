@@ -5,6 +5,7 @@ export default class ArrayDataBuffer {
 
     this.size = options.size;
     this.type = options.type || this.context.FLOAT;
+    this.count = options.data ? options.data.length / this.size : 0;
 
     context.bindBuffer(context.ARRAY_BUFFER, this.buffer);
     options.data && context.bufferData(context.ARRAY_BUFFER, new Float32Array(options.data), context.STATIC_DRAW);
