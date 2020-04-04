@@ -7,13 +7,13 @@ export default {
   vsh: {
     source: vsh,
     attributes: ['a_position'],
-    uniforms: ['u_resolution', 'u_translation']
+    uniforms: ['u_resolution', 'u_translation', 'u_rotation']
   },
   fsh: {
     source: fsh,
     uniforms: ['u_color']
   },
   ui: {
-    title: '2d translation v2'
+    title: '2d rotation v1'
   }
 };

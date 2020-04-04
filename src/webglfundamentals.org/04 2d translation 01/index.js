@@ -14,6 +14,6 @@ export default {
     uniforms: ['u_color']
   },
   ui: {
-    title: 'fundamentals v2'
+    title: '2d translation v1'
   }
 };
