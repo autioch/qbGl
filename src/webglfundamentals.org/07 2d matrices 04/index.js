@@ -7,13 +7,13 @@ export default {
   vsh: {
     source: vsh,
     attributes: ['a_position'],
-    uniforms: ['u_resolution', 'u_matrix']
+    uniforms: ['u_matrix']
   },
   fsh: {
     source: fsh,
     uniforms: ['u_color']
   },
   ui: {
-    title: '2d matrices 01'
+    title: '2d matrices 04'
   }
 };

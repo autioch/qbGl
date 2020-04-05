@@ -12,5 +12,8 @@ module.exports = [
   require('./04 2d translation 02'),
   require('./05 2d rotation 01'),
   require('./06 2d scale 01'),
-  require('./07 2d matrices 01')
+  require('./07 2d matrices 01'),
+  require('./07 2d matrices 02'),
+  require('./07 2d matrices 03'),
+  require('./07 2d matrices 04')
 ];

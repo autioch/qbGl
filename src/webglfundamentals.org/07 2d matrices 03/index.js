@@ -14,6 +14,6 @@ export default {
     uniforms: ['u_color']
   },
   ui: {
-    title: '2d matrices 01'
+    title: '2d matrices 03'
   }
 };
