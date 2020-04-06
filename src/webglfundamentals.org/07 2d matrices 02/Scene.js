@@ -25,7 +25,7 @@ export default class extends Lib.Scene {
     const rotationMatrix = m3.rotation(this.radians);
     const scaleMatrix = m3.scaling(this.scale[0], this.scale[1]);
 
-    this.position.fillBuffer('a_position');
+    this.position.fillBuffer(program.locateAttribute('a_position'));
 
     // Starting Matrix.
     let matrix = m3.identity();

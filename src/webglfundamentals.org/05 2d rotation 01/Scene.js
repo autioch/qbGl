@@ -23,7 +23,7 @@ export default class extends Lib.Scene {
     context.uniform2fv(program.locateUniform('u_translation'), this.translation);
     context.uniform2fv(program.locateUniform('u_rotation'), this.rotation);
 
-    this.position.fillBuffer('a_position');
+    this.position.fillBuffer(program.locateAttribute('a_position'));
 
     context.drawArrays(context.TRIANGLES, 0, 18);
   }

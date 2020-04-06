@@ -19,7 +19,7 @@ export default class extends Lib.Scene {
     context.uniform4fv(program.locateUniform('u_color'), this.color);
     context.uniform2fv(program.locateUniform('u_translation'), this.translation);
 
-    this.position.fillBuffer('a_position');
+    this.position.fillBuffer(program.locateAttribute('a_position'));
 
     context.drawArrays(context.TRIANGLES, 0, 18);
   }

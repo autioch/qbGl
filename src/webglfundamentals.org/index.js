@@ -7,7 +7,7 @@ module.exports = [
   // require('./03 image processing 01'),
   // require('./03 image processing 02'),
   // require('./03 image processing 03'),
-  // require('./03 image processing 04'),
+  require('./03 image processing 04'),
   require('./04 2d translation 01'),
   require('./04 2d translation 02'),
   require('./05 2d rotation 01'),
@@ -15,5 +15,5 @@ module.exports = [
   require('./07 2d matrices 01'),
   require('./07 2d matrices 02'),
   require('./07 2d matrices 03'),
-  require('./07 2d matrices 04')
+  require('./08 ortographic 3d 01')
 ];

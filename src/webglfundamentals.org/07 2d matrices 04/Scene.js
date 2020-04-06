@@ -26,7 +26,7 @@ export default class extends Lib.Scene {
     matrix = m3.scale(matrix, this.scale[0], this.scale[1]);
     context.uniformMatrix3fv(program.locateUniform('u_matrix'), false, matrix);
 
-    this.position.fillBuffer('a_position');
+    this.position.fillBuffer(program.locateAttribute('a_position'));
 
     context.drawArrays(context.TRIANGLES, 0, 18);
   }
