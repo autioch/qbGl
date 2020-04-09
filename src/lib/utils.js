@@ -1,6 +1,7 @@
 import Texture from './Texture';
 
 export const degToRad = (degrees) => degrees * Math.PI / 180;
+export const radToDeg = (radians) => radians * 180 / Math.PI;
 
 export function mouse({ selector, onStart, onMove, onStop }) {
   function stopMouse() {
