@@ -1,27 +1,29 @@
+import { m4 } from './m4';
+
 const positions = [
   // left column front
   0, 0, 0,
-  30, 0, 0,
-  0, 150, 0,
   0, 150, 0,
   30, 0, 0,
+  0, 150, 0,
   30, 150, 0,
+  30, 0, 0,
 
   // top rung front
   30, 0, 0,
-  100, 0, 0,
-  30, 30, 0,
   30, 30, 0,
   100, 0, 0,
+  30, 30, 0,
   100, 30, 0,
+  100, 0, 0,
 
   // middle rung front
   30, 60, 0,
-  67, 60, 0,
-  30, 90, 0,
   30, 90, 0,
   67, 60, 0,
+  30, 90, 0,
   67, 90, 0,
+  67, 60, 0,
 
   // left column back
   0, 0, 30,
@@ -73,27 +75,27 @@ const positions = [
 
   // between top rung and middle
   30, 30, 0,
+  30, 60, 30,
   30, 30, 30,
-  30, 60, 30,
   30, 30, 0,
-  30, 60, 30,
   30, 60, 0,
+  30, 60, 30,
 
   // top of middle rung
   30, 60, 0,
+  67, 60, 30,
   30, 60, 30,
-  67, 60, 30,
   30, 60, 0,
-  67, 60, 30,
   67, 60, 0,
+  67, 60, 30,
 
   // right of middle rung
   67, 60, 0,
+  67, 90, 30,
   67, 60, 30,
-  67, 90, 30,
   67, 60, 0,
-  67, 90, 30,
   67, 90, 0,
+  67, 90, 30,
 
   // bottom of middle rung.
   30, 90, 0,
@@ -105,11 +107,11 @@ const positions = [
 
   // right of bottom
   30, 90, 0,
+  30, 150, 30,
   30, 90, 30,
-  30, 150, 30,
   30, 90, 0,
-  30, 150, 30,
   30, 150, 0,
+  30, 150, 30,
 
   // bottom
   0, 150, 0,
@@ -127,6 +129,25 @@ const positions = [
   0, 150, 30,
   0, 150, 0
 ];
+
+// Center the F around the origin and Flip it around. We do this because
+// we're in 3D now with and +Y is up where as before when we started with 2D
+// we had +Y as down.
+
+// We could do by changing all the values above but I'm lazy.
+// We could also do it with a matrix at draw time but you should
+// never do stuff at draw time if you can do it at init time.
+let matrix = m4.xRotation(Math.PI);
+
+matrix = m4.translate(matrix, -50, -75, -15);
+
+for (let ii = 0; ii < positions.length; ii += 3) {
+  const vector = m4.vectorMultiply([positions[ii + 0], positions[ii + 1], positions[ii + 2], 1], matrix);
+
+  positions[ii + 0] = vector[0]; // eslint-disable-line prefer-destructuring
+  positions[ii + 1] = vector[1]; // eslint-disable-line prefer-destructuring
+  positions[ii + 2] = vector[2]; // eslint-disable-line prefer-destructuring
+}
 
 const colors = [
   // left column front
