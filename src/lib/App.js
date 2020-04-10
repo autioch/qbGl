@@ -26,7 +26,7 @@ export default class App {
     this.ui.el.addEventListener('blur', this.stop);
 
     this.context = this.ui.canvas.getContext('webgl');
-    this.context.clearColor(0.0, 0.0, 0.0, 1.0);
+    this.context.clearColor(0.0, 0.0, 0.0, 1.0); // calling .clear will make black canvas
 
     !this.config.skipDepthTest && this.context.enable(this.context.DEPTH_TEST);
 

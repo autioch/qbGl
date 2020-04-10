@@ -1,30 +1,29 @@
-# qb-gl
+# qbGL
 
-*Work in progress.*
+Learning WbGL1.
+
+## TODO
+- getActiveAttrib (getProgramParameter)
+- getActiveUniform (getProgramParameter)
+- getProgramInfoLog
+- getShaderInfoLog
+- validateProgram
+- vertexAttrib
 
 
-## Installation
-`npm i qb-gl`
-
-## Usage
-
-```javascript
-
-const QbGl = require('qb-gl');
-
-import  QbGl  from 'qb-gl';
-
-```
-
-## Adding Preact
-1. Install packages:
-`npm i preact babel-plugin-transform-react-jsx`
-`npm i -D eslint-plugin-react`
-2. Modify `tools/webpack.config.js`. Add option to javascript loader:
-```javascript
-  plugins: [
-    ['transform-react-jsx', {
-      pragma: 'h'
-    }]
-]
-```
+## TO READ
+- stencil possible usages (mirror)
+- .colorMask()
+- copyTexImage2D()
+- createRenderbuffer
+- depthRange
+- disableVertexAttribArray
+- drawArrays vs drawElements
+- frontFace
+- when to generateMipmap
+- getBufferParameter
+- hint()
+- pixelStorei()
+- renderbufferStorage()
+- sampleCoverage()
+- scissor

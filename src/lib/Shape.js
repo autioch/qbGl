@@ -56,7 +56,8 @@ export default class Shape {
     if (!texture) {
       throw `Texture not defined: ${textureName}`;
     }
-    context.activeTexture(context.TEXTURE0);
+
+    context.activeTexture(context.TEXTURE0); // activate texture unit
     context.bindTexture(context.TEXTURE_2D, texture.get());
     context.uniform1i(samplerUniform, 0);
   }

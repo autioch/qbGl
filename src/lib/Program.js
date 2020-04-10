@@ -2,23 +2,23 @@ export default class Program {
   constructor(context) {
     this.context = context;
     this.program = context.createProgram();
-    this.attribs = {};
+    this.attributes = {};
     this.uniforms = {};
-    this.attribsToSet = [];
+    this.attributesToSet = [];
     this.uniformsToSet = [];
   }
 
   setShaderFromConfig(config, type) {
     const { source, uniforms = [], attributes = [] } = config;
 
-    const Shader = this.context.createShader(type);
+    const shader = this.context.createShader(type);
 
-    this.context.shaderSource(Shader, source);
-    this.context.compileShader(Shader);
-    this.context.attachShader(this.program, Shader);
+    this.context.shaderSource(shader, source);
+    this.context.compileShader(shader);
+    this.context.attachShader(this.program, shader);
 
     this.uniformsToSet.push(...uniforms);
-    this.attribsToSet.push(...attributes);
+    this.attributesToSet.push(...attributes);
   }
 
   use() {
@@ -30,8 +30,8 @@ export default class Program {
 
     this.context.useProgram(this.program);
 
-    this.attribsToSet.forEach((attributeName) => {
-      if (this.attribs[attributeName]) {
+    this.attributesToSet.forEach((attributeName) => {
+      if (this.attributes[attributeName]) {
         throw `Attrib already exsists: ${attributeName}`;
       }
       const attrib = this.context.getAttribLocation(this.program, attributeName);
@@ -39,8 +39,8 @@ export default class Program {
       if (attrib === undefined) {
         throw `No location for attrib: ${attributeName}`;
       }
-      this.attribs[attributeName] = attrib;
-      this.context.enableVertexAttribArray(attrib);
+      this.attributes[attributeName] = attrib;
+      this.context.enableVertexAttribArray(attrib); // todo is this needed?
     });
 
     this.uniformsToSet.forEach((uniformName) => {
@@ -69,7 +69,7 @@ export default class Program {
   }
 
   locateAttribute(attributeName) {
-    const attribute = this.attribs[attributeName];
+    const attribute = this.attributes[attributeName];
 
     if (attribute === undefined) {
       throw `Undefined attribute: ${attributeName}`;

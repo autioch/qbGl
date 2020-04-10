@@ -11,14 +11,13 @@ function setupApp(config) {
 }
 
 const apps = [
-  ...require('./lessons'),
+  // ...require('./lessons'),
   ...require('./webglfundamentals.org'),
   ...require('./tests')
 ];
 
-console.log(apps.map((config) => Object.keys(config.default)));
-
 apps
-  .slice(0, 16) // limit of webgl contexts
-  .map(setupApp)[0]
-  .ui.el.focus();
+  .slice(-16) // limit of webgl contexts
+  .map(setupApp)[0];
+
+// .ui.el.focus();
