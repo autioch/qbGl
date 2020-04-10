@@ -5,9 +5,6 @@ Learning WbGL1.
 ## TODO
 - getActiveAttrib (getProgramParameter)
 - getActiveUniform (getProgramParameter)
-- getProgramInfoLog
-- getShaderInfoLog
-- validateProgram
 - vertexAttrib
 
 

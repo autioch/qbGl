@@ -15,6 +15,13 @@ export default class Program {
 
     this.context.shaderSource(shader, source);
     this.context.compileShader(shader);
+
+    const message = this.context.getShaderInfoLog(shader);
+
+    if (message.length) {
+      console.log('shader info log', message);
+    }
+
     this.context.attachShader(this.program, shader);
 
     this.uniformsToSet.push(...uniforms);
@@ -23,7 +30,16 @@ export default class Program {
 
   use() {
     this.context.linkProgram(this.program);
+    this.context.validateProgram(this.program);
 
+    if (!this.context.getProgramParameter(this.program, this.context.VALIDATE_STATUS)) {
+      throw 'Program validation failed.';
+    }
+    const message = this.context.getProgramInfoLog(this.program);
+
+    if (message.length) {
+      console.log('shader info log', message);
+    }
     if (!this.context.getProgramParameter(this.program, this.context.LINK_STATUS)) {
       throw 'Shader program error.';
     }
