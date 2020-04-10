@@ -14,6 +14,6 @@ export default {
     uniforms: ['u_image']
   },
   ui: {
-    title: 'image processing 01'
+    title: module.id
   }
 };

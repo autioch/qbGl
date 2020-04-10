@@ -13,6 +13,6 @@ export default {
     source: fsh
   },
   ui: {
-    title: 'Basic shapes'
+    title: module.id
   }
 };

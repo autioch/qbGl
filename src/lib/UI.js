@@ -1,32 +1,38 @@
 import { configBuilder } from './utils';
+import tag from 'lean-tag';
 
 const buildConfig = configBuilder({
   width: 300,
   height: 225,
   title: '',
-  template: ''
+  template: '',
+  keybinds: {}
 });
 
 export default class UI {
   constructor(config) {
     this.config = buildConfig(config);
 
-    this.el = document.createElement('section');
-    this.el.classList.add('app');
-    this.el.setAttribute('tabindex', 0);
+    this.el = tag('section.app', {
+      attrs: {
+        tabindex: 0
+      }
+    }, [
+      tag('header.app-title', this.config.title.split('/').slice(-3, -1).join(' - '))
+    ]);
 
-    const title = document.createElement('header');
-
-    title.textContent = this.config.title;
-    title.classList.add('app-title');
-    this.el.append(title);
-
-    this.canvas = document.createElement('canvas');
-    this.canvas.classList.add('app-canvas');
-    this.canvas.height = this.config.height;
-    this.canvas.width = this.config.width;
+    this.canvas = tag('canvas.app-canvas', {
+      height: this.config.height,
+      width: this.config.width
+    });
 
     this.el.append(this.canvas);
+
+    const keys = Object.keys(this.config.keybinds);
+
+    if (keys.length) {
+      this.el.append(tag('div.keybinds', `Controls: ${keys.join(', ')}`));
+    }
 
     const wrapper = document.createElement('div');
 

@@ -13,6 +13,6 @@ export default {
     source: fsh
   },
   ui: {
-    title: 'ortographic 3d 01'
+    title: module.id
   }
 };

@@ -14,6 +14,6 @@ export default {
     uniforms: ['u_color']
   },
   ui: {
-    title: 'fundamentals v3'
+    title: module.id
   }
 };

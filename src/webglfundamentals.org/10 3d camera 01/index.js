@@ -13,6 +13,6 @@ export default {
     source: fsh
   },
   ui: {
-    title: '3d camera 01'
+    title: module.id
   }
 };

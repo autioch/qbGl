@@ -14,6 +14,6 @@ export default {
     uniforms: ['u_color']
   },
   ui: {
-    title: '2d translation v2'
+    title: module.id
   }
 };

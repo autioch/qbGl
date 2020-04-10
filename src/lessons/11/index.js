@@ -18,7 +18,10 @@ export default {
     uniforms: ['uSampler']
   },
   ui: {
-    title: 'mouse on the moon',
-    template
+    title: module.id,
+    template,
+    keybinds: {
+      Mouse: true
+    }
   }
 };

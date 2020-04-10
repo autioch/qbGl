@@ -13,6 +13,6 @@ export default {
     source: fsh
   },
   ui: {
-    title: 'how it works v2'
+    title: module.id
   }
 };

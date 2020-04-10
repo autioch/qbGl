@@ -12,6 +12,6 @@ export default {
     source: fsh
   },
   ui: {
-    title: 'fundamentals v1'
+    title: module.id
   }
 };

@@ -16,7 +16,12 @@ export default {
     uniforms: ['uSampler', 'uColor']
   },
   ui: {
-    title: 'lots of items',
-    template
+    title: module.id,
+    template,
+    keybinds: {
+      Arrows: true,
+      PageUp: true,
+      PageDown: true
+    }
   }
 };

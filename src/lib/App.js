@@ -4,11 +4,6 @@ import UI from './UI';
 import { configBuilder } from './utils';
 
 const buildConfig = configBuilder({
-  width: 300,
-  height: 225,
-  title: '',
-  template: '',
-
   skipDepthTest: false,
   Scene: null,
   vsh: {},
@@ -61,6 +56,7 @@ export default class App {
     this.initPromise.then(() => {
       this._focused = true;
       this._lastAnimate = 0;
+      this.render();
       this._raf = requestAnimationFrame(this.loop);
     });
   }
@@ -69,21 +65,23 @@ export default class App {
     if (!this._focused) {
       return;
     }
-    this.render();
 
     const timeNow = new Date().getTime();
+    const isChanged = this.scene.update(timeNow - this._lastAnimate);
 
-    this._lastAnimate !== 0 && this.scene.update(timeNow - this._lastAnimate);
+    if (isChanged !== false) {
+      this.render();
+    }
     this._lastAnimate = timeNow;
 
     this._raf = requestAnimationFrame(this.loop);
   }
 
   render() {
-    this.context.viewport(0, 0, this.config.width, this.config.height);
+    this.context.viewport(0, 0, this.ui.canvas.width, this.ui.canvas.height);
     this.context.clear(this.context.COLOR_BUFFER_BIT | this.context.DEPTH_BUFFER_BIT); // eslint-disable-line no-bitwise
 
-    this.pMatrix.perspective(45, this.config.width / this.config.height, 0.1, 100.0);
+    this.pMatrix.perspective(45, this.ui.canvas.width / this.ui.canvas.height, 0.1, 100.0);
     this.mMatrix.identity();
 
     this.scene.render({

@@ -12,7 +12,7 @@ export default {
     source: fsh
   },
   ui: {
-    title: 'circle'
+    title: module.id
   }
 };
 

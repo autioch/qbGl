@@ -17,7 +17,13 @@ export default {
     uniforms: ['uSampler']
   },
   ui: {
-    title: 'light',
-    template
+    title: module.id,
+    template,
+    keybinds: {
+      F: true,
+      arrows: true,
+      PageUp: true,
+      PageDown: true
+    }
   }
 };

@@ -1,7 +1,6 @@
 import Scene from './Scene';
 import fsh from './main.fsh';
 import vsh from './main.vsh';
-import template from './template.html';
 
 export default {
   Scene,
@@ -15,7 +14,12 @@ export default {
     uniforms: ['uSampler']
   },
   ui: {
-    title: 'game',
-    template
+    title: module.id,
+    keybinds: {
+      Arrows: true,
+      WSAD: true,
+      PageUp: true,
+      PageDown: true
+    }
   }
 };

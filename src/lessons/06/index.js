@@ -15,7 +15,13 @@ export default {
     uniforms: ['uSampler']
   },
   ui: {
-    title: '3d objects',
-    template
+    title: module.id,
+    template,
+    keybinds: {
+      F: true,
+      arrows: true,
+      PageUp: true,
+      PageDown: true
+    }
   }
 };

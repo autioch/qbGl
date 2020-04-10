@@ -14,6 +14,6 @@ export default {
     uniforms: ['u_image', 'u_textureSize', 'u_kernel[0]', 'u_kernelWeight']
   },
   ui: {
-    title: 'image processing 03 - convolution kernel'
+    title: module.id
   }
 };

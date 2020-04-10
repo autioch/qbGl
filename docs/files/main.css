@@ -30,7 +30,8 @@ table {
   position: absolute;
   color: #fff;
   font-size: 12px;
-  font-family: Arial; }
+  font-family: Arial;
+  text-shadow: 0 0 2px #000; }
 
 .keybinds {
   top: 10px;

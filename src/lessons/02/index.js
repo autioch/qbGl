@@ -13,6 +13,6 @@ export default {
     source: fsh
   },
   ui: {
-    title: 'Colors'
+    title: module.id
   }
 };

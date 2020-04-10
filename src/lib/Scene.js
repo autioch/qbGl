@@ -10,5 +10,7 @@ export default class Scene {
     throw Error('Scene must implement render method');
   }
 
-  update() {}
+  update() {
+    return false;
+  }
 }

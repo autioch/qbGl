@@ -14,6 +14,6 @@ export default {
     uniforms: ['uSampler']
   },
   ui: {
-    title: 'texture'
+    title: module.id
   }
 };

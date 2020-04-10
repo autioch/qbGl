@@ -14,6 +14,6 @@ export default {
     uniforms: ['u_image', 'u_textureSize']
   },
   ui: {
-    title: 'image processing 02 - blur'
+    title: module.id
   }
 };

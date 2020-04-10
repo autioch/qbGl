@@ -36,7 +36,7 @@ table{
   border:0;
   border-collapse:collapse;
 }
-.keybinds,.tooltip{position:absolute;color:#fff;font-size:12px;font-family: Arial}
+.keybinds,.tooltip{position:absolute;color:#fff;font-size:12px;font-family: Arial;text-shadow: 0 0 2px #000;}
 .keybinds{top:10px;left:10px}
 .keybinds::before{content:"Keybinds: "}
 .tooltip{top:200px;right:10px;}
