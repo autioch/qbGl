@@ -4,13 +4,8 @@ import vsh from './main.vsh';
 
 export default {
   Scene,
-  vsh: {
-    source: vsh,
-    attributes: ['a_position']
-  },
-  fsh: {
-    source: fsh
-  },
+  vsh,
+  fsh,
   ui: {
     title: module.id
   }

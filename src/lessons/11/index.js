@@ -5,18 +5,8 @@ import template from './template.html';
 
 export default {
   Scene,
-  vsh: {
-    source: vsh,
-    uniforms: [
-      'uMVMatrix', 'uPMatrix',
-      'uNMatrix', 'uAmbientColor', 'uLightingDirection', 'uDirectionalColor', 'uUseLighting'
-    ],
-    attributes: ['aVertexPosition', 'aVertexNormal', 'aTextureCoord']
-  },
-  fsh: {
-    source: fsh,
-    uniforms: ['uSampler']
-  },
+  vsh,
+  fsh,
   ui: {
     title: module.id,
     template,

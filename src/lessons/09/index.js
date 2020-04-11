@@ -6,15 +6,8 @@ import template from './template.html';
 export default {
   Scene,
   skipDepthTest: true,
-  vsh: {
-    source: vsh,
-    uniforms: ['uMVMatrix', 'uPMatrix'],
-    attributes: ['aVertexPosition', 'aTextureCoord']
-  },
-  fsh: {
-    source: fsh,
-    uniforms: ['uSampler', 'uColor']
-  },
+  vsh,
+  fsh,
   ui: {
     title: module.id,
     template,

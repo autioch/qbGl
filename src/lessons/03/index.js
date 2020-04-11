@@ -4,14 +4,8 @@ import vsh from './main.vsh';
 
 export default {
   Scene,
-  vsh: {
-    source: vsh,
-    uniforms: ['uMVMatrix', 'uPMatrix'],
-    attributes: ['aVertexPosition', 'aVertexColor']
-  },
-  fsh: {
-    source: fsh
-  },
+  vsh,
+  fsh,
   ui: {
     title: module.id
   }

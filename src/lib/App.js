@@ -6,8 +6,8 @@ import { configBuilder } from './utils';
 const buildConfig = configBuilder({
   skipDepthTest: false,
   Scene: null,
-  vsh: {},
-  fsh: {},
+  vsh: '',
+  fsh: '',
   ui: {}
 });
 

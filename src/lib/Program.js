@@ -4,16 +4,12 @@ export default class Program {
     this.program = context.createProgram();
     this.attributes = {};
     this.uniforms = {};
-    this.attributesToSet = [];
-    this.uniformsToSet = [];
   }
 
   setShaderFromConfig(config, type) {
-    const { source, uniforms = [], attributes = [] } = config;
-
     const shader = this.context.createShader(type);
 
-    this.context.shaderSource(shader, source);
+    this.context.shaderSource(shader, typeof config === 'string' ? config : config.source);
     this.context.compileShader(shader);
 
     const message = this.context.getShaderInfoLog(shader);
@@ -23,9 +19,6 @@ export default class Program {
     }
 
     this.context.attachShader(this.program, shader);
-
-    this.uniformsToSet.push(...uniforms);
-    this.attributesToSet.push(...attributes);
   }
 
   use() {
@@ -46,32 +39,38 @@ export default class Program {
 
     this.context.useProgram(this.program);
 
-    this.attributesToSet.forEach((attributeName) => {
-      if (this.attributes[attributeName]) {
-        throw `Attrib already exsists: ${attributeName}`;
-      }
-      const attrib = this.context.getAttribLocation(this.program, attributeName);
+    this.detectAttributesAndUniforms();
+  }
 
-      if (attrib === undefined) {
-        throw `No location for attrib: ${attributeName}`;
-      }
-      this.attributes[attributeName] = attrib;
-      this.context.enableVertexAttribArray(attrib); // todo is this needed?
-    });
+  detectAttributesAndUniforms() {
+    const attributeCount = this.context.getProgramParameter(this.program, this.context.ACTIVE_ATTRIBUTES);
 
-    this.uniformsToSet.forEach((uniformName) => {
-      if (this.uniforms[uniformName]) {
-        throw `Uniform already exsists: ${uniformName}`;
-      }
-      const uniform = this.context.getUniformLocation(this.program, uniformName);
+    for (let index = 0; index < attributeCount; ++index) {
+      const info = this.context.getActiveAttrib(this.program, index);
 
-      if (uniform === undefined) {
-        throw `No location for uniform: ${uniformName}`;
-      }
-      this.uniforms[uniformName] = uniform;
-    });
+      // console.log('name:', info.name, 'type:', info.type, 'size:', info.size);
+      const attribute = this.context.getAttribLocation(this.program, info.name);
 
-    return this;
+      if (attribute === -1) {
+        throw Error(`No location for attrib: ${info.name}`);
+      }
+      this.attributes[info.name] = attribute;
+      this.context.enableVertexAttribArray(attribute); // todo is this needed?
+    }
+
+    const uniformCount = this.context.getProgramParameter(this.program, this.context.ACTIVE_UNIFORMS);
+
+    for (let index = 0; index < uniformCount; ++index) {
+      const info = this.context.getActiveUniform(this.program, index);
+
+      // console.log('name:', info.name, 'type:', info.type, 'size:', info.size);
+      const uniform = this.context.getUniformLocation(this.program, info.name);
+
+      if (uniform === -1) {
+        throw Error(`No location for uniform: ${info.name}`);
+      }
+      this.uniforms[info.name] = uniform;
+    }
   }
 
   locateUniform(uniformName) {
