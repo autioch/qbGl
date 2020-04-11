@@ -22,20 +22,23 @@ export default class extends Lib.Scene {
     this.scale = [1, 1];
   }
 
-  render({ context, attributes, uniforms, canvas }) { // eslint-disable-line class-methods-use-this
-    const umatrix = uniforms.u_matrix;
-
-    this.position.fillBuffer(attributes.a_position);
-    this.colors.fillBuffer(attributes.a_color);
-
-    // Compute the matrix
-    let matrix = m3.projection(canvas.clientWidth, context.canvas.clientHeight);
+  calculateMatrix(canvas) {
+    let matrix = m3.projection(canvas.clientWidth, canvas.clientHeight);
 
     matrix = m3.translate(matrix, this.translation[0], this.translation[1]);
     matrix = m3.rotate(matrix, this.angleInRadians);
     matrix = m3.scale(matrix, this.scale[0], this.scale[1]);
 
-    context.uniformMatrix3fv(umatrix, false, matrix);
+    return matrix;
+  }
+
+  render({ context, attributes, uniforms, canvas }) {
+    this.position.fillBuffer(attributes.a_position);
+    this.colors.fillBuffer(attributes.a_color);
+
+    const matrix = this.calculateMatrix(canvas);
+
+    context.uniformMatrix3fv(uniforms.u_matrix, false, matrix);
     context.drawArrays(context.TRIANGLES, 0, 6);
   }
 }
