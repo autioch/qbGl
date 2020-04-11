@@ -1,5 +1,5 @@
 import Lib from '../../lib';
-import './leaves.jpg';
+import '../leaves.jpg';
 import { computeKernelWeight, setupTextFrameBuffer } from './utils';
 import { kernels, effectsToApply } from './consts';
 
@@ -49,15 +49,15 @@ export default class extends Lib.Scene {
     effectsToApply.forEach((effect, index) => {
       const textFrameBuffer = this.textFrameBuffers[index % 2];
 
-      this.renderTexture(context, attributes, uniforms, canvas, textFrameBuffer.frameBuffer.frameBuffer, effect);
+      this.renderTexture(context, uniforms, canvas, textFrameBuffer.frameBuffer.frameBuffer, effect);
       context.bindTexture(context.TEXTURE_2D, textFrameBuffer.texture.texture);
     });
     context.uniform1f(flipYLocation, -1);
 
-    this.renderTexture(context, attributes, uniforms, canvas, null, 'normal');
+    this.renderTexture(context, uniforms, canvas, null, 'normal');
   }
 
-  renderTexture(context, attributes, uniforms, canvas, frameBuffer, kernelName) { // eslint-disable-line class-methods-use-this
+  renderTexture(context, uniforms, canvas, frameBuffer, kernelName) { // eslint-disable-line class-methods-use-this
     context.bindFramebuffer(context.FRAMEBUFFER, frameBuffer);
     context.uniform2f(uniforms.u_resolution, canvas.width, canvas.height);
     context.viewport(0, 0, canvas.width, canvas.height);

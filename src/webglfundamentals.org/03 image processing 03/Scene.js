@@ -1,5 +1,5 @@
 import Lib from '../../lib';
-import './leaves.jpg';
+import '../leaves.jpg';
 import { computeKernelWeight } from './utils';
 import { kernels } from './consts';
 

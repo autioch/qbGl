@@ -17,7 +17,7 @@ export default class extends Lib.Scene {
     this.cube.rotate = 0;
   }
 
-  render({ context, attributes, uniforms, mMatrix, setMatrixUniforms }) {
+  render({ context, attributes, mMatrix, setMatrixUniforms }) {
     mMatrix
       .translate([-1.5, 0.0, -6.0])
       .push()

@@ -21,7 +21,7 @@ export default class extends Lib.Scene {
     });
   }
 
-  render({ context, attributes, uniforms, mMatrix, setMatrixUniforms }) {
+  render({ context, attributes, mMatrix, setMatrixUniforms }) {
     mMatrix.translate([-1.5, 0.0, -6.0]);
     this.triangleVertices.fillBuffer(attributes.aVertexPosition);
     this.triangleColors.fillBuffer(attributes.aVertexColor);

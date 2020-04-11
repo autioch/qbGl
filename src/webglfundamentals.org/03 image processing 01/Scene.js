@@ -1,5 +1,5 @@
 import Lib from '../../lib';
-import './leaves.jpg';
+import '../leaves.jpg';
 
 export default class extends Lib.Scene {
   initialize({ context }) {

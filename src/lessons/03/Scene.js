@@ -24,7 +24,7 @@ export default class extends Lib.Scene {
     this.squareRotate = 0;
   }
 
-  render({ context, attributes, uniforms, mMatrix, setMatrixUniforms }) {
+  render({ context, attributes, mMatrix, setMatrixUniforms }) {
     mMatrix.translate([-1.5, 0.0, -6.0]).push().rotate(this.triangleRotate, [0, 1, 0]);
     this.triangleVertices.fillBuffer(attributes.aVertexPosition);
     this.triangleColors.fillBuffer(attributes.aVertexColor);

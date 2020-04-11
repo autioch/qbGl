@@ -5,7 +5,8 @@ Learning WbGL1.
 ## TODO
 - getActiveAttrib (getProgramParameter)
 - getActiveUniform (getProgramParameter)
-- vertexAttrib
+- remove setMatrixUniforms
+- unify matrix approaches
 
 
 ## TO READ

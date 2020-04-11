@@ -1,5 +1,5 @@
 import Lib from '../../lib';
-import m3 from './m3';
+import m3 from '../m3';
 import { generateColor } from './utils';
 
 export default class extends Lib.Scene {
