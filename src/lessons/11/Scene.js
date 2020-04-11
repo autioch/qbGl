@@ -32,10 +32,10 @@ export default class extends Lib.Scene {
     this.lastMouseY = null;
   }
 
-  render({ context, program, mMatrix, setMatrixUniforms }) {
+  render({ context, attributes, uniforms, mMatrix, setMatrixUniforms }) {
     // const lighting = document.getElementById('lighting').checked;
 
-    context.uniform1i(program.locateUniform('uUseLighting'), false);
+    context.uniform1i(uniforms.uUseLighting, false);
 
     //        context.uniform1i(program.locateUniform("uUseLighting"), lighting);
     //        if (lighting) {
@@ -48,16 +48,16 @@ export default class extends Lib.Scene {
       .translate([0, 0, -6])
       .multiply(this.moonRotationMatrix);
 
-    this.bufferStash.getTexture('moon', program.locateUniform('uSampler'));
-    this.bufferStash.getBuffer('positions', program.locateAttribute('aVertexPosition'));
-    this.bufferStash.getBuffer('textures', program.locateAttribute('aTextureCoord'));
-    this.bufferStash.getBuffer('normals', program.locateAttribute('aVertexNormal'));
+    this.bufferStash.getTexture('moon', uniforms.uSampler);
+    this.bufferStash.getBuffer('positions', attributes.aVertexPosition);
+    this.bufferStash.getBuffer('textures', attributes.aTextureCoord);
+    this.bufferStash.getBuffer('normals', attributes.aVertexNormal);
 
     const indices = this.bufferStash.getBuff('indices');
 
     context.bindBuffer(context.ELEMENT_ARRAY_BUFFER, indices);
     setMatrixUniforms();
-    context.uniformMatrix3fv(program.locateUniform('uNMatrix'), false, mMatrix.toInvTraMat3());
+    context.uniformMatrix3fv(uniforms.uNMatrix, false, mMatrix.toInvTraMat3());
 
     context.drawElements(context.TRIANGLES, indices.count, context.UNSIGNED_SHORT, 0);
   }

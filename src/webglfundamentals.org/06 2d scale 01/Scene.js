@@ -21,14 +21,14 @@ export default class extends Lib.Scene {
     });
   }
 
-  render({ context, program, canvas }) {
-    context.uniform2f(program.locateUniform('u_resolution'), canvas.width, canvas.height);
-    context.uniform4fv(program.locateUniform('u_color'), this.color);
-    context.uniform2fv(program.locateUniform('u_translation'), this.translation);
-    context.uniform2fv(program.locateUniform('u_rotation'), this.rotation);
-    context.uniform2fv(program.locateUniform('u_scale'), this.scale);
+  render({ context, attributes, uniforms, canvas }) {
+    context.uniform2f(uniforms.u_resolution, canvas.width, canvas.height);
+    context.uniform4fv(uniforms.u_color, this.color);
+    context.uniform2fv(uniforms.u_translation, this.translation);
+    context.uniform2fv(uniforms.u_rotation, this.rotation);
+    context.uniform2fv(uniforms.u_scale, this.scale);
 
-    this.position.fillBuffer(program.locateAttribute('a_position'));
+    this.position.fillBuffer(attributes.a_position);
 
     context.drawArrays(context.TRIANGLES, 0, 18);
   }

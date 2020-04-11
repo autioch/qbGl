@@ -1,9 +1,9 @@
-function drawStar(uniforms, context, program, bufferStash) {
-  bufferStash.getTexture('star', program.locateUniform('uSampler'));
-  bufferStash.getBuffer('textures', program.locateAttribute('aTextureCoord'));
-  const vertices = bufferStash.getBuffer('vertices', program.locateAttribute('aVertexPosition'));
+function drawStar(setMatrixUniforms, context, attributes, uniforms, bufferStash) {
+  bufferStash.getTexture('star', uniforms.uSampler);
+  bufferStash.getBuffer('textures', attributes.aTextureCoord);
+  const vertices = bufferStash.getBuffer('vertices', attributes.aVertexPosition);
 
-  uniforms();
+  setMatrixUniforms();
   context.drawArrays(context.TRIANGLE_STRIP, 0, vertices.count);
 }
 
@@ -36,7 +36,7 @@ export default class Star {
     }
   }
 
-  render(context, mMatrix, program, tilt, spin, twinkle, uniforms, bufferStash) {
+  render(context, mMatrix, attributes, uniforms, tilt, spin, twinkle, setMatrixUniforms, bufferStash) {
     mMatrix
       .push()
       .rotate(this.angle, [0.0, 1.0, 0.0])
@@ -45,14 +45,14 @@ export default class Star {
       .rotate(-tilt, [1.0, 0.0, 0.0]);
 
     if (twinkle) {
-      context.uniform3f(program.locateUniform('uColor'), this.twinkleR, this.twinkleG, this.twinkleB);
-      drawStar(uniforms, context, program, bufferStash);
+      context.uniform3f(uniforms.uColor, this.twinkleR, this.twinkleG, this.twinkleB);
+      drawStar(setMatrixUniforms, context, attributes, uniforms, bufferStash);
     }
 
     mMatrix.rotate(spin, [0.0, 0.0, 1.0]);
 
-    context.uniform3f(program.locateUniform('uColor'), this.r, this.g, this.b);
-    drawStar(uniforms, context, program, bufferStash);
+    context.uniform3f(uniforms.uColor, this.r, this.g, this.b);
+    drawStar(setMatrixUniforms, context, attributes, uniforms, bufferStash);
 
     mMatrix.pop();
   }

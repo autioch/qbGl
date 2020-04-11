@@ -15,8 +15,8 @@ export default class extends Lib.Scene {
     });
   }
 
-  render({ context, program }) {
-    this.circles.fillBuffer(program.locateAttribute('pos'));
+  render({ context, attributes }) {
+    this.circles.fillBuffer(attributes.pos);
 
     context.drawArrays(context.LINE_LOOP, 0, this.rotationRadian.length / 3);
 

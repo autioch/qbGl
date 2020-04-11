@@ -32,7 +32,7 @@ export default class extends Lib.Scene {
     });
   }
 
-  render({ context, program, mMatrix, setMatrixUniforms }) {
+  render({ context, attributes, uniforms, mMatrix, setMatrixUniforms }) {
     context.blendFunc(context.SRC_ALPHA, context.ONE);
     context.enable(context.BLEND);
 
@@ -43,7 +43,7 @@ export default class extends Lib.Scene {
     const twinkle = document.getElementById('twinkle').checked;
 
     this.shapes.forEach((shape) => {
-      shape.render(context, mMatrix, program, this.tilt, this.spin, twinkle, setMatrixUniforms, this.bufferStash);
+      shape.render(context, mMatrix, attributes, uniforms, this.tilt, this.spin, twinkle, setMatrixUniforms, this.bufferStash);
       this.spin += 0.1;
     });
   }

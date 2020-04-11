@@ -16,9 +16,9 @@ export default class extends Lib.Scene {
     });
   }
 
-  render({ context, program, canvas }) {
-    context.uniform2f(program.locateUniform('u_resolution'), canvas.width, canvas.height);
-    context.uniform4fv(program.locateUniform('u_color'), this.color);
+  render({ context, attributes, uniforms, canvas }) {
+    context.uniform2f(uniforms.u_resolution, canvas.width, canvas.height);
+    context.uniform4fv(uniforms.u_color, this.color);
 
     // Compute the matrices
     const translationMatrix = m3.translation(this.translation[0], this.translation[1]);
@@ -28,9 +28,9 @@ export default class extends Lib.Scene {
     // Multiply the matrices.
     const matrix = m3.multiply(m3.multiply(translationMatrix, rotationMatrix), scaleMatrix);
 
-    context.uniformMatrix3fv(program.locateUniform('u_matrix'), false, matrix);
+    context.uniformMatrix3fv(uniforms.u_matrix, false, matrix);
 
-    this.position.fillBuffer(program.locateAttribute('a_position'));
+    this.position.fillBuffer(attributes.a_position);
 
     context.drawArrays(context.TRIANGLES, 0, 18);
   }

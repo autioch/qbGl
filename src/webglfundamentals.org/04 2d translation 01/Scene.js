@@ -10,15 +10,13 @@ export default class extends Lib.Scene {
     this.buffer = context.createBuffer();
   }
 
-  render({ context, program, canvas }) {
-    context.uniform2f(program.locateUniform('u_resolution'), canvas.width, canvas.height);
-    context.uniform4fv(program.locateUniform('u_color'), this.color);
+  render({ context, attributes, uniforms, canvas }) {
+    context.uniform2f(uniforms.u_resolution, canvas.width, canvas.height);
+    context.uniform4fv(uniforms.u_color, this.color);
 
-    const position = program.locateAttribute('a_position');
-
-    context.enableVertexAttribArray(position);
+    context.enableVertexAttribArray(attributes.a_position);
     context.bindBuffer(context.ARRAY_BUFFER, this.buffer);
-    context.vertexAttribPointer(position, 2, context.FLOAT, false, 0, 0);
+    context.vertexAttribPointer(attributes.a_position, 2, context.FLOAT, false, 0, 0);
 
     const [x1, y1] = this.translation;
     const x2 = x1 + this.width;

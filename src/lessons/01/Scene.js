@@ -14,14 +14,14 @@ export default class extends Lib.Scene {
     });
   }
 
-  render({ context, program, mMatrix, setMatrixUniforms }) {
+  render({ context, attributes, uniforms, mMatrix, setMatrixUniforms }) {
     mMatrix.translate([-1.5, 0.0, -6.0]);
-    this.triangle.fillBuffer(program.locateAttribute('aVertexPosition'));
+    this.triangle.fillBuffer(attributes.aVertexPosition);
     setMatrixUniforms();
     context.drawArrays(context.TRIANGLES, 0, this.triangle.count);
 
     mMatrix.translate([3, 0, 0]);
-    this.square.fillBuffer(program.locateAttribute('aVertexPosition'));
+    this.square.fillBuffer(attributes.aVertexPosition);
     setMatrixUniforms();
     context.drawArrays(context.TRIANGLE_STRIP, 0, this.square.count);
   }

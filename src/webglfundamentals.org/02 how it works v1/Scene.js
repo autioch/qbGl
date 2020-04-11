@@ -13,10 +13,10 @@ export default class extends Lib.Scene {
     this.scale = [1, 1];
   }
 
-  render({ context, program, canvas }) { // eslint-disable-line class-methods-use-this
-    const umatrix = program.locateUniform('u_matrix');
+  render({ context, attributes, uniforms, canvas }) { // eslint-disable-line class-methods-use-this
+    const umatrix = uniforms.u_matrix;
 
-    this.buffer.fillBuffer(program.locateAttribute('a_position'));
+    this.buffer.fillBuffer(attributes.a_position);
 
     // Compute the matrix
     let matrix = m3.projection(canvas.clientWidth, context.canvas.clientHeight);

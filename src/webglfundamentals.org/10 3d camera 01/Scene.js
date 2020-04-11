@@ -27,13 +27,9 @@ export default class extends Lib.Scene {
     // context.enable(context.CULL_FACE);
   }
 
-  render({ context, program, canvas }) {
-    const positionLocation = program.locateAttribute('a_position');
-    const colorLocation = program.locateAttribute('a_color');
-    const matrixLocation = program.locateUniform('u_matrix');
-
-    this.position.fillBuffer(positionLocation);
-    this.color.fillBuffer(colorLocation);
+  render({ context, attributes, uniforms, canvas }) {
+    this.position.fillBuffer(attributes.a_position);
+    this.color.fillBuffer(attributes.a_color);
 
     // Compute a view projection matrix
     const viewProjectionMatrix = this.calculateMatrices(canvas);
@@ -44,7 +40,7 @@ export default class extends Lib.Scene {
       const matrix = m4.translate(viewProjectionMatrix, ...this.calculateRotation(ii));
 
       // Set the matrix.
-      context.uniformMatrix4fv(matrixLocation, false, matrix);
+      context.uniformMatrix4fv(uniforms.u_matrix, false, matrix);
 
       context.drawArrays(context.TRIANGLES, 0, 16 * 6);
     }

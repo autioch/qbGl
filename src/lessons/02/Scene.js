@@ -21,16 +21,16 @@ export default class extends Lib.Scene {
     });
   }
 
-  render({ context, program, mMatrix, setMatrixUniforms }) {
+  render({ context, attributes, uniforms, mMatrix, setMatrixUniforms }) {
     mMatrix.translate([-1.5, 0.0, -6.0]);
-    this.triangleVertices.fillBuffer(program.locateAttribute('aVertexPosition'));
-    this.triangleColors.fillBuffer(program.locateAttribute('aVertexColor'));
+    this.triangleVertices.fillBuffer(attributes.aVertexPosition);
+    this.triangleColors.fillBuffer(attributes.aVertexColor);
     setMatrixUniforms();
     context.drawArrays(context.TRIANGLES, 0, this.triangleVertices.count);
 
     mMatrix.translate([3, 0, 0]);
-    this.squareVertices.fillBuffer(program.locateAttribute('aVertexPosition'));
-    this.squareColors.fillBuffer(program.locateAttribute('aVertexColor'));
+    this.squareVertices.fillBuffer(attributes.aVertexPosition);
+    this.squareColors.fillBuffer(attributes.aVertexColor);
     setMatrixUniforms();
     context.drawArrays(context.TRIANGLE_STRIP, 0, this.squareVertices.count);
   }

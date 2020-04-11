@@ -26,7 +26,7 @@ export default class extends Lib.Scene {
     // context.enable(context.CULL_FACE);
   }
 
-  render({ context, program, canvas }) {
+  render({ context, attributes, uniforms, canvas }) {
     const aspect = canvas.clientWidth / canvas.clientHeight;
     const zNear = 1;
     const zFar = 2000;
@@ -37,10 +37,10 @@ export default class extends Lib.Scene {
     matrix = m4.yRotate(matrix, degToRad(this.rotation[1]));
     matrix = m4.zRotate(matrix, degToRad(this.rotation[2]));
     matrix = m4.scale(matrix, this.scale[0], this.scale[1], this.scale[2]);
-    context.uniformMatrix4fv(program.locateUniform('u_matrix'), false, matrix);
+    context.uniformMatrix4fv(uniforms.u_matrix, false, matrix);
 
-    this.position.fillBuffer(program.locateAttribute('a_position'));
-    this.color.fillBuffer(program.locateAttribute('a_color'));
+    this.position.fillBuffer(attributes.a_position);
+    this.color.fillBuffer(attributes.a_color);
 
     context.drawArrays(context.TRIANGLES, 0, 16 * 6);
   }

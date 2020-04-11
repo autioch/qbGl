@@ -6,7 +6,7 @@ export default class Scene {
 
   ready({ context }) {}
 
-  render({ context, program, mMatrix, setMatrixUniforms }) {
+  render({ context, attributes, uniforms, mMatrix, setMatrixUniforms }) {
     throw Error('Scene must implement render method');
   }
 

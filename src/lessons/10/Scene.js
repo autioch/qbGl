@@ -39,32 +39,32 @@ export default class extends Lib.Scene {
     this.loadWorld(context);
   }
 
-  render({ context, program, mMatrix, setMatrixUniforms }) {
+  render({ context, attributes, uniforms, mMatrix, setMatrixUniforms }) {
     mMatrix
       .rotate(-this.pitch, [1, 0, 0])
       .rotate(-this.yaw, [0, 1, 0])
       .translate([-this.xPos, -this.yPos, -this.zPos]);
 
-    this.ceilingShape.getTexture('floor', program.locateUniform('uSampler'));
-    this.ceilingShape.getBuffer('textures', program.locateAttribute('aTextureCoord'));
+    this.ceilingShape.getTexture('floor', uniforms.uSampler);
+    this.ceilingShape.getBuffer('textures', attributes.aTextureCoord);
 
-    const ceilVerticesBuffer = this.ceilingShape.getBuffer('vertices', program.locateAttribute('aVertexPosition'));
+    const ceilVerticesBuffer = this.ceilingShape.getBuffer('vertices', attributes.aVertexPosition);
 
     setMatrixUniforms();
     context.drawArrays(context.TRIANGLES, 0, ceilVerticesBuffer.count);
 
-    this.floorShape.getTexture('floor', program.locateUniform('uSampler'));
-    this.floorShape.getBuffer('textures', program.locateAttribute('aTextureCoord'));
+    this.floorShape.getTexture('floor', uniforms.uSampler);
+    this.floorShape.getBuffer('textures', attributes.aTextureCoord);
 
-    const floorVerticesBuffer = this.floorShape.getBuffer('vertices', program.locateAttribute('aVertexPosition'));
+    const floorVerticesBuffer = this.floorShape.getBuffer('vertices', attributes.aVertexPosition);
 
     setMatrixUniforms();
     context.drawArrays(context.TRIANGLES, 0, floorVerticesBuffer.count);
 
-    this.wallsShape.getTexture('wall', program.locateUniform('uSampler'));
-    this.wallsShape.getBuffer('textures', program.locateAttribute('aTextureCoord'));
+    this.wallsShape.getTexture('wall', uniforms.uSampler);
+    this.wallsShape.getBuffer('textures', attributes.aTextureCoord);
 
-    const wallVerticesBuffer = this.wallsShape.getBuffer('vertices', program.locateAttribute('aVertexPosition'));
+    const wallVerticesBuffer = this.wallsShape.getBuffer('vertices', attributes.aVertexPosition);
 
     setMatrixUniforms();
     context.drawArrays(context.TRIANGLES, 0, wallVerticesBuffer.count);

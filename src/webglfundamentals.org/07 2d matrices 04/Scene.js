@@ -16,17 +16,17 @@ export default class extends Lib.Scene {
     });
   }
 
-  render({ context, program, canvas }) {
-    context.uniform4fv(program.locateUniform('u_color'), this.color);
+  render({ context, attributes, uniforms, canvas }) {
+    context.uniform4fv(uniforms.u_color, this.color);
 
     let matrix = m3.projection(canvas.width, canvas.height);
 
     matrix = m3.translate(matrix, this.translation[0], this.translation[1]);
     matrix = m3.rotate(matrix, this.radians);
     matrix = m3.scale(matrix, this.scale[0], this.scale[1]);
-    context.uniformMatrix3fv(program.locateUniform('u_matrix'), false, matrix);
+    context.uniformMatrix3fv(uniforms.u_matrix, false, matrix);
 
-    this.position.fillBuffer(program.locateAttribute('a_position'));
+    this.position.fillBuffer(attributes.a_position);
 
     context.drawArrays(context.TRIANGLES, 0, 18);
   }

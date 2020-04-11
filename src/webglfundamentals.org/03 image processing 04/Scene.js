@@ -35,12 +35,12 @@ export default class extends Lib.Scene {
     ];
   }
 
-  render({ context, program, canvas }) {
-    const flipYLocation = program.locateUniform('u_flipY');
+  render({ context, attributes, uniforms, canvas }) {
+    const flipYLocation = uniforms.u_flipY;
 
-    this.position.fillBuffer(program.locateAttribute('a_position'));
-    this.textCoord.fillBuffer(program.locateAttribute('a_texCoord'));
-    context.uniform2f(program.locateUniform('u_textureSize'), this.texture.image.width, this.texture.image.height);
+    this.position.fillBuffer(attributes.a_position);
+    this.textCoord.fillBuffer(attributes.a_texCoord);
+    context.uniform2f(uniforms.u_textureSize, this.texture.image.width, this.texture.image.height);
 
     context.uniform1f(flipYLocation, 1); // don't y flip images while drawing to the textures
 
@@ -49,20 +49,20 @@ export default class extends Lib.Scene {
     effectsToApply.forEach((effect, index) => {
       const textFrameBuffer = this.textFrameBuffers[index % 2];
 
-      this.renderTexture(context, program, canvas, textFrameBuffer.frameBuffer.frameBuffer, effect);
+      this.renderTexture(context, attributes, uniforms, canvas, textFrameBuffer.frameBuffer.frameBuffer, effect);
       context.bindTexture(context.TEXTURE_2D, textFrameBuffer.texture.texture);
     });
     context.uniform1f(flipYLocation, -1);
 
-    this.renderTexture(context, program, canvas, null, 'normal');
+    this.renderTexture(context, attributes, uniforms, canvas, null, 'normal');
   }
 
-  renderTexture(context, program, canvas, frameBuffer, kernelName) { // eslint-disable-line class-methods-use-this
+  renderTexture(context, attributes, uniforms, canvas, frameBuffer, kernelName) { // eslint-disable-line class-methods-use-this
     context.bindFramebuffer(context.FRAMEBUFFER, frameBuffer);
-    context.uniform2f(program.locateUniform('u_resolution'), canvas.width, canvas.height);
+    context.uniform2f(uniforms.u_resolution, canvas.width, canvas.height);
     context.viewport(0, 0, canvas.width, canvas.height);
-    context.uniform1fv(program.locateUniform('u_kernel[0]'), kernels[kernelName]);
-    context.uniform1f(program.locateUniform('u_kernelWeight'), computeKernelWeight(kernels[kernelName]));
+    context.uniform1fv(uniforms['u_kernel[0]'], kernels[kernelName]);
+    context.uniform1f(uniforms.u_kernelWeight, computeKernelWeight(kernels[kernelName]));
     context.drawArrays(context.TRIANGLES, 0, 6);
   }
 }

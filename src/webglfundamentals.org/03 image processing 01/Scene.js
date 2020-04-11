@@ -28,10 +28,10 @@ export default class extends Lib.Scene {
     });
   }
 
-  render({ context, program, canvas }) {
-    this.position.fillBuffer(program.locateAttribute('a_position'));
-    this.textCoord.fillBuffer(program.locateAttribute('a_texCoord'));
-    context.uniform2f(program.locateUniform('u_resolution'), canvas.width, canvas.height);
+  render({ context, attributes, uniforms, canvas }) {
+    this.position.fillBuffer(attributes.a_position);
+    this.textCoord.fillBuffer(attributes.a_texCoord);
+    context.uniform2f(uniforms.u_resolution, canvas.width, canvas.height);
     context.drawArrays(context.TRIANGLES, 0, 6);
   }
 }

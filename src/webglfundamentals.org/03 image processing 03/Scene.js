@@ -60,18 +60,13 @@ export default class extends Lib.Scene {
     });
   }
 
-  render({ context, program, canvas }) {
-    this.position.fillBuffer(program.locateAttribute('a_position'));
-    this.textCoord.fillBuffer(program.locateAttribute('a_texCoord'));
-    context.uniform2f(program.locateUniform('u_resolution'), canvas.width, canvas.height);
-    context.uniform2f(program.locateUniform('u_textureSize'), this.texture.image.width, this.texture.image.height);
-
-    const kernelLocation = program.locateUniform('u_kernel[0]');
-    const kernelWeightLocation = program.locateUniform('u_kernelWeight');
-
-    context.uniform1fv(kernelLocation, this.kernel);
-    context.uniform1f(kernelWeightLocation, this.kernelWeight);
-
+  render({ context, attributes, uniforms, canvas }) {
+    this.position.fillBuffer(attributes.a_position);
+    this.textCoord.fillBuffer(attributes.a_texCoord);
+    context.uniform2f(uniforms.u_resolution, canvas.width, canvas.height);
+    context.uniform2f(uniforms.u_textureSize, this.texture.image.width, this.texture.image.height);
+    context.uniform1fv(uniforms['u_kernel[0]'], this.kernel);
+    context.uniform1f(uniforms.u_kernelWeight, this.kernelWeight);
     context.drawArrays(context.TRIANGLES, 0, 6);
   }
 }

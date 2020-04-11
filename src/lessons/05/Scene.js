@@ -17,15 +17,15 @@ export default class extends Lib.Scene {
     this.cube.rotate = 0;
   }
 
-  render({ context, program, mMatrix, setMatrixUniforms }) {
+  render({ context, attributes, uniforms, mMatrix, setMatrixUniforms }) {
     mMatrix
       .translate(cubeDef.translate)
       .push()
       .rotate(this.cube.rotate, cubeDef.rotateVertex);
 
-    this.cube.getBuffer('vertices', program.locateAttribute('aVertexPosition'));
-    this.cube.getBuffer('textures', program.locateAttribute('aTextureCoord'));
-    this.cube.getTexture('podloga', program.locateUniform('uSampler'));
+    this.cube.getBuffer('vertices', attributes.aVertexPosition);
+    this.cube.getBuffer('textures', attributes.aTextureCoord);
+    this.cube.getTexture('podloga', uniforms.uSampler);
     const indices = this.cube.getBuff('indices');
 
     setMatrixUniforms();

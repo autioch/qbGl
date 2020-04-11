@@ -9,13 +9,13 @@ export default class extends Lib.Scene {
     });
   }
 
-  render({ context, program, canvas }) {
-    const resolution = program.locateUniform('u_resolution');
-    const color = program.locateUniform('u_color');
+  render({ context, attributes, uniforms, canvas }) {
+    const resolution = uniforms.u_resolution;
+    const color = uniforms.u_color;
 
     context.uniform2f(resolution, canvas.width, canvas.height);
 
-    this.buffer.fillBuffer(program.locateAttribute('a_position'));
+    this.buffer.fillBuffer(attributes.a_position);
     this.rects.forEach((rect) => {
       context.bufferData(context.ARRAY_BUFFER, rect.vertices, context.STATIC_DRAW);
       context.uniform4f(color, ...rect.color, 1);

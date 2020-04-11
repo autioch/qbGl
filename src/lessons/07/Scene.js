@@ -38,35 +38,35 @@ export default class extends Lib.Scene {
     this.cube.filter = 0;
   }
 
-  render({ context, program, mMatrix, setMatrixUniforms }) {
+  render({ context, attributes, uniforms, mMatrix, setMatrixUniforms }) {
     mMatrix
       .translate([0.0, 0.0, this.cube.z])
       .rotate(this.cube.xRot, [1, 0, 0])
       .rotate(this.cube.yRot, [0, 1, 0]);
 
-    this.cube.getBuffer('vertices', program.locateAttribute('aVertexPosition'));
-    this.cube.getBuffer('normals', program.locateAttribute('aVertexNormal'));
-    this.cube.getBuffer('textures', program.locateAttribute('aTextureCoord'));
-    this.cube.getTexture(this.cube.filter, program.locateUniform('uSampler'));
+    this.cube.getBuffer('vertices', attributes.aVertexPosition);
+    this.cube.getBuffer('normals', attributes.aVertexNormal);
+    this.cube.getBuffer('textures', attributes.aTextureCoord);
+    this.cube.getTexture(this.cube.filter, uniforms.uSampler);
 
     const lighting = document.getElementById('lighting').checked;
 
-    context.uniform1i(program.locateUniform('uUseLighting'), lighting);
+    context.uniform1i(uniforms.uUseLighting, lighting);
     if (lighting) {
       this.light.get3f(
-        program.locateUniform('uAmbientColor'),
+        uniforms.uAmbientColor,
         getVal('ambientR'),
         getVal('ambientG'),
         getVal('ambientB')
       );
       this.light.get3fv(
-        program.locateUniform('uLightingDirection'),
+        uniforms.uLightingDirection,
         getVal('lightDirectionX'),
         getVal('lightDirectionY'),
         getVal('lightDirectionZ')
       );
       this.light.get3f(
-        program.locateUniform('uDirectionalColor'),
+        uniforms.uDirectionalColor,
         getVal('directionalR'),
         getVal('directionalG'),
         getVal('directionalB')
@@ -77,7 +77,7 @@ export default class extends Lib.Scene {
 
     context.bindBuffer(context.ELEMENT_ARRAY_BUFFER, indices);
     setMatrixUniforms();
-    context.uniformMatrix3fv(program.locateUniform('uNMatrix'), false, mMatrix.toInvTraMat3());
+    context.uniformMatrix3fv(uniforms.uNMatrix, false, mMatrix.toInvTraMat3());
 
     context.drawElements(context.TRIANGLES, indices.count, context.UNSIGNED_SHORT, 0);
   }

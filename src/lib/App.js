@@ -67,7 +67,7 @@ export default class App {
     }
 
     const timeNow = new Date().getTime();
-    const isChanged = this.scene.update(timeNow - this._lastAnimate);
+    const isChanged = this._lastAnimate !== 0 && this.scene.update(timeNow - this._lastAnimate);
 
     if (isChanged !== false) {
       this.render();
@@ -86,13 +86,13 @@ export default class App {
 
     this.scene.render({
       context: this.context,
-      program: this.program,
       mMatrix: this.mMatrix,
       setMatrixUniforms: this.setMatrixUniforms,
-      canvas: this.ui.canvas
+      canvas: this.ui.canvas,
+      attributes: this.program.attributes,
+      uniforms: this.program.uniforms
     });
   }
-
   stop() {
     this._focused = false;
     this._raf && window.cancelAnimationFrame(this._raf);
@@ -100,7 +100,7 @@ export default class App {
   }
 
   setMatrixUniforms() {
-    this.context.uniformMatrix4fv(this.program.locateUniform('uPMatrix'), false, this.pMatrix.get());
-    this.context.uniformMatrix4fv(this.program.locateUniform('uMVMatrix'), false, this.mMatrix.get());
+    this.context.uniformMatrix4fv(this.program.uniforms.uPMatrix, false, this.pMatrix.get());
+    this.context.uniformMatrix4fv(this.program.uniforms.uMVMatrix, false, this.mMatrix.get());
   }
 }
