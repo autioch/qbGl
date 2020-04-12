@@ -1,6 +1,6 @@
 import Lib from '../../lib';
 import { positions } from './consts';
-import { m3 } from './m3';
+import m3 from '../../m3';
 
 // Copy of 01 fundamentals v2
 export default class extends Lib.Scene {
@@ -16,14 +16,24 @@ export default class extends Lib.Scene {
     });
   }
 
-  render({ context, attributes, uniforms, canvas }) {
-    context.uniform2f(uniforms.u_resolution, canvas.width, canvas.height);
-    context.uniform4fv(uniforms.u_color, this.color);
-
+  calculateMatrices() {
     // Compute the matrices
     const translationMatrix = m3.translation(this.translation[0], this.translation[1]);
     const rotationMatrix = m3.rotation(this.radians);
     const scaleMatrix = m3.scaling(this.scale[0], this.scale[1]);
+
+    return {
+      translationMatrix,
+      rotationMatrix,
+      scaleMatrix
+    };
+  }
+
+  render({ context, attributes, uniforms, canvas }) {
+    context.uniform2f(uniforms.u_resolution, canvas.width, canvas.height);
+    context.uniform4fv(uniforms.u_color, this.color);
+
+    const { translationMatrix, rotationMatrix, scaleMatrix } = this.calculateMatrices();
 
     this.position.fillBuffer(attributes.a_position);
 

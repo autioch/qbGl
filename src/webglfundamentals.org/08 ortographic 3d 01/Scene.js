@@ -1,6 +1,6 @@
 import Lib from '../../lib';
 import { positions, colors } from './consts';
-import { m4 } from './m4';
+import m4 from '../../m4';
 
 const { degToRad } = Lib;
 
@@ -21,11 +21,9 @@ export default class extends Lib.Scene {
       normalize: true,
       type: context.UNSIGNED_BYTE
     });
-
-    // context.enable(context.CULL_FACE);
   }
 
-  render({ context, attributes, uniforms, canvas }) {
+  calculateMatrices(canvas) {
     const left = 0;
     const right = canvas.clientWidth;
     const bottom = canvas.clientHeight;
@@ -40,6 +38,13 @@ export default class extends Lib.Scene {
     matrix = m4.yRotate(matrix, degToRad(this.rotation[1]));
     matrix = m4.zRotate(matrix, degToRad(this.rotation[2]));
     matrix = m4.scale(matrix, this.scale[0], this.scale[1], this.scale[2]);
+
+    return matrix;
+  }
+
+  render({ context, attributes, uniforms, canvas }) {
+    const matrix = this.calculateMatrices(canvas);
+
     context.uniformMatrix4fv(uniforms.u_matrix, false, matrix);
 
     this.position.fillBuffer(attributes.a_position);

@@ -1,6 +1,6 @@
 import Lib from '../../lib';
 import { positions, colors } from './consts';
-import { m4 } from './m4';
+import m4 from '../../m4';
 
 const { degToRad } = Lib;
 
@@ -8,6 +8,8 @@ export default class extends Lib.Scene {
   initialize({ context }) {
     this.fieldOfViewRadians = degToRad(60);
     this.cameraDegrees = 0;
+    this.numFs = 5;
+    this.radius = 100;
 
     this.position = new Lib.ArrayDataBuffer(context, {
       size: 3,
@@ -20,11 +22,6 @@ export default class extends Lib.Scene {
       normalize: true,
       type: context.UNSIGNED_BYTE
     });
-
-    this.numFs = 5;
-    this.radius = 100;
-
-    // context.enable(context.CULL_FACE);
   }
 
   render({ context, attributes, uniforms, canvas }) {

@@ -17,7 +17,9 @@ const apps = [
 ];
 
 apps
-  .slice(0, 16) // limit of webgl contexts
+
+  // .slice(0, 16) // limit of webgl contexts
+  .slice(-16) // limit of webgl contexts
   .map(setupApp)[0];
 
 // .ui.el.focus();
