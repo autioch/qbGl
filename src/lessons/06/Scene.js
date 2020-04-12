@@ -49,9 +49,9 @@ export default class extends Lib.Scene {
     context.drawElements(context.TRIANGLES, indices.count, context.UNSIGNED_SHORT, 0);
   }
 
-  update(timeSinceLastUpdate) {
-    this.xRot += (this.xSpeed * timeSinceLastUpdate) / 1000.0;
-    this.yRot += (this.ySpeed * timeSinceLastUpdate) / 1000.0;
+  update({ pulse }) {
+    this.xRot += (this.xSpeed * pulse) / 1000.0;
+    this.yRot += (this.ySpeed * pulse) / 1000.0;
     this.handleKeys();
   }
 

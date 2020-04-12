@@ -26,10 +26,10 @@ export default class Star {
     this.twinkleB = Math.random();
   }
 
-  update(change) {
-    this.angle += this.rotationSpeed * change;
+  update({ pulse }) {
+    this.angle += this.rotationSpeed * pulse;
 
-    this.dist -= 0.01 * change;
+    this.dist -= 0.01 * pulse;
     if (this.dist < 0.0) {
       this.dist += 5.0;
       this.randomizeColors();

@@ -82,9 +82,9 @@ export default class extends Lib.Scene {
     context.drawElements(context.TRIANGLES, indices.count, context.UNSIGNED_SHORT, 0);
   }
 
-  update(timeSinceLastUpdate) {
-    this.cube.xRot += (this.cube.xSpeed * timeSinceLastUpdate) / 1000.0;
-    this.cube.yRot += (this.cube.ySpeed * timeSinceLastUpdate) / 1000.0;
+  update({ pulse }) {
+    this.cube.xRot += (this.cube.xSpeed * pulse) / 1000.0;
+    this.cube.yRot += (this.cube.ySpeed * pulse) / 1000.0;
     this.handleKeys();
   }
 

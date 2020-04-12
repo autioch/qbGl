@@ -70,15 +70,15 @@ export default class extends Lib.Scene {
     context.drawArrays(context.TRIANGLES, 0, wallVerticesBuffer.count);
   }
 
-  update(timeSinceLastUpdate) {
+  update({ pulse }) {
     if (this.speed !== 0) {
-      this.xPos -= Math.sin(Lib.degToRad(this.yaw)) * this.speed * timeSinceLastUpdate;
-      this.zPos -= Math.cos(Lib.degToRad(this.yaw)) * this.speed * timeSinceLastUpdate;
-      this.joggingAngle += timeSinceLastUpdate * 0.6; // 0.6 "fiddle factor" - makes it feel more realistic :-)
+      this.xPos -= Math.sin(Lib.degToRad(this.yaw)) * this.speed * pulse;
+      this.zPos -= Math.cos(Lib.degToRad(this.yaw)) * this.speed * pulse;
+      this.joggingAngle += pulse * 0.6; // 0.6 "fiddle factor" - makes it feel more realistic :-)
       this.yPos = (Math.sin(Lib.degToRad(this.joggingAngle)) / 20) + 0.4;
     }
-    this.yaw += this.yawRate * timeSinceLastUpdate;
-    this.pitch += this.pitchRate * timeSinceLastUpdate;
+    this.yaw += this.yawRate * pulse;
+    this.pitch += this.pitchRate * pulse;
     this.handleKeys();
   }
 

@@ -46,8 +46,8 @@ export default class extends Lib.Scene {
     mMatrix.pop();
   }
 
-  update(elapsedTime) {
-    this.pyramid.rotate += (90 * elapsedTime) / 1000.0;
-    this.cube.rotate += (75 * elapsedTime) / 1000.0;
+  update({ pulse }) {
+    this.pyramid.rotate += (90 * pulse) / 1000.0;
+    this.cube.rotate += (75 * pulse) / 1000.0;
   }
 }

@@ -40,8 +40,8 @@ export default class extends Lib.Scene {
     mMatrix.pop();
   }
 
-  update(elapsedTime) {
-    this.triangleRotate += (90 * elapsedTime) / 1000.0;
-    this.squareRotate += (75 * elapsedTime) / 1000.0;
+  update({ pulse }) {
+    this.triangleRotate += (90 * pulse) / 1000.0;
+    this.squareRotate += (75 * pulse) / 1000.0;
   }
 }

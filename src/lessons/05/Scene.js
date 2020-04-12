@@ -34,7 +34,7 @@ export default class extends Lib.Scene {
     mMatrix.pop();
   }
 
-  update(timeSinceLastUpdate) {
-    this.cube.rotate += ((cubeDef.rotateSpeed * timeSinceLastUpdate) / 1000.0) * cubeDef.rotateDirection;
+  update({ pulse }) {
+    this.cube.rotate += ((cubeDef.rotateSpeed * pulse) / 1000.0) * cubeDef.rotateDirection;
   }
 }

@@ -67,7 +67,10 @@ export default class App {
     }
 
     const timeNow = new Date().getTime();
-    const isChanged = this._lastAnimate !== 0 && this.scene.update(timeNow - this._lastAnimate);
+    const isChanged = this._lastAnimate !== 0 && this.scene.update({
+      pulse: timeNow - this._lastAnimate,
+      canvas: this.canvas
+    });
 
     if (isChanged !== false) {
       this.render();

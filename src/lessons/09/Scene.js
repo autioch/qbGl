@@ -48,8 +48,8 @@ export default class extends Lib.Scene {
     });
   }
 
-  update(timeSinceLastUpdate) {
-    const change = timeSinceLastUpdate * this.effectiveFPMS;
+  update({ pulse }) {
+    const change = pulse * this.effectiveFPMS;
 
     this.shapes.forEach((shape) => shape.update(change));
     this.handleKeys();
