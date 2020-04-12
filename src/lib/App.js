@@ -32,23 +32,28 @@ export default class App {
 
     this.pMatrix = new Matrix();
     this.mMatrix = new Matrix();
+    this.program = new Program(this.context);
+    this.program.setShaderFromConfig(this.config.vsh, this.context.VERTEX_SHADER);
+    this.program.setShaderFromConfig(this.config.fsh, this.context.FRAGMENT_SHADER);
+    this.program.use();
+  }
 
+  didMount() {
     this.scene = new this.config.Scene();
     this.initPromise = Promise
       .resolve(this.scene.initialize({
         context: this.context,
         el: this.ui.el,
-        canvas: this.ui.canvas
+        canvas: this.ui.canvas,
+        attributes: this.program.attributes,
+        uniforms: this.program.uniforms
       }));
-
-    this.program = new Program(this.context);
-    this.program.setShaderFromConfig(this.config.vsh, this.context.VERTEX_SHADER);
-    this.program.setShaderFromConfig(this.config.fsh, this.context.FRAGMENT_SHADER);
-    this.program.use();
 
     this.initPromise.then(() => this.scene.ready({
       context: this.context,
-      program: this.program
+      canvas: this.ui.canvas,
+      attributes: this.program.attributes,
+      uniforms: this.program.uniforms
     }));
   }
 

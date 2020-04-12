@@ -7,6 +7,9 @@ Learning WbGL1.
 - getActiveUniform (getProgramParameter)
 - remove setMatrixUniforms
 - unify matrix approaches
+- mechanism for updating on canvas size change.
+- stop passing canvas around, just pass what's really needed.
+- decide what should be passed to initialize/ready/render/update.
 
 
 ## TO READ

@@ -9,9 +9,11 @@ export default class extends Lib.Scene {
     });
   }
 
-  render({ context, attributes, uniforms, canvas }) {
+  ready({ context, canvas, uniforms }) {
     context.uniform2f(uniforms.u_resolution, canvas.width, canvas.height);
+  }
 
+  render({ context, attributes, uniforms }) {
     this.buffer.fillBuffer(attributes.a_position);
     this.rects.forEach((rect) => {
       // already bound/activated a_position

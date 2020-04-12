@@ -5,6 +5,7 @@ function setupApp(config) {
   const app = new Lib.App(config.default);
 
   document.body.append(app.ui.el);
+  app.didMount();
   app.initPromise.then(() => app.render());
 
   return app;

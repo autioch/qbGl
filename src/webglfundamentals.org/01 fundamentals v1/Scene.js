@@ -9,9 +9,11 @@ export default class extends Lib.Scene {
     });
   }
 
-  render({ context, attributes }) {
+  ready({ attributes }) {
     this.position.fillBuffer(attributes.a_position);
+  }
 
+  render({ context }) {
     context.drawArrays(context.TRIANGLES, 0, this.position.count);
   }
 }

@@ -9,9 +9,12 @@ export default class extends Lib.Scene {
     });
   }
 
-  render({ context, attributes, uniforms, canvas }) {
+  ready({ context, uniforms, attributes, canvas }) {
     context.uniform2f(uniforms.u_resolution, canvas.width, canvas.height);
     this.position.fillBuffer(attributes.a_position);
+  }
+
+  render({ context }) {
     context.drawArrays(context.TRIANGLES, 0, 6);
   }
 }

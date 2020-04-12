@@ -18,5 +18,6 @@ module.exports = {
     'guard-for-in': ['off'],
     'id-blacklist': ['off'],
     'no-plusplus': ['off'],
+    'class-methods-use-this': ['off']
   }
 };

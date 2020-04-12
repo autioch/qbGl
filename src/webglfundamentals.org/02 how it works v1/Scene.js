@@ -13,6 +13,12 @@ export default class extends Lib.Scene {
     this.scale = [1, 1];
   }
 
+  ready({ context, canvas, uniforms, attributes }) {
+    this.matrix = this.calculateMatrix(canvas);
+    context.uniformMatrix3fv(uniforms.u_matrix, false, this.matrix);
+    this.buffer.fillBuffer(attributes.a_position);
+  }
+
   calculateMatrix(canvas) {
     let matrix = m3.projection(canvas.clientWidth, canvas.clientHeight);
 
@@ -23,12 +29,7 @@ export default class extends Lib.Scene {
     return matrix;
   }
 
-  render({ context, attributes, uniforms, canvas }) {
-    this.buffer.fillBuffer(attributes.a_position);
-
-    const matrix = this.calculateMatrix(canvas);
-
-    context.uniformMatrix3fv(uniforms.u_matrix, false, matrix);
+  render({ context }) {
     context.drawArrays(context.TRIANGLES, 0, 3);
   }
 }
