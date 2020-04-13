@@ -18,6 +18,6 @@ const apps = [
 ];
 
 apps
-  .slice(-16)
+  .slice(0, 16)
   .map(setupApp)[0]
   .ui.el.focus();
