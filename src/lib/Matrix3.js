@@ -1,9 +1,9 @@
 import { mat3 } from 'gl-matrix';
 
 export default class Matrix {
-  constructor(context) {
+  constructor(context, current = mat3.create()) {
     this.context = context;
-    this.current = mat3.create();
+    this.current = current;
     this.stack = [];
   }
 

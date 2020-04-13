@@ -2,9 +2,9 @@ import { degToRad } from './utils';
 import { mat3, mat4 } from 'gl-matrix';
 
 export default class Matrix {
-  constructor(context) {
+  constructor(context, current = mat4.create()) {
     this.context = context;
-    this.current = mat4.create();
+    this.current = current;
     this.stack = [];
   }
 
@@ -117,5 +117,13 @@ export default class Matrix {
     mat4.invert(this.current, this.current);
 
     return this;
+  }
+
+  getCamera() {
+    return [
+      this.current[12],
+      this.current[13],
+      this.current[14]
+    ];
   }
 }

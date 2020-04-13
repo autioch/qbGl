@@ -1,15 +1,11 @@
 import Lib from '../../lib';
 import { positions, colors } from './consts';
+import { customLookAt } from './utils';
 
 const { degToRad } = Lib;
 
 export default class extends Lib.Scene {
   initialize({ context }) {
-    this.fieldOfViewRadians = degToRad(60);
-    this.cameraDegrees = 0;
-    this.numFs = 5;
-    this.radius = 100;
-
     this.position = new Lib.ArrayDataBuffer(context, {
       size: 3,
       data: positions
@@ -21,46 +17,49 @@ export default class extends Lib.Scene {
       normalize: true,
       type: context.UNSIGNED_BYTE
     });
+
+    this.fieldOfViewRadians = degToRad(60);
+    this.numFs = 5;
+    this.radius = 200;
+    this.cameraDegrees = 0;
   }
 
-  ready({ context, canvas }) {
+  ready({ context, attributes, canvas }) {
     const aspect = canvas.clientWidth / canvas.clientHeight;
 
+    this.position.fillBuffer(attributes.a_position);
+    this.color.fillBuffer(attributes.a_color);
     this.pMatrix = new Lib.Matrix4(context).perspective(this.fieldOfViewRadians, aspect, 1, 2000);
   }
 
-  render({ context, attributes, uniforms, canvas }) {
-    this.position.fillBuffer(attributes.a_position);
-    this.color.fillBuffer(attributes.a_color);
+  calculateViewMatrix(context) {
+    const cameraPosition = new Lib.Matrix4(context)
+      .rotateY(degToRad(this.cameraDegrees))
+      .translate([0, 0, this.radius * 1.5])
+      .getCamera();
 
-    // Compute a view projection matrix
-    this.calculateMatrix({
-      context,
-      canvas
-    });
+    return new Lib.Matrix4(context, customLookAt(cameraPosition, [this.radius, 0, 0], [0, 1, 0])).invert();
+  }
+
+  render({ context, uniforms }) {
+    const viewMatrix = this.calculateViewMatrix(context);
+
+    this.pMatrix.push().multiply(viewMatrix);
 
     for (let ii = 0; ii < this.numFs; ++ii) {
-      this.vpMatrix.translate(this.calculateRotation(ii)).fillBuffer(uniforms.u_matrix);
+      const angle = ii * Math.PI * 2 / this.numFs;
+      const x = Math.cos(angle) * this.radius;
+      const y = Math.sin(angle) * this.radius;
+
+      this.pMatrix
+        .push()
+        .translate([x, 0, y])
+        .fillBuffer(uniforms.u_matrix)
+        .pop();
 
       context.drawArrays(context.TRIANGLES, 0, 16 * 6);
     }
-  }
-
-  calculateRotation(index) {
-    const angle = index * Math.PI * 2 / this.numFs;
-    const x = Math.cos(angle) * this.radius;
-    const y = Math.sin(angle) * this.radius;
-
-    return [x, 0, y];
-  }
-
-  calculateMatrix({ context }) {
-    this.cMatrix = new Lib.Matrix4(context).rotateY(degToRad(this.cameraDegrees)).translate([0, 0, this.radius * 1.5]);
-
-    const cameraPosition = [this.cMatrix.get()[12], this.cMatrix.get()[13], this.cMatrix.get()[14]];
-
-    this.laMatrix = new Lib.Matrix4(context).lookAt(cameraPosition, [this.radius, 0, 0], [0, 1, 0]).invert();
-    this.vpMatrix = new Lib.Matrix4(context).multiply(this.pMatrix).multiply(this.laMatrix);
+    this.pMatrix.pop();
   }
 
   update() {
