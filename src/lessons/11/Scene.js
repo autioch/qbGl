@@ -17,8 +17,7 @@ export default class extends Lib.Scene {
       onMove: this.mouseMove.bind(this)
     });
 
-    this.moonRotationMatrix = new Lib.Matrix();
-    this.moonRotationMatrix.identity();
+    this.moonRotationMatrix = new Lib.Matrix4();
 
     this.bufferStash = new Lib.Shape(context);
 
@@ -32,7 +31,12 @@ export default class extends Lib.Scene {
     this.lastMouseY = null;
   }
 
-  render({ context, attributes, uniforms, mMatrix, setMatrixUniforms }) {
+  ready({ context, canvas, uniforms }) {
+    this.pMatrix = new Lib.Matrix4(context).perspective(45, canvas.width / canvas.height, 0.1, 100.0).fillBuffer(uniforms.uPMatrix);
+    this.mMatrix = new Lib.Matrix4(context);
+  }
+
+  render({ context, attributes, uniforms }) {
     // const lighting = document.getElementById('lighting').checked;
 
     context.uniform1i(uniforms.uUseLighting, false);
@@ -44,9 +48,11 @@ export default class extends Lib.Scene {
     //            light.get3f(program.locateUniform("uDirectionalColor"), getVal("directionalR"), getVal("directionalG"), getVal("directionalB"));
     //        }
 
-    mMatrix
+    this.mMatrix
+      .push()
       .translate([0, 0, -6])
-      .multiply(this.moonRotationMatrix);
+      .multiply(this.moonRotationMatrix)
+      .fillBuffer(uniforms.uMVMatrix);
 
     this.bufferStash.getTexture('moon', uniforms.uSampler);
     this.bufferStash.getBuffer('positions', attributes.aVertexPosition);
@@ -56,19 +62,16 @@ export default class extends Lib.Scene {
     const indices = this.bufferStash.getBuff('indices');
 
     context.bindBuffer(context.ELEMENT_ARRAY_BUFFER, indices);
-    setMatrixUniforms();
-    context.uniformMatrix3fv(uniforms.uNMatrix, false, mMatrix.toInvTraMat3());
-
+    context.uniformMatrix3fv(uniforms.uNMatrix, false, this.mMatrix.toInvTraMat3());
     context.drawElements(context.TRIANGLES, indices.count, context.UNSIGNED_SHORT, 0);
+
+    this.mMatrix.pop();
   }
 
   mouseMove(ev) {
     const newX = ev.clientX;
     const newY = ev.clientY;
-    const newRotationMatrix = new Lib.Matrix();
-
-    newRotationMatrix
-      .identity()
+    const newRotationMatrix = new Lib.Matrix4()
       .rotate((newX - this.lastMouseX) / 10, [0, 1, 0])
       .rotate((newY - this.lastMouseY) / 10, [1, 0, 0]);
 

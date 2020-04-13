@@ -1,12 +1,12 @@
 /* 4x4 matrix, which is a wrapper for mat4.
  * Used to store and operate matrices. */
 
-/* global mat3, mat4 */
-import './gl-matrix-min.js';
 import { degToRad } from './utils';
+import { mat3, mat4 } from 'gl-matrix';
 
 export default class Matrix {
-  constructor() {
+  constructor(context) {
+    this.context = context;
     this.current = mat4.create();
     this.stack = [];
   }
@@ -29,6 +29,14 @@ export default class Matrix {
 
     return this;
   }
+
+  fillBuffer(uniformLocation) {
+    this.context.uniformMatrix4fv(uniformLocation, false, this.current);
+
+    return this;
+  }
+
+  /* Operations */
 
   identity() {
     mat4.identity(this.current);

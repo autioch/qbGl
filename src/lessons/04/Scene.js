@@ -17,22 +17,22 @@ export default class extends Lib.Scene {
     this.cube.rotate = 0;
   }
 
-  render({ context, attributes, mMatrix, setMatrixUniforms }) {
-    mMatrix
-      .translate([-1.5, 0.0, -6.0])
-      .push()
-      .rotate(this.pyramid.rotate, [0, 1, 0]);
+  ready({ context, canvas, uniforms }) {
+    this.pMatrix = new Lib.Matrix4(context).perspective(45, canvas.width / canvas.height, 0.1, 100.0).fillBuffer(uniforms.uPMatrix);
+    this.mMatrix = new Lib.Matrix4(context).translate([-1.5, 0.0, -6.0]);
+  }
+
+  render({ context, attributes, uniforms }) {
+    this.mMatrix.push().rotate(this.pyramid.rotate, [0, 1, 0]).fillBuffer(uniforms.uMVMatrix)
+      .pop();
     const pyramidVertices = this.pyramid.getBuffer('vertices', attributes.aVertexPosition);
 
     this.pyramid.getBuffer('colors', attributes.aVertexColor);
-    setMatrixUniforms();
     context.drawArrays(context.TRIANGLES, 0, pyramidVertices.count);
 
-    mMatrix.pop();
-
-    mMatrix.translate([3, 0, 0])
-      .push()
-      .rotate(this.cube.rotate, [1, 1, 1]);
+    this.mMatrix.push().translate([3, 0, 0]).rotate(this.cube.rotate, [1, 1, 1])
+      .fillBuffer(uniforms.uMVMatrix)
+      .pop();
 
     this.cube.getBuffer('vertices', attributes.aVertexPosition);
     this.cube.getBuffer('colors', attributes.aVertexColor);
@@ -40,10 +40,7 @@ export default class extends Lib.Scene {
     const indices = this.cube.getBuff('indices');
 
     context.bindBuffer(indices.type, indices);
-    setMatrixUniforms();
     context.drawElements(context.TRIANGLES, indices.count, context.UNSIGNED_SHORT, 0);
-
-    mMatrix.pop();
   }
 
   update({ pulse }) {

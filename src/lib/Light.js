@@ -1,5 +1,4 @@
-/* global vec3 */
-import './gl-matrix-min.js';
+import { vec3 } from 'gl-matrix';
 
 export default class Light {
   constructor(context) {

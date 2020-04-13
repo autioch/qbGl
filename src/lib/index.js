@@ -1,5 +1,4 @@
 import Light from './Light';
-import Matrix from './Matrix';
 import Program from './Program';
 import Scene from './Scene';
 import App from './App';
@@ -9,11 +8,11 @@ import Shape from './Shape';
 import Texture from './Texture';
 import Texture2 from './Texture2';
 import UI from './UI';
+import Matrix4 from './Matrix4';
 import { degToRad, mouse, keyboard, loadTextures, configBuilder, loadImage } from './utils';
 
 export {
   Light,
-  Matrix,
   Program,
   Scene,
   App,
@@ -23,6 +22,7 @@ export {
   Texture,
   Texture2,
   UI,
+  Matrix4,
   degToRad,
   mouse,
   keyboard,
@@ -33,7 +33,6 @@ export {
 
 export default {
   Light,
-  Matrix,
   Program,
   Scene,
   App,
@@ -43,6 +42,7 @@ export default {
   Texture,
   Texture2,
   UI,
+  Matrix4,
   degToRad,
   mouse,
   keyboard,

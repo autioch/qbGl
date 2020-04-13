@@ -14,15 +14,22 @@ export default class extends Lib.Scene {
     });
   }
 
-  render({ context, attributes, mMatrix, setMatrixUniforms }) {
-    mMatrix.translate([-1.5, 0.0, -6.0]);
+  ready({ context, canvas, uniforms }) {
+    this.pMatrix = new Lib.Matrix4(context).perspective(45, canvas.width / canvas.height, 0.1, 100.0).fillBuffer(uniforms.uPMatrix);
+    this.mMatrix = new Lib.Matrix4(context);
+  }
+
+  render({ context, attributes, uniforms }) {
+    this.mMatrix.push();
+
+    this.mMatrix.translate([-1.5, 0.0, -6.0]).fillBuffer(uniforms.uMVMatrix);
     this.triangle.fillBuffer(attributes.aVertexPosition);
-    setMatrixUniforms();
     context.drawArrays(context.TRIANGLES, 0, this.triangle.count);
 
-    mMatrix.translate([3, 0, 0]);
+    this.mMatrix.translate([3, 0, 0]).fillBuffer(uniforms.uMVMatrix);
     this.square.fillBuffer(attributes.aVertexPosition);
-    setMatrixUniforms();
     context.drawArrays(context.TRIANGLE_STRIP, 0, this.square.count);
+
+    this.mMatrix.pop();
   }
 }
