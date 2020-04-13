@@ -15,6 +15,7 @@ module.exports = [
   require('./07 2d matrices 01'),
   require('./07 2d matrices 02'),
   require('./07 2d matrices 03'),
+  require('./07 2d matrices 04'),
   require('./08 ortographic 3d 01'),
   require('./09 3d perspective 01'),
   require('./10 3d camera 01')

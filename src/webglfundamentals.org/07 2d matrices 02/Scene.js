@@ -1,8 +1,6 @@
 import Lib from '../../lib';
 import { positions } from './consts';
-import m3 from '../../m3';
 
-// Copy of 01 fundamentals v2
 export default class extends Lib.Scene {
   initialize({ context }) {
     this.radians = 0;
@@ -16,38 +14,25 @@ export default class extends Lib.Scene {
     });
   }
 
-  calculateMatrices() {
-    // Compute the matrices
-    const translationMatrix = m3.translation(this.translation[0], this.translation[1]);
-    const rotationMatrix = m3.rotation(this.radians);
-    const scaleMatrix = m3.scaling(this.scale[0], this.scale[1]);
-
-    return {
-      translationMatrix,
-      rotationMatrix,
-      scaleMatrix
-    };
+  ready({ context }) {
+    this.tMatrix = new Lib.Matrix3(context).translate(this.translation);
+    this.rMatrix = new Lib.Matrix3(context).rotate(this.radians);
+    this.sMatrix = new Lib.Matrix3(context).scale(this.scale);
+    this.mMatrix = new Lib.Matrix3(context);
   }
 
   render({ context, attributes, uniforms, canvas }) {
     context.uniform2f(uniforms.u_resolution, canvas.width, canvas.height);
     context.uniform4fv(uniforms.u_color, this.color);
-
-    const { translationMatrix, rotationMatrix, scaleMatrix } = this.calculateMatrices();
-
     this.position.fillBuffer(attributes.a_position);
-
-    // Starting Matrix.
-    let matrix = m3.identity();
+    this.mMatrix.push();
 
     for (let i = 0; i < 5; ++i) {
-      context.uniformMatrix3fv(uniforms.u_matrix, false, matrix);
+      this.mMatrix.fillBuffer(uniforms.u_matrix);
+      this.mMatrix.multiply(this.tMatrix).multiply(this.rMatrix).multiply(this.sMatrix);
       context.drawArrays(context.TRIANGLES, 0, 18);
-
-      // Multiply the matrices.
-      matrix = m3.multiply(matrix, translationMatrix);
-      matrix = m3.multiply(matrix, rotationMatrix);
-      matrix = m3.multiply(matrix, scaleMatrix);
     }
+
+    this.mMatrix.pop();
   }
 }

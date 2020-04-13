@@ -14,7 +14,7 @@ export default class extends Lib.Scene {
   }
 
   render({ context, attributes, uniforms }) {
-    this.buffer.fillBuffer(attributes.a_position);
+    this.buffer.fillBuffer(attributes.a_position); // TODO Why does this work? It's not filled in.
     this.rects.forEach((rect) => {
       // already bound/activated a_position
       context.bufferData(context.ARRAY_BUFFER, rect.vertices, context.STATIC_DRAW);

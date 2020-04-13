@@ -1,4 +1,5 @@
-import m4 from '../../m4';
+/* eslint-disable no-mixed-operators */
+import { mat4 } from 'gl-matrix';
 
 const positions = [
   // left column front
@@ -137,12 +138,25 @@ const positions = [
 // We could do by changing all the values above but I'm lazy.
 // We could also do it with a matrix at draw time but you should
 // never do stuff at draw time if you can do it at init time.
-let matrix = m4.xRotation(Math.PI);
+let matrix = mat4.fromXRotation(mat4.create(), Math.PI);
 
-matrix = m4.translate(matrix, -50, -75, -15);
+matrix = mat4.translate(matrix, matrix, [-50, -75, -15]);
+
+function vectorMultiply(v, m) {
+  const dst = [];
+
+  for (let i = 0; i < 4; ++i) {
+    dst[i] = 0.0;
+    for (let j = 0; j < 4; ++j) {
+      dst[i] += v[j] * m[j * 4 + i];
+    }
+  }
+
+  return dst;
+}
 
 for (let ii = 0; ii < positions.length; ii += 3) {
-  const vector = m4.vectorMultiply([positions[ii + 0], positions[ii + 1], positions[ii + 2], 1], matrix);
+  const vector = vectorMultiply([positions[ii + 0], positions[ii + 1], positions[ii + 2], 1], matrix);
 
   positions[ii + 0] = vector[0]; // eslint-disable-line prefer-destructuring
   positions[ii + 1] = vector[1]; // eslint-disable-line prefer-destructuring

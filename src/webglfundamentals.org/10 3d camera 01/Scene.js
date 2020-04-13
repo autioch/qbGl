@@ -1,6 +1,5 @@
 import Lib from '../../lib';
 import { positions, colors } from './consts';
-import m4 from '../../m4';
 
 const { degToRad } = Lib;
 
@@ -24,20 +23,24 @@ export default class extends Lib.Scene {
     });
   }
 
+  ready({ context, canvas }) {
+    const aspect = canvas.clientWidth / canvas.clientHeight;
+
+    this.pMatrix = new Lib.Matrix4(context).perspective(this.fieldOfViewRadians, aspect, 1, 2000);
+  }
+
   render({ context, attributes, uniforms, canvas }) {
     this.position.fillBuffer(attributes.a_position);
     this.color.fillBuffer(attributes.a_color);
 
     // Compute a view projection matrix
-    const viewProjectionMatrix = this.calculateMatrices(canvas);
+    this.calculateMatrix({
+      context,
+      canvas
+    });
 
     for (let ii = 0; ii < this.numFs; ++ii) {
-      // starting with the view projection matrix
-      // compute a matrix for the F
-      const matrix = m4.translate(viewProjectionMatrix, ...this.calculateRotation(ii));
-
-      // Set the matrix.
-      context.uniformMatrix4fv(uniforms.u_matrix, false, matrix);
+      this.vpMatrix.translate(this.calculateRotation(ii)).fillBuffer(uniforms.u_matrix);
 
       context.drawArrays(context.TRIANGLES, 0, 16 * 6);
     }
@@ -51,35 +54,13 @@ export default class extends Lib.Scene {
     return [x, 0, y];
   }
 
-  calculateMatrices(canvas) {
-    const aspect = canvas.clientWidth / canvas.clientHeight;
-    const zNear = 1;
-    const zFar = 2000;
-    const projectionMatrix = m4.perspective(this.fieldOfViewRadians, aspect, zNear, zFar);
+  calculateMatrix({ context }) {
+    this.cMatrix = new Lib.Matrix4(context).rotateY(degToRad(this.cameraDegrees)).translate([0, 0, this.radius * 1.5]);
 
-    // Compute the position of the first F
-    const fPosition = [this.radius, 0, 0];
+    const cameraPosition = [this.cMatrix.get()[12], this.cMatrix.get()[13], this.cMatrix.get()[14]];
 
-    // Use matrix math to compute a position on a circle where
-    // the camera is
-    let cameraMatrix = m4.yRotation(degToRad(this.cameraDegrees));
-
-    cameraMatrix = m4.translate(cameraMatrix, 0, 0, this.radius * 1.5);
-
-    const cameraPosition = [// Get the camera's position from the matrix we computed
-      cameraMatrix[12],
-      cameraMatrix[13],
-      cameraMatrix[14]
-    ];
-
-    cameraMatrix = m4.lookAt(cameraPosition, fPosition, [0, 1, 0]);// Compute the camera's matrix using look at.
-
-    const viewMatrix = m4.inverse(cameraMatrix);// Make a view matrix from the camera matrix
-
-    // Compute a view projection matrix
-    const viewProjectionMatrix = m4.multiply(projectionMatrix, viewMatrix);
-
-    return viewProjectionMatrix;
+    this.laMatrix = new Lib.Matrix4(context).lookAt(cameraPosition, [this.radius, 0, 0], [0, 1, 0]).invert();
+    this.vpMatrix = new Lib.Matrix4(context).multiply(this.pMatrix).multiply(this.laMatrix);
   }
 
   update() {

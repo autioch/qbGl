@@ -1,6 +1,3 @@
-/* 4x4 matrix, which is a wrapper for mat4.
- * Used to store and operate matrices. */
-
 import { degToRad } from './utils';
 import { mat3, mat4 } from 'gl-matrix';
 
@@ -44,8 +41,8 @@ export default class Matrix {
     return this;
   }
 
-  perspective(fovy, aspect, near, far) {
-    mat4.perspective(this.current, fovy, aspect, near, far);
+  multiply(matrix4) {
+    mat4.multiply(this.current, this.current, matrix4.get());
 
     return this;
   }
@@ -62,8 +59,8 @@ export default class Matrix {
     return this;
   }
 
-  multiply(matrix) {
-    mat4.multiply(this.current, this.current, matrix.get());
+  scale(vec3) {
+    mat4.scale(this.current, this.current, vec3);
 
     return this;
   }
@@ -76,5 +73,49 @@ export default class Matrix {
     mat3.transpose(result, result);
 
     return result;
+  }
+
+  perspective(fovy, aspect, near, far) {
+    mat4.perspective(this.current, fovy, aspect, near, far);
+
+    return this;
+  }
+
+  // todo make this static to construct
+  orthographic(left, right, bottom, top, near, far) { // eslint-disable-line no-shadow
+    this.current = mat4.ortho(this.current, left, right, bottom, top, near, far);
+
+    return this;
+  }
+
+  // todo make this static to construct
+  lookAt(camera, target, up) {
+    this.current = mat4.lookAt(this.current, camera, target, up);
+
+    return this;
+  }
+
+  rotateX(radians) {
+    mat4.rotateX(this.current, this.current, radians);
+
+    return this;
+  }
+
+  rotateY(radians) {
+    mat4.rotateY(this.current, this.current, radians);
+
+    return this;
+  }
+
+  rotateZ(radians) {
+    mat4.rotateZ(this.current, this.current, radians);
+
+    return this;
+  }
+
+  invert() {
+    mat4.invert(this.current, this.current);
+
+    return this;
   }
 }

@@ -9,6 +9,7 @@ import Texture from './Texture';
 import Texture2 from './Texture2';
 import UI from './UI';
 import Matrix4 from './Matrix4';
+import Matrix3 from './Matrix3';
 import { degToRad, mouse, keyboard, loadTextures, configBuilder, loadImage } from './utils';
 
 export {
@@ -23,6 +24,7 @@ export {
   Texture2,
   UI,
   Matrix4,
+  Matrix3,
   degToRad,
   mouse,
   keyboard,
@@ -43,6 +45,7 @@ export default {
   Texture2,
   UI,
   Matrix4,
+  Matrix3,
   degToRad,
   mouse,
   keyboard,

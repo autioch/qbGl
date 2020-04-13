@@ -1,5 +1,4 @@
 import Lib from '../../lib';
-import m3 from '../../m3';
 
 export default class extends Lib.Scene {
   initialize({ context }) {
@@ -8,28 +7,27 @@ export default class extends Lib.Scene {
       data: [0, -50, 75, 62.5, -87.5, 50]
     });
 
-    this.translation = [200, 150];
-    this.angleInRadians = 0;
+    this.translation = [150, 100];
+    this.degrees = 0;
     this.scale = [1, 1];
+    this.mMatrix = new Lib.Matrix3(context);
   }
 
-  ready({ context, canvas, uniforms, attributes }) {
-    this.matrix = this.calculateMatrix(canvas);
-    context.uniformMatrix3fv(uniforms.u_matrix, false, this.matrix);
+  ready({ canvas }) {
+    this.mMatrix.projection(canvas.clientWidth, canvas.clientHeight).translate(this.translation).scale(this.scale);
+  }
+
+  render({ context, uniforms, attributes }) {
+    this.mMatrix
+      .push()
+      .rotate(Lib.degToRad(this.degrees))
+      .fillBuffer(uniforms.u_matrix)
+      .pop();
     this.buffer.fillBuffer(attributes.a_position);
-  }
-
-  calculateMatrix(canvas) {
-    let matrix = m3.projection(canvas.clientWidth, canvas.clientHeight);
-
-    matrix = m3.translate(matrix, this.translation[0], this.translation[1]);
-    matrix = m3.rotate(matrix, this.angleInRadians);
-    matrix = m3.scale(matrix, this.scale[0], this.scale[1]);
-
-    return matrix;
-  }
-
-  render({ context }) {
     context.drawArrays(context.TRIANGLES, 0, 3);
+  }
+
+  update({ pulse }) {
+    this.degrees += 90 * pulse / 1000.0;
   }
 }

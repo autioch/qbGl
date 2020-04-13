@@ -1,12 +1,11 @@
 import Lib from '../../lib';
 import { positions } from './consts';
-import m3 from '../../m3';
 
 export default class extends Lib.Scene {
   initialize({ context }) {
-    this.radians = Lib.degToRad(15);
-    this.translation = [100, 50];
-    this.scale = [1.5, 0.5];
+    this.radians = Lib.degToRad(13);
+    this.translation = [75, 50];
+    this.scale = [1, 1];
     this.color = [0, 255, 0, 1];
 
     this.position = new Lib.ArrayDataBuffer(context, {
@@ -15,22 +14,17 @@ export default class extends Lib.Scene {
     });
   }
 
-  calculateMatrices(canvas) {
-    let matrix = m3.projection(canvas.width, canvas.height);
-
-    matrix = m3.translate(matrix, this.translation[0], this.translation[1]);
-    matrix = m3.rotate(matrix, this.radians);
-    matrix = m3.scale(matrix, this.scale[0], this.scale[1]);
-
-    return matrix;
+  ready({ context, canvas }) {
+    this.mMatrix = new Lib.Matrix3(context)
+      .projection(canvas.width, canvas.height)
+      .translate(this.translation)
+      .rotate(this.radians)
+      .scale(this.scale);
   }
 
-  render({ context, attributes, uniforms, canvas }) {
-    const matrix = this.calculateMatrices(canvas);
-
+  render({ context, attributes, uniforms }) {
     context.uniform4fv(uniforms.u_color, this.color);
-    context.uniformMatrix3fv(uniforms.u_matrix, false, matrix);
-
+    this.mMatrix.fillBuffer(uniforms.u_matrix);
     this.position.fillBuffer(attributes.a_position);
 
     context.drawArrays(context.TRIANGLES, 0, 18);
