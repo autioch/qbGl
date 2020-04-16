@@ -20,6 +20,8 @@ export default class extends Lib.Scene {
     this.angleInRadians = 0;
     this.scale = [1, 1];
     this.mMatrix = new Lib.Matrix3(context);
+
+    this.axes = new Lib.Axes(context);
   }
 
   ready({ canvas }) {
@@ -36,5 +38,7 @@ export default class extends Lib.Scene {
     this.mMatrix.fillBuffer(uniforms.u_matrix);
 
     context.drawArrays(context.TRIANGLES, 0, 6);
+
+    this.axes.render(attributes.a_color, attributes.a_position);
   }
 }

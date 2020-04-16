@@ -8,6 +8,8 @@ export default class extends Lib.Scene {
     this.height = 30;
     this.color = [0, 255, 0, 1];
     this.buffer = context.createBuffer();
+
+    this.axes = new Lib.Axes(context);
   }
 
   render({ context, attributes, uniforms, canvas }) {
@@ -25,5 +27,7 @@ export default class extends Lib.Scene {
 
     context.bufferData(context.ARRAY_BUFFER, data, context.STATIC_DRAW);
     context.drawArrays(context.TRIANGLES, 0, 6);
+
+    this.axes.render(attributes.a_color, attributes.a_position);
   }
 }

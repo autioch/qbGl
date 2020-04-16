@@ -3,6 +3,7 @@ import Program from './Program';
 import Scene from './Scene';
 import App from './App';
 import ArrayDataBuffer from './ArrayDataBuffer';
+import Axes from './Axes';
 import FrameBuffer from './FrameBuffer';
 import Shape from './Shape';
 import Texture from './Texture';
@@ -18,6 +19,7 @@ export {
   Scene,
   App,
   ArrayDataBuffer,
+  Axes,
   FrameBuffer,
   Shape,
   Texture,
@@ -39,6 +41,7 @@ export default {
   Scene,
   App,
   ArrayDataBuffer,
+  Axes,
   FrameBuffer,
   Shape,
   Texture,

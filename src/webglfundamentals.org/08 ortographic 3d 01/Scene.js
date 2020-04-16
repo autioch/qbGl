@@ -20,6 +20,8 @@ export default class extends Lib.Scene {
       normalize: true,
       type: context.UNSIGNED_BYTE
     });
+
+    this.axes = new Lib.Axes(context);
   }
 
   ready({ context, canvas }) {
@@ -49,6 +51,8 @@ export default class extends Lib.Scene {
     this.color.fillBuffer(attributes.a_color);
 
     context.drawArrays(context.TRIANGLES, 0, 16 * 6);
+
+    this.axes.render(attributes.a_color, attributes.a_position);
   }
 
   update() {

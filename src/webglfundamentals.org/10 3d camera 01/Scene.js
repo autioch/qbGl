@@ -22,13 +22,13 @@ export default class extends Lib.Scene {
     this.numFs = 5;
     this.radius = 200;
     this.cameraDegrees = 0;
+
+    this.axes = new Lib.Axes(context);
   }
 
-  ready({ context, attributes, canvas }) {
+  ready({ context, canvas }) {
     const aspect = canvas.clientWidth / canvas.clientHeight;
 
-    this.position.fillBuffer(attributes.a_position);
-    this.color.fillBuffer(attributes.a_color);
     this.pMatrix = new Lib.Matrix4(context).perspective(this.fieldOfViewRadians, aspect, 1, 2000);
   }
 
@@ -41,9 +41,11 @@ export default class extends Lib.Scene {
     return new Lib.Matrix4(context, customLookAt(cameraPosition, [this.radius, 0, 0], [0, 1, 0])).invert();
   }
 
-  render({ context, uniforms }) {
+  render({ context, uniforms, attributes }) {
     const viewMatrix = this.calculateViewMatrix(context);
 
+    this.position.fillBuffer(attributes.a_position);
+    this.color.fillBuffer(attributes.a_color);
     this.pMatrix.push().multiply(viewMatrix);
 
     for (let ii = 0; ii < this.numFs; ++ii) {
@@ -54,12 +56,16 @@ export default class extends Lib.Scene {
       this.pMatrix
         .push()
         .translate([x, 0, y])
+
+        .rotate(Lib.degToRad(10), [90, 0, 0])
         .fillBuffer(uniforms.u_matrix)
         .pop();
 
       context.drawArrays(context.TRIANGLES, 0, 16 * 6);
     }
     this.pMatrix.pop();
+
+    this.axes.render(attributes.a_color, attributes.a_position);
   }
 
   update() {

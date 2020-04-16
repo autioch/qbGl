@@ -12,6 +12,8 @@ export default class extends Lib.Scene {
       size: 2,
       data: positions
     });
+
+    this.axes = new Lib.Axes(context);
   }
 
   render({ context, attributes, uniforms, canvas }) {
@@ -22,5 +24,7 @@ export default class extends Lib.Scene {
     this.position.fillBuffer(attributes.a_position);
 
     context.drawArrays(context.TRIANGLES, 0, 18);
+
+    this.axes.render(attributes.a_color, attributes.a_position);
   }
 }
