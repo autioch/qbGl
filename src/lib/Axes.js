@@ -12,7 +12,7 @@ const AXES = [{
   points: [0, 0, 0, 0, 0, AXIS_LENGTH],
   color: [0, 0, 255, 1]
 }, {
-  points: [0, 0, 0, AXIS_LENGTH, AXIS_LENGTH, AXIS_LENGTH],
+  points: [0, 0, 0, -AXIS_LENGTH, -AXIS_LENGTH, -AXIS_LENGTH],
   color: [255, 255, 255, 1]
 }];
 

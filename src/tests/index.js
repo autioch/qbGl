@@ -1,3 +1,4 @@
 module.exports = [
-  require('./circle')
+  require('./circle'),
+  require('./leaf')
 ];
