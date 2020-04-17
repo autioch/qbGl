@@ -14,7 +14,7 @@ function setupApp(config) {
 const apps = [
   // ...require('./lessons'),
   // ...require('./webglfundamentals.org'),
-  ...require('./tests')
+  require('./tests')[1]
 ];
 
 apps

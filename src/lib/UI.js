@@ -14,6 +14,9 @@ export default class UI {
     this.config = buildConfig(config);
 
     this.el = tag('section.app', {
+      style: {
+        width: `${this.config.width}px`
+      },
       attrs: {
         tabindex: 0
       }
@@ -22,8 +25,8 @@ export default class UI {
     ]);
 
     this.canvas = tag('canvas.app-canvas', {
-      height: this.config.height,
-      width: this.config.width
+      height: this.config.height, // - 4, // border
+      width: this.config.width// - 4 // border
     });
 
     this.el.append(this.canvas);

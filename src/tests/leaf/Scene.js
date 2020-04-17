@@ -1,12 +1,14 @@
 import Lib from '../../lib';
 
-// import Blade from './Blade';
 import Lawn from './grass/Lawn';
+import Earth from './grass/Earth';
+import Leaf from './tree/leaf';
 
 export default class extends Lib.Scene {
   initialize({ context }) {
-    // this.blade = new Blade(context);
     this.lawn = new Lawn(context);
+    this.earth = new Earth(context);
+    this.leaf = new Leaf(context);
 
     this.rotationDegrees = 0;
     this.rotation = [0, 0, 0];
@@ -19,7 +21,7 @@ export default class extends Lib.Scene {
     const aspect = canvas.clientWidth / canvas.clientHeight;
 
     this.uMatrix = new Lib.Matrix4(context)
-      .perspective(Lib.degToRad(60), aspect, 1, 2000);
+      .perspective(Lib.degToRad(70), aspect, 1, 2000);
   }
 
   render({ attributes, uniforms }) {
@@ -34,6 +36,8 @@ export default class extends Lib.Scene {
     this.uMatrix.fillBuffer(uniforms.u_matrix);
     this.axes.render(attributes.a_color, attributes.a_position);
 
+    this.leaf.render(attributes.a_color, attributes.a_position);
+    this.earth.render(attributes.a_color, attributes.a_position);
     this.lawn.render(this.uMatrix, uniforms.u_matrix, attributes.a_color, attributes.a_position);
 
     this.uMatrix.pop();

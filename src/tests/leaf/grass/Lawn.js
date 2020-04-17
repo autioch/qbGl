@@ -1,21 +1,36 @@
 import Bunch from './Bunch';
+import Lib from '../../../lib';
+import { GARDEN_SIZE } from './consts';
 
 const BUNCH_COUNT = 1000;
-const GRASS_RANGE = 400;
 
 const range = (min, max) => Math.round(((Math.random() * (max - min)) + min) * 100) / 100;
 
 export default class Lawn {
   constructor(context) {
-    const radius = GRASS_RANGE - 0.2;
-
-    this.bunch = new Bunch(context, [0, range(0.3, 0.4), 0, 1]);
+    this.bunch = new Bunch(context, [0, range(0.3, 0.7), 0, 1]);
 
     this.bunches = new Array(BUNCH_COUNT).fill(null).map(() => ({
-      translate: [range(-radius, radius), 0, range(-radius, radius)],
+      translate: [range(-GARDEN_SIZE, GARDEN_SIZE), 0, range(-GARDEN_SIZE, GARDEN_SIZE)],
       rotateY: range(0, 360),
-      scale: range(0.5, 1)
+      scale: range(0.1, 1),
+      color: [0, range(0.3, 0.7), 0, 1]
     }));
+
+    this.bunches.forEach((bunch) => {
+      bunch.colorBuffer = new Lib.ArrayDataBuffer(context, {
+        size: 4,
+        data: [
+          ...bunch.color,
+          ...bunch.color,
+          ...bunch.color,
+          ...bunch.color,
+          ...bunch.color,
+          ...bunch.color,
+          ...bunch.color
+        ]
+      });
+    });
   }
 
   render(matrix, matrixLocation, colorLocation, positionLocation) {
@@ -25,7 +40,16 @@ export default class Lawn {
       matrix.rotateY(bunch.rotateY);
 
       matrix.scale([bunch.scale, bunch.scale, bunch.scale]);
-      this.bunch.render(matrix, matrixLocation, colorLocation, positionLocation);
+
+      const isColorUniform = colorLocation instanceof WebGLUniformLocation;
+
+      if (isColorUniform) {
+        this.context.uniform4fv(colorLocation, this.rawColor);
+      } else {
+        bunch.colorBuffer.fillBuffer(colorLocation);
+      }
+
+      this.bunch.render(matrix, matrixLocation, positionLocation);
       matrix.pop();
     });
   }

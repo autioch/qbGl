@@ -7,6 +7,8 @@ export default {
   vsh,
   fsh,
   ui: {
-    title: module.id
+    title: module.id,
+    width: window.innerWidth,
+    height: window.innerHeight
   }
 };

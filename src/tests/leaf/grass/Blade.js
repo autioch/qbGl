@@ -1,25 +1,8 @@
 import Lib from '../../../lib';
 
-// const color = [0, 0.5, 0, 1];
-
 export default class Blade {
-  constructor(context, color) {
+  constructor(context) {
     this.context = context;
-    this.rawColor = color;
-
-    this.color = new Lib.ArrayDataBuffer(context, {
-      size: 4,
-      data: [
-        ...color,
-        ...color,
-        ...color,
-        ...color,
-        ...color,
-        ...color,
-        ...color
-      ]
-    });
-
     this.position = new Lib.ArrayDataBuffer(context, {
       size: 3,
       data: [
@@ -34,17 +17,8 @@ export default class Blade {
     });
   }
 
-  render(colorLocation, positionLocation) {
-    const isColorUniform = colorLocation instanceof WebGLUniformLocation;
-
+  render(positionLocation) {
     this.position.fillBuffer(positionLocation);
-
-    if (isColorUniform) {
-      this.context.uniform4fv(colorLocation, this.rawColor);
-    } else {
-      this.color.fillBuffer(colorLocation);
-    }
-
     this.context.drawArrays(this.context.TRIANGLE_STRIP, 0, this.position.count);
   }
 }
