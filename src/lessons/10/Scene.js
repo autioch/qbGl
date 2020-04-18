@@ -39,18 +39,25 @@ export default class extends Lib.Scene {
     this.loadWorld(context);
   }
 
-  render({ context, attributes, uniforms, mMatrix, setMatrixUniforms }) {
-    mMatrix
+  ready({ context, canvas, uniforms }) {
+    this.pMatrix = new Lib.Matrix4(context).perspective(45, canvas.width / canvas.height, 0.1, 100.0).fillBuffer(uniforms.uPMatrix);
+    this.mMatrix = new Lib.Matrix4(context);
+  }
+
+  render({ context, attributes, uniforms }) {
+    this.mMatrix
+      .push()
       .rotate(-this.pitch, [1, 0, 0])
       .rotate(-this.yaw, [0, 1, 0])
-      .translate([-this.xPos, -this.yPos, -this.zPos]);
+      .translate([-this.xPos, -this.yPos, -this.zPos])
+      .fillBuffer(uniforms.uMVMatrix)
+      .pop();
 
     this.ceilingShape.getTexture('floor', uniforms.uSampler);
     this.ceilingShape.getBuffer('textures', attributes.aTextureCoord);
 
     const ceilVerticesBuffer = this.ceilingShape.getBuffer('vertices', attributes.aVertexPosition);
 
-    setMatrixUniforms();
     context.drawArrays(context.TRIANGLES, 0, ceilVerticesBuffer.count);
 
     this.floorShape.getTexture('floor', uniforms.uSampler);
@@ -58,7 +65,6 @@ export default class extends Lib.Scene {
 
     const floorVerticesBuffer = this.floorShape.getBuffer('vertices', attributes.aVertexPosition);
 
-    setMatrixUniforms();
     context.drawArrays(context.TRIANGLES, 0, floorVerticesBuffer.count);
 
     this.wallsShape.getTexture('wall', uniforms.uSampler);
@@ -66,7 +72,6 @@ export default class extends Lib.Scene {
 
     const wallVerticesBuffer = this.wallsShape.getBuffer('vertices', attributes.aVertexPosition);
 
-    setMatrixUniforms();
     context.drawArrays(context.TRIANGLES, 0, wallVerticesBuffer.count);
   }
 

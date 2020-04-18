@@ -39,11 +39,22 @@ export default class extends Lib.Scene {
     this.cube.filter = 0;
   }
 
-  render({ context, attributes, uniforms, mMatrix, setMatrixUniforms }) {
-    mMatrix
+  ready({ context, canvas, uniforms }) {
+    this.pMatrix = new Lib.Matrix4(context).perspective(45, canvas.width / canvas.height, 0.1, 100.0).fillBuffer(uniforms.uPMatrix);
+    this.mMatrix = new Lib.Matrix4(context);
+  }
+
+  render({ context, attributes, uniforms }) {
+    this.mMatrix
+      .push()
       .translate([0.0, 0.0, this.cube.z])
       .rotate(this.cube.xRot, [1, 0, 0])
-      .rotate(this.cube.yRot, [0, 1, 0]);
+      .rotate(this.cube.yRot, [0, 1, 0])
+      .fillBuffer(uniforms.uMVMatrix);
+
+    context.uniformMatrix3fv(uniforms.uNMatrix, false, this.mMatrix.toInvTraMat3());
+
+    this.mMatrix.pop();
 
     this.cube.getBuffer('vertices', attributes.aVertexPosition);
     this.cube.getBuffer('normals', attributes.aVertexNormal);
@@ -75,9 +86,6 @@ export default class extends Lib.Scene {
     const indices = this.cube.getBuff('indices');
 
     context.bindBuffer(context.ELEMENT_ARRAY_BUFFER, indices);
-    setMatrixUniforms();
-    context.uniformMatrix3fv(uniforms.uNMatrix, false, mMatrix.toInvTraMat3());
-
     context.drawElements(context.TRIANGLES, indices.count, context.UNSIGNED_SHORT, 0);
   }
 

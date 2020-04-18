@@ -18,6 +18,7 @@ module.exports = {
     'guard-for-in': ['off'],
     'id-blacklist': ['off'],
     'no-plusplus': ['off'],
+    'newline-per-chained-call': ['off'],
     'class-methods-use-this': ['off']
   }
 };

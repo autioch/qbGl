@@ -1,12 +1,12 @@
 /* eslint-disable class-methods-use-this, no-unused-vars, no-empty-function */
 export default class Scene {
-  initialize({ context }) {
+  initialize() {
     throw Error('Scene must implement initialize method');
   }
 
-  ready({ context }) {}
+  ready() {}
 
-  render({ context, attributes, uniforms, mMatrix, setMatrixUniforms }) {
+  render() {
     throw Error('Scene must implement render method');
   }
 

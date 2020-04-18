@@ -1,9 +1,9 @@
-function drawStar(setMatrixUniforms, context, attributes, uniforms, bufferStash) {
+function drawStar(context, attributes, uniforms, bufferStash, mMatrix) {
   bufferStash.getTexture('star', uniforms.uSampler);
   bufferStash.getBuffer('textures', attributes.aTextureCoord);
   const vertices = bufferStash.getBuffer('vertices', attributes.aVertexPosition);
 
-  setMatrixUniforms();
+  mMatrix.fillBuffer(uniforms.uMVMatrix);
   context.drawArrays(context.TRIANGLE_STRIP, 0, vertices.count);
 }
 
@@ -26,17 +26,17 @@ export default class Star {
     this.twinkleB = Math.random();
   }
 
-  update({ pulse }) {
-    this.angle += this.rotationSpeed * pulse;
+  update(change) {
+    this.angle += this.rotationSpeed * change;
 
-    this.dist -= 0.01 * pulse;
+    this.dist -= 0.01 * change;
     if (this.dist < 0.0) {
       this.dist += 5.0;
       this.randomizeColors();
     }
   }
 
-  render(context, mMatrix, attributes, uniforms, tilt, spin, twinkle, setMatrixUniforms, bufferStash) {
+  render(context, mMatrix, attributes, uniforms, tilt, spin, twinkle, bufferStash) {
     mMatrix
       .push()
       .rotate(this.angle, [0.0, 1.0, 0.0])
@@ -46,13 +46,13 @@ export default class Star {
 
     if (twinkle) {
       context.uniform3f(uniforms.uColor, this.twinkleR, this.twinkleG, this.twinkleB);
-      drawStar(setMatrixUniforms, context, attributes, uniforms, bufferStash);
+      drawStar(context, attributes, uniforms, bufferStash, mMatrix);
     }
 
     mMatrix.rotate(spin, [0.0, 0.0, 1.0]);
 
     context.uniform3f(uniforms.uColor, this.r, this.g, this.b);
-    drawStar(setMatrixUniforms, context, attributes, uniforms, bufferStash);
+    drawStar(context, attributes, uniforms, bufferStash, mMatrix);
 
     mMatrix.pop();
   }

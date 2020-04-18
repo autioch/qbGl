@@ -1,6 +1,5 @@
 import Lib from '../../lib';
 import { positions } from './consts';
-import m3 from '../../m3';
 
 export default class extends Lib.Scene {
   initialize({ context }) {
@@ -13,30 +12,27 @@ export default class extends Lib.Scene {
       size: 2,
       data: positions
     });
+
+    this.axes = new Lib.Axes(context);
   }
 
-  calculateMatrices() {
-    // Compute the matrices
-    const translationMatrix = m3.translation(this.translation[0], this.translation[1]);
-    const rotationMatrix = m3.rotation(this.radians);
-    const scaleMatrix = m3.scaling(this.scale[0], this.scale[1]);
+  ready({ context }) {
+    this.tMatrix = new Lib.Matrix3(context).translate(this.translation);
+    this.rMatrix = new Lib.Matrix3(context).rotate(this.radians);
+    this.sMatrix = new Lib.Matrix3(context).scale(this.scale);
 
-    // Multiply the matrices.
-    const matrix = m3.multiply(m3.multiply(translationMatrix, rotationMatrix), scaleMatrix);
-
-    return matrix;
+    this.tMatrix.multiply(this.rMatrix).multiply(this.sMatrix);
   }
 
   render({ context, attributes, uniforms, canvas }) {
     context.uniform2f(uniforms.u_resolution, canvas.width, canvas.height);
     context.uniform4fv(uniforms.u_color, this.color);
 
-    const matrix = this.calculateMatrices();
-
-    context.uniformMatrix3fv(uniforms.u_matrix, false, matrix);
-
+    this.tMatrix.fillBuffer(uniforms.u_matrix);
     this.position.fillBuffer(attributes.a_position);
 
     context.drawArrays(context.TRIANGLES, 0, 18);
+
+    this.axes.render(attributes.a_color, attributes.a_position);
   }
 }

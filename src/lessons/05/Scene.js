@@ -17,21 +17,24 @@ export default class extends Lib.Scene {
     this.cube.rotate = 0;
   }
 
-  render({ context, attributes, uniforms, mMatrix, setMatrixUniforms }) {
-    mMatrix
-      .translate(cubeDef.translate)
+  ready({ context, canvas, uniforms }) {
+    this.pMatrix = new Lib.Matrix4(context).perspective(45, canvas.width / canvas.height, 0.1, 100.0).fillBuffer(uniforms.uPMatrix);
+    this.mMatrix = new Lib.Matrix4(context).translate(cubeDef.translate);
+  }
+
+  render({ context, attributes, uniforms }) {
+    this.mMatrix
       .push()
-      .rotate(this.cube.rotate, cubeDef.rotateVertex);
+      .rotate(this.cube.rotate, cubeDef.rotateVertex)
+      .fillBuffer(uniforms.uMVMatrix)
+      .pop();
 
     this.cube.getBuffer('vertices', attributes.aVertexPosition);
     this.cube.getBuffer('textures', attributes.aTextureCoord);
     this.cube.getTexture('podloga', uniforms.uSampler);
     const indices = this.cube.getBuff('indices');
 
-    setMatrixUniforms();
     context.drawElements(context.TRIANGLES, indices.count, context.UNSIGNED_SHORT, 0);
-
-    mMatrix.pop();
   }
 
   update({ pulse }) {

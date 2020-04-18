@@ -32,20 +32,28 @@ export default class extends Lib.Scene {
     });
   }
 
-  render({ context, attributes, uniforms, mMatrix, setMatrixUniforms }) {
+  ready({ context, canvas, uniforms }) {
+    this.pMatrix = new Lib.Matrix4(context).perspective(45, canvas.width / canvas.height, 0.1, 100.0).fillBuffer(uniforms.uPMatrix);
+    this.mMatrix = new Lib.Matrix4(context);
+  }
+
+  render({ context, attributes, uniforms }) {
     context.blendFunc(context.SRC_ALPHA, context.ONE);
     context.enable(context.BLEND);
 
-    mMatrix
+    this.mMatrix
+      .push()
       .translate([0.0, 0.0, this.zoom])
       .rotate(this.tilt, [1, 0, 0]);
 
     const twinkle = document.getElementById('twinkle').checked;
 
     this.shapes.forEach((shape) => {
-      shape.render(context, mMatrix, attributes, uniforms, this.tilt, this.spin, twinkle, setMatrixUniforms, this.bufferStash);
+      shape.render(context, this.mMatrix, attributes, uniforms, this.tilt, this.spin, twinkle, this.bufferStash);
       this.spin += 0.1;
     });
+
+    this.mMatrix.pop();
   }
 
   update({ pulse }) {

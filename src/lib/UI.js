@@ -13,17 +13,22 @@ export default class UI {
   constructor(config) {
     this.config = buildConfig(config);
 
+    const { title } = this.config;
+
     this.el = tag('section.app', {
+      style: {
+        width: `${this.config.width}px`
+      },
       attrs: {
         tabindex: 0
       }
     }, [
-      tag('header.app-title', this.config.title.split('/').slice(-3, -1).join(' - '))
+      tag('header.app-title', typeof title === 'string' ? title.split('/').slice(-3, -1).join(' - ') : title.toString())
     ]);
 
     this.canvas = tag('canvas.app-canvas', {
-      height: this.config.height,
-      width: this.config.width
+      height: this.config.height, // - 4, // border
+      width: this.config.width// - 4 // border
     });
 
     this.el.append(this.canvas);

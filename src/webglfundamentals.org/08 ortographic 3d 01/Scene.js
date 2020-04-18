@@ -1,6 +1,5 @@
 import Lib from '../../lib';
 import { positions, colors } from './consts';
-import m4 from '../../m4';
 
 const { degToRad } = Lib;
 
@@ -21,9 +20,11 @@ export default class extends Lib.Scene {
       normalize: true,
       type: context.UNSIGNED_BYTE
     });
+
+    this.axes = new Lib.Axes(context);
   }
 
-  calculateMatrices(canvas) {
+  ready({ context, canvas }) {
     const left = 0;
     const right = canvas.clientWidth;
     const bottom = canvas.clientHeight;
@@ -31,26 +32,27 @@ export default class extends Lib.Scene {
     const near = 400;
     const far = -400;
 
-    let matrix = m4.orthographic(left, right, bottom, top, near, far);
-
-    matrix = m4.translate(matrix, this.translation[0], this.translation[1], this.translation[2]);
-    matrix = m4.xRotate(matrix, degToRad(this.rotation[0]));
-    matrix = m4.yRotate(matrix, degToRad(this.rotation[1]));
-    matrix = m4.zRotate(matrix, degToRad(this.rotation[2]));
-    matrix = m4.scale(matrix, this.scale[0], this.scale[1], this.scale[2]);
-
-    return matrix;
+    this.uMatrix = new Lib.Matrix4(context)
+      .orthographic(left, right, bottom, top, near, far)
+      .translate(this.translation)
+      .scale(this.scale);
   }
 
-  render({ context, attributes, uniforms, canvas }) {
-    const matrix = this.calculateMatrices(canvas);
-
-    context.uniformMatrix4fv(uniforms.u_matrix, false, matrix);
+  render({ context, attributes, uniforms }) {
+    this.uMatrix
+      .push()
+      .rotateX(degToRad(this.rotation[0]))
+      .rotateY(degToRad(this.rotation[1]))
+      .rotateZ(degToRad(this.rotation[2]))
+      .fillBuffer(uniforms.u_matrix)
+      .pop();
 
     this.position.fillBuffer(attributes.a_position);
     this.color.fillBuffer(attributes.a_color);
 
     context.drawArrays(context.TRIANGLES, 0, 16 * 6);
+
+    this.axes.render(attributes.a_color, attributes.a_position);
   }
 
   update() {

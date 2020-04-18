@@ -3,51 +3,54 @@ import { pyramidDef, cubeDef } from './consts';
 
 export default class extends Lib.Scene {
   initialize({ context }) {
-    this.pyramid = new Lib.Shape(context);
+    this.pyramidRotate = 0;
+    this.cubeRotate = 0;
 
-    this.pyramid.setBuffer('vertices', new Float32Array(pyramidDef.vertices), context.ARRAY_BUFFER, 12, 3);
-    this.pyramid.setBuffer('colors', new Float32Array(pyramidDef.colors), context.ARRAY_BUFFER, 12, 4);
-    this.pyramid.rotate = 0;
+    this.pyramidVertices = new Lib.ArrayDataBuffer(context, {
+      size: 3,
+      data: pyramidDef.vertices
+    });
+    this.pyramidColors = new Lib.ArrayDataBuffer(context, {
+      size: 4,
+      data: pyramidDef.colors
+    });
 
-    this.cube = new Lib.Shape(context);
+    this.cubeVertices = new Lib.ArrayDataBuffer(context, {
+      size: 3,
+      data: cubeDef.vertices
+    });
+    this.cubeColors = new Lib.ArrayDataBuffer(context, {
+      size: 4,
+      data: cubeDef.colors
+    });
 
-    this.cube.setBuffer('vertices', new Float32Array(cubeDef.vertices), context.ARRAY_BUFFER, 24, 3);
-    this.cube.setBuffer('colors', new Float32Array(cubeDef.colors), context.ARRAY_BUFFER, 24, 4);
-    this.cube.setBuffer('indices', new Uint16Array(cubeDef.indices), context.ELEMENT_ARRAY_BUFFER, 36, 1);
-    this.cube.rotate = 0;
+    this.cubeIndices = new Lib.ArrayDataBuffer(context, {
+      target: context.ELEMENT_ARRAY_BUFFER,
+      size: 1,
+      data: new Uint16Array(cubeDef.indices)
+    });
   }
 
-  render({ context, attributes, mMatrix, setMatrixUniforms }) {
-    mMatrix
-      .translate([-1.5, 0.0, -6.0])
-      .push()
-      .rotate(this.pyramid.rotate, [0, 1, 0]);
-    const pyramidVertices = this.pyramid.getBuffer('vertices', attributes.aVertexPosition);
+  ready({ context, canvas, uniforms }) {
+    this.pMatrix = new Lib.Matrix4(context).perspective(45, canvas.width / canvas.height, 0.1, 100.0).fillBuffer(uniforms.uPMatrix);
+    this.mMatrix = new Lib.Matrix4(context).translate([-1.5, 0.0, -6.0]);
+  }
 
-    this.pyramid.getBuffer('colors', attributes.aVertexColor);
-    setMatrixUniforms();
-    context.drawArrays(context.TRIANGLES, 0, pyramidVertices.count);
+  render({ context, attributes, uniforms }) {
+    this.mMatrix.push().rotate(this.pyramidRotate, [0, 1, 0]).fillBuffer(uniforms.uMVMatrix).pop();
+    this.pyramidVertices.fillBuffer(attributes.aVertexPosition);
+    this.pyramidColors.fillBuffer(attributes.aVertexColor);
+    context.drawArrays(context.TRIANGLES, 0, this.pyramidVertices.count);
 
-    mMatrix.pop();
-
-    mMatrix.translate([3, 0, 0])
-      .push()
-      .rotate(this.cube.rotate, [1, 1, 1]);
-
-    this.cube.getBuffer('vertices', attributes.aVertexPosition);
-    this.cube.getBuffer('colors', attributes.aVertexColor);
-
-    const indices = this.cube.getBuff('indices');
-
-    context.bindBuffer(indices.type, indices);
-    setMatrixUniforms();
-    context.drawElements(context.TRIANGLES, indices.count, context.UNSIGNED_SHORT, 0);
-
-    mMatrix.pop();
+    this.mMatrix.push().translate([3, 0, 0]).rotate(this.cubeRotate, [1, 1, 1]).fillBuffer(uniforms.uMVMatrix).pop();
+    this.cubeVertices.fillBuffer(attributes.aVertexPosition);
+    this.cubeColors.fillBuffer(attributes.aVertexColor);
+    context.bindBuffer(context.ELEMENT_ARRAY_BUFFER, this.cubeIndices.buffer);
+    context.drawElements(context.TRIANGLES, this.cubeIndices.count, context.UNSIGNED_SHORT, 0);
   }
 
   update({ pulse }) {
-    this.pyramid.rotate += (90 * pulse) / 1000.0;
-    this.cube.rotate += (75 * pulse) / 1000.0;
+    this.pyramidRotate += (90 * pulse) / 1000.0;
+    this.cubeRotate += (75 * pulse) / 1000.0;
   }
 }

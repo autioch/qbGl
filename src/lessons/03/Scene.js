@@ -24,20 +24,28 @@ export default class extends Lib.Scene {
     this.squareRotate = 0;
   }
 
-  render({ context, attributes, mMatrix, setMatrixUniforms }) {
-    mMatrix.translate([-1.5, 0.0, -6.0]).push().rotate(this.triangleRotate, [0, 1, 0]);
+  ready({ context, canvas, uniforms }) {
+    this.pMatrix = new Lib.Matrix4(context).perspective(45, canvas.width / canvas.height, 0.1, 100.0).fillBuffer(uniforms.uPMatrix);
+    this.mMatrix = new Lib.Matrix4(context).translate([-1.5, 0.0, -6.0]);
+  }
+
+  render({ context, attributes, uniforms }) {
+    this.mMatrix.push()
+      .rotate(this.triangleRotate, [-1.5, 0.0, -6.0])
+      .fillBuffer(uniforms.uMVMatrix)
+      .pop();
     this.triangleVertices.fillBuffer(attributes.aVertexPosition);
     this.triangleColors.fillBuffer(attributes.aVertexColor);
-    setMatrixUniforms();
     context.drawArrays(context.TRIANGLES, 0, this.triangleVertices.count);
-    mMatrix.pop();
 
-    mMatrix.translate([3, 0, 0]).push().rotate(this.squareRotate, [1, 0, 0]);
+    this.mMatrix.push()
+      .translate([3, 0, 0])
+      .rotate(this.squareRotate, [1, 0, 0])
+      .fillBuffer(uniforms.uMVMatrix)
+      .pop();
     this.squareVertices.fillBuffer(attributes.aVertexPosition);
     this.squareColors.fillBuffer(attributes.aVertexColor);
-    setMatrixUniforms();
     context.drawArrays(context.TRIANGLE_STRIP, 0, this.squareVertices.count);
-    mMatrix.pop();
   }
 
   update({ pulse }) {

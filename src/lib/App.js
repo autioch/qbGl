@@ -1,4 +1,3 @@
-import Matrix from './Matrix';
 import Program from './Program';
 import UI from './UI';
 import { configBuilder } from './utils';
@@ -18,7 +17,6 @@ export default class App {
     this.start = this.start.bind(this);
     this.loop = this.loop.bind(this);
     this.stop = this.stop.bind(this);
-    this.setMatrixUniforms = this.setMatrixUniforms.bind(this);
 
     this.ui = new UI(this.config.ui);
 
@@ -30,31 +28,25 @@ export default class App {
 
     !this.config.skipDepthTest && this.context.enable(this.context.DEPTH_TEST);
 
-    this.pMatrix = new Matrix();
-    this.mMatrix = new Matrix();
     this.program = new Program(this.context);
     this.program.setShaderFromConfig(this.config.vsh, this.context.VERTEX_SHADER);
     this.program.setShaderFromConfig(this.config.fsh, this.context.FRAGMENT_SHADER);
     this.program.use();
+
+    this.sceneContext = {
+      context: this.context,
+      el: this.ui.el,
+      canvas: this.ui.canvas,
+      attributes: this.program.attributes,
+      uniforms: this.program.uniforms
+    };
   }
 
   didMount() {
     this.scene = new this.config.Scene();
     this.initPromise = Promise
-      .resolve(this.scene.initialize({
-        context: this.context,
-        el: this.ui.el,
-        canvas: this.ui.canvas,
-        attributes: this.program.attributes,
-        uniforms: this.program.uniforms
-      }));
-
-    this.initPromise.then(() => this.scene.ready({
-      context: this.context,
-      canvas: this.ui.canvas,
-      attributes: this.program.attributes,
-      uniforms: this.program.uniforms
-    }));
+      .resolve(this.scene.initialize(this.sceneContext))
+      .then(() => this.scene.ready(this.sceneContext));
   }
 
   start() {
@@ -77,38 +69,20 @@ export default class App {
       canvas: this.canvas
     });
 
-    if (isChanged !== false) {
-      this.render();
-    }
+    isChanged !== false && this.render();
     this._lastAnimate = timeNow;
-
     this._raf = requestAnimationFrame(this.loop);
   }
 
   render() {
     this.context.viewport(0, 0, this.ui.canvas.width, this.ui.canvas.height);
     this.context.clear(this.context.COLOR_BUFFER_BIT | this.context.DEPTH_BUFFER_BIT); // eslint-disable-line no-bitwise
-
-    this.pMatrix.perspective(45, this.ui.canvas.width / this.ui.canvas.height, 0.1, 100.0);
-    this.mMatrix.identity();
-
-    this.scene.render({
-      context: this.context,
-      mMatrix: this.mMatrix,
-      setMatrixUniforms: this.setMatrixUniforms,
-      canvas: this.ui.canvas,
-      attributes: this.program.attributes,
-      uniforms: this.program.uniforms
-    });
+    this.scene.render(this.sceneContext);
   }
+
   stop() {
     this._focused = false;
     this._raf && window.cancelAnimationFrame(this._raf);
     this._raf = undefined;
-  }
-
-  setMatrixUniforms() {
-    this.context.uniformMatrix4fv(this.program.uniforms.uPMatrix, false, this.pMatrix.get());
-    this.context.uniformMatrix4fv(this.program.uniforms.uMVMatrix, false, this.mMatrix.get());
   }
 }
