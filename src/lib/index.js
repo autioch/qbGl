@@ -12,6 +12,7 @@ import UI from './UI';
 import Matrix4 from './Matrix4';
 import Matrix3 from './Matrix3';
 import { degToRad, mouse, keyboard, loadTextures, configBuilder, loadImage } from './utils';
+import parameters from './parameters';
 
 export {
   Light,
@@ -32,7 +33,8 @@ export {
   keyboard,
   loadTextures,
   configBuilder,
-  loadImage
+  loadImage,
+  parameters
 };
 
 export default {
@@ -54,5 +56,6 @@ export default {
   keyboard,
   loadTextures,
   configBuilder,
-  loadImage
+  loadImage,
+  parameters
 };

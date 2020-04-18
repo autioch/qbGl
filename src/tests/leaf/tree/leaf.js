@@ -1,7 +1,7 @@
 import Lib from '../../../lib';
 
-const COLOR = [0.2, 0.8, 0.2, 1];
-const COLOR_VEIN = [0.2, 0.5, 0.2, 1];
+// const COLOR = [0.2, 0.8, 0.2, 1];
+const COLOR = [1, 0.5, 1, 1];
 
 export default class Leaf {
   constructor(context) {
@@ -42,10 +42,6 @@ export default class Leaf {
       size: 4,
       data: new Array(this.position.count).fill(COLOR).flat()
     });
-    this.colorVeins = new Lib.ArrayDataBuffer(context, {
-      size: 4,
-      data: new Array(this.position.count).fill(COLOR_VEIN).flat()
-    });
   }
 
   render(colorLocation, positionLocation) {
@@ -59,14 +55,5 @@ export default class Leaf {
 
     this.position.fillBuffer(positionLocation);
     this.context.drawArrays(this.context.TRIANGLE_FAN, 0, this.position.count);
-
-    if (isColorUniform) {
-      this.context.uniform4fv(colorLocation, COLOR_VEIN);
-    } else {
-      this.colorVeins.fillBuffer(colorLocation);
-    }
-
-    this.position.fillBuffer(positionLocation);
-    this.context.drawArrays(this.context.LINE_LOOP, 0, this.position.count);
   }
 }

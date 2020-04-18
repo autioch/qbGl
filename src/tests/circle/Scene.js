@@ -9,12 +9,7 @@ export default class extends Lib.Scene {
       this.rotationRadian.push(Math.cos(degToRad(i)), Math.sin(degToRad(i)), 0);
     }
 
-    this.colorBuffer = new Lib.ArrayDataBuffer(context, {
-      size: 4,
-      data: [255, 255, 255, 1]
-    });
-
-    this.circles = new Lib.ArrayDataBuffer(context, {
+    this.position = new Lib.ArrayDataBuffer(context, {
       size: 3,
       data: this.rotationRadian
     });
@@ -23,7 +18,7 @@ export default class extends Lib.Scene {
   }
 
   render({ context, attributes, uniforms }) {
-    this.circles.fillBuffer(attributes.a_position);
+    this.position.fillBuffer(attributes.a_position);
     context.uniform4fv(uniforms.u_color, [255, 255, 255, 1]);
     context.drawArrays(context.LINE_LOOP, 0, this.rotationRadian.length / 3);
 

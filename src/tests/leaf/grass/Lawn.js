@@ -1,10 +1,9 @@
 import Bunch from './Bunch';
 import Lib from '../../../lib';
 import { GARDEN_SIZE } from './consts';
+import { range } from '../utils';
 
-const BUNCH_COUNT = 1000;
-
-const range = (min, max) => Math.round(((Math.random() * (max - min)) + min) * 100) / 100;
+const BUNCH_COUNT = 200;
 
 export default class Lawn {
   constructor(context) {
@@ -13,7 +12,7 @@ export default class Lawn {
     this.bunches = new Array(BUNCH_COUNT).fill(null).map(() => ({
       translate: [range(-GARDEN_SIZE, GARDEN_SIZE), 0, range(-GARDEN_SIZE, GARDEN_SIZE)],
       rotateY: range(0, 360),
-      scale: range(0.1, 1),
+      scale: range(0.4, 1),
       color: [0, range(0.3, 0.7), 0, 1]
     }));
 

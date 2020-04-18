@@ -13,6 +13,8 @@ export default class UI {
   constructor(config) {
     this.config = buildConfig(config);
 
+    const { title } = this.config;
+
     this.el = tag('section.app', {
       style: {
         width: `${this.config.width}px`
@@ -21,7 +23,7 @@ export default class UI {
         tabindex: 0
       }
     }, [
-      tag('header.app-title', this.config.title.split('/').slice(-3, -1).join(' - '))
+      tag('header.app-title', typeof title === 'string' ? title.split('/').slice(-3, -1).join(' - ') : title.toString())
     ]);
 
     this.canvas = tag('canvas.app-canvas', {

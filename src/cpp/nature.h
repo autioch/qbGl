@@ -318,28 +318,28 @@ void butterfly::paint(float r, float g, float b, int p) {
 }
 
 void butterfly::skrzydlo(float r, float g, float b) {
-  glColor3f(r * 0.5, g * 0.0, b * 0.2);
+  // glColor3f(r * 0.5, g * 0.0, b * 0.2);
   glBegin(GL_TRIANGLE_FAN);
   glVertex3f(0.0, 0.0, 0.0);
   glVertex3f(0.0, 0.2, 0.0);
-  glColor3f(r * 1.0, g * 0.9, b * 0.0);
+  // glColor3f(r * 1.0, g * 0.9, b * 0.0);
   glVertex3f(0.1, 0.25, 0.0);
   glVertex3f(0.25, 0.25, 0.0);
-  glColor3f(r * 0.9, g * 0.7, b * 0.2);
+  // glColor3f(r * 0.9, g * 0.7, b * 0.2);
   glVertex3f(0.35, 0.2, 0.0);
-  glColor3f(r * 0.9, g * 0.7, b * 0.2);
+  // glColor3f(r * 0.9, g * 0.7, b * 0.2);
   glVertex3f(0.35, 0.1, 0.0);
-  glColor3f(r * 0.8, g * 0.7, b * 0.0);
+  // glColor3f(r * 0.8, g * 0.7, b * 0.0);
   glVertex3f(0.3, 0.0, 0.0);
-  glColor3f(r * 0.0, g * 0.0, b * 1.0);
+  // glColor3f(r * 0.0, g * 0.0, b * 1.0);
   glVertex3f(0.25, -0.05, 0.0);
-  glColor3f(r * 0.9, g * 0.7, b * 0.0);
+  // glColor3f(r * 0.9, g * 0.7, b * 0.0);
   glVertex3f(0.2, -0.15, 0.0);
-  glColor3f(r * 1.0, g * 0.8, b * 0.0);
+  // glColor3f(r * 1.0, g * 0.8, b * 0.0);
   glVertex3f(0.15, -0.2, 0.0);
-  glColor3f(r * 1.0, g * 0.9, b * 0.0);
+  // glColor3f(r * 1.0, g * 0.9, b * 0.0);
   glVertex3f(0.05, -0.2, 0.0);
-  glColor3f(r * 1.0, g * 1.0, b * 0.0);
+  // glColor3f(r * 1.0, g * 1.0, b * 0.0);
   glVertex3f(0.0, -0.1, 0.0);
   glEnd();
 }
