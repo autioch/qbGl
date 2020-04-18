@@ -1,1 +1,1 @@
-export const GARDEN_SIZE = 400;
+export const GARDEN_SIZE = 600;

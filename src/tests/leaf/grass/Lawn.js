@@ -3,7 +3,7 @@ import Lib from '../../../lib';
 import { GARDEN_SIZE } from './consts';
 import { range } from '../utils';
 
-const BUNCH_COUNT = 200;
+const BUNCH_COUNT = 500;
 
 export default class Lawn {
   constructor(context) {

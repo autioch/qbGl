@@ -37,7 +37,8 @@ export default class extends Lib.Scene {
       .rotateZ(Lib.degToRad(this.rotation[2]));
 
     this.uMatrix.fillBuffer(uniforms.u_matrix);
-    this.axes.render(attributes.a_color, attributes.a_position);
+
+    // this.axes.render(attributes.a_color, attributes.a_position);
 
     this.earth.render(attributes.a_color, attributes.a_position);
     this.lawn.render(this.uMatrix, uniforms.u_matrix, attributes.a_color, attributes.a_position);
