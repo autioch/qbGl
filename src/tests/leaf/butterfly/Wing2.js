@@ -44,13 +44,8 @@ export default class Wing {
 
     this.color = new Lib.ArrayDataBuffer(context, {
       size: 4,
-      data: generateColors(...colorMod)// 1.0, 0.5, 0.25)
+      data: generateColors(...colorMod)
     });
-
-    // this.color2 = new Lib.ArrayDataBuffer(context, {
-    //   size: 4,
-    //   data: generateColors(0.0, 0.5, 0.5)
-    // });
   }
 
   render(colorLocation, positionLocation) {

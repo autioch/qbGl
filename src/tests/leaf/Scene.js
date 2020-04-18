@@ -3,14 +3,15 @@ import Lib from '../../lib';
 import Earth from './grass/Earth';
 import Lawn from './grass/Lawn';
 import Tree from './tree/Tree';
-import Wing from './butterfly/Wing';
+import Butterfly from './butterfly/Butterfly';
 
 export default class extends Lib.Scene {
   initialize({ context }) {
     this.lawn = new Lawn(context);
     this.earth = new Earth(context);
     this.tree = new Tree(context);
-    this.wing = new Wing(context);
+    this.butterfly1 = new Butterfly(context, [1.0, 0.5, 0.25]);
+    this.butterfly2 = new Butterfly(context, [0.0, 0.5, 0.5]);
 
     this.rotationDegrees = 0;
     this.rotation = [0, 0, 0];
@@ -40,15 +41,23 @@ export default class extends Lib.Scene {
 
     this.earth.render(attributes.a_color, attributes.a_position);
     this.lawn.render(this.uMatrix, uniforms.u_matrix, attributes.a_color, attributes.a_position);
+
     this.tree.render(this.uMatrix, uniforms.u_matrix, attributes.a_color, attributes.a_position);
 
     this.uMatrix.translate([200, 200, 200]);
     this.uMatrix.fillBuffer(uniforms.u_matrix);
-    this.wing.render(attributes.a_color, attributes.a_position);
+    this.butterfly1.render(this.uMatrix, uniforms.u_matrix, attributes.a_color, attributes.a_position);
+
+    this.uMatrix.rotateY(Lib.degToRad(90));
+    this.butterfly2.render(this.uMatrix, uniforms.u_matrix, attributes.a_color, attributes.a_position);
+
     this.uMatrix.pop();
   }
 
   update({ pulse }) {
-    this.rotation[1] += pulse / 100;
+    this.butterfly1.update();
+    this.butterfly2.update();
+
+    this.rotation[1] += pulse / 50;
   }
 }
