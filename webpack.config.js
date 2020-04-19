@@ -128,6 +128,12 @@ module.exports = {
       appendScriptTag: true,
       ignore: /.(config|ico|js|json|html|template|woff)$/
     }) : undefined,
+    new (require('webpack-bundle-analyzer').BundleAnalyzerPlugin)({
+      analyzerMode: 'static',
+      reportFilename: `bundle.report${argv.production ? '.min' : ''}.html`,
+      openAnalyzer: false,
+      logLevel: 'error'
+    }),
     argv.production ? new UglifyJsPlugin({
       sourceMap: false
     }) : undefined

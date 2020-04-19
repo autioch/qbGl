@@ -1,5 +1,6 @@
 import { configBuilder } from './utils';
 import tag from 'lean-tag';
+import './ui.scss';
 
 const buildConfig = configBuilder({
   width: 300,
@@ -22,9 +23,11 @@ export default class UI {
       attrs: {
         tabindex: 0
       }
-    }, [
-      tag('header.app-title', typeof title === 'string' ? title.split('/').slice(-3, -1).join(' - ') : title.toString())
-    ]);
+    });
+
+    if (title && title.length) {
+      this.el.append(tag('header.app-title', typeof title === 'string' ? title.split('/').slice(-3, -1).join(' - ') : title.toString()));
+    }
 
     this.canvas = tag('canvas.app-canvas', {
       height: this.config.height, // - 4, // border
