@@ -1,0 +1,16 @@
+body {
+  background: #000;
+}
+
+.examples {
+  display: flex;
+  flex-wrap: wrap;
+
+  .app {
+    border: solid 2px #000;
+
+    &:focus {
+      border: solid 2px #0f0;
+    }
+  }
+}
