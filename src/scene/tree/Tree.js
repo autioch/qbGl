@@ -36,7 +36,7 @@ function growBranch(parentBranch, id) {
   if (leafCount === 1) {
     leafTransform = length / 2;
   }
-  const subBranches = new Array(BRANCH_SUB).fill(null).map((_, index) => ({// eslint-disable-line no-unused-vars
+  const subBranches = new Array(BRANCH_SUB).fill(null).map((_, index) => ({ // eslint-disable-line no-unused-vars
     radius,
     length,
     rotateY: Lib.degToRad(range(0, 360)),
