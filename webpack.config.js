@@ -1,7 +1,6 @@
 const { join } = require('path');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const packageJson = require('./package.json');
 
 const { argv } = require('yargs').options({
   production: {
@@ -35,7 +34,7 @@ module.exports = {
   output: {
     path: buildPath,
     filename: `files/main${nameSuffix}.js`,
-    publicPath: argv.production ? packageJson.name : '/',
+    publicPath: argv.production ? '' : '/',
     pathinfo: false
   },
   resolve: {
