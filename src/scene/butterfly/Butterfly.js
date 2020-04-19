@@ -1,6 +1,7 @@
-import Lib, { distance3d } from 'lib';
-import { range } from '../utils';
+import Lib from 'lib';
 import { WING_COLORS, WING_VERTICES } from './consts';
+import { GARDEN_SIZE } from '../grass/consts';
+import Travel from './Travel';
 
 function generateColors(rMod, gMod, bMod) {
   return WING_COLORS
@@ -11,18 +12,14 @@ function generateColors(rMod, gMod, bMod) {
 export default class Butterfly {
   constructor(context, colorMod = [1, 1, 1]) {
     this.context = context;
+    this.travel = new Travel(
+      [-GARDEN_SIZE, 0, -GARDEN_SIZE],
+      [GARDEN_SIZE, GARDEN_SIZE, GARDEN_SIZE]
+    );
 
-    this.pos = [0, 0, 0];
     this.rotateY = 0;
     this.wingsRotateY = 0;
-
-    this.start = [-1, -1, -1];
-    this.end = [0, 0, 0];
-    this.mov = [0.1, 0.1, 0.1];
-    this.wings_d = -0.1;
-    this.d = 1.0;
-
-    this.setNewDirection();
+    this.wingStep = -0.1;
 
     this.wing = new Lib.ColorShape(context, {
       vertices: WING_VERTICES,
@@ -32,7 +29,7 @@ export default class Butterfly {
   }
 
   render(matrix, matrixLocation, colorLocation, positionLocation) {
-    matrix.push().translate(this.pos).rotateX(this.rotateY - 90);
+    matrix.push().translate(this.travel.current).rotateX(this.rotateY - 90);
 
     matrix
       .push()
@@ -52,40 +49,14 @@ export default class Butterfly {
   }
 
   update() {
-    if (distance3d(this.pos, this.end) < 1) {
-      this.setNewDirection();
+    if (this.travel.update()) {
+      this.rotateY = Math.atan2(this.travel.step[1], this.travel.step[0]) * 180 / Math.PI;
     }
-    this.pos[0] += this.mov[0];
-    this.pos[1] += this.mov[1];
-    this.pos[2] += this.mov[2];
-    this.wingsRotateY += this.wings_d;
+    this.wingsRotateY += this.wingStep;
     if (this.wingsRotateY > 60) {
-      this.wings_d *= -1;
+      this.wingStep *= -1;
     } else if (this.wingsRotateY < -30) {
-      this.wings_d *= -1;
+      this.wingStep *= -1;
     }
-  }
-
-  setNewDirection() {
-    const tmp = [range(0, 80), range(0, 80), range(0, 40)];
-
-    if (Math.random() < 0.25) {
-      tmp[0] *= -1;
-    }
-
-    this.start = this.end;
-    this.end = tmp;
-
-    this.mov[0] = this.end[0] - this.start[0];
-    this.mov[1] = this.end[1] - this.start[1];
-    this.mov[2] = this.end[2] - this.start[2];
-
-    this.rotateY = Math.atan2(this.mov[1], this.mov[0]) * 180 / Math.PI;
-
-    const l = Math.hypot(...this.mov);
-
-    this.mov[0] = this.mov[0] / l;
-    this.mov[1] = this.mov[1] / l;
-    this.mov[2] = this.mov[2] / l;
   }
 }

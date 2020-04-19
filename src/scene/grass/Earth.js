@@ -1,7 +1,7 @@
 import Lib from 'lib';
 import { GARDEN_SIZE } from './consts';
 
-const COLOR = [0.5, 0.5, 0, 1];
+const COLOR = [0.4, 0.3, 0, 1];
 
 export default class Earth {
   constructor(context) {

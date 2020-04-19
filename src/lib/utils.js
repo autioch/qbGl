@@ -3,6 +3,10 @@ import Texture from './Texture';
 export const degToRad = (degrees) => degrees * Math.PI / 180;
 export const radToDeg = (radians) => radians * 180 / Math.PI;
 export const distance3d = (vec3a, vec3b) => Math.hypot(vec3a[0] - vec3b[0], vec3a[1] - vec3b[1], vec3a[2] - vec3b[2]);
+export const vec3Add = (vec3a, vec3b) => [vec3a[0] + vec3b[0], vec3a[1] + vec3b[1], vec3a[2] + vec3b[2]];
+export const vec3Substract = (vec3a, vec3b) => [vec3a[0] - vec3b[0], vec3a[1] - vec3b[1], vec3a[2] - vec3b[2]];
+export const vec3Divide = (vec3a, vec3b) => [vec3a[0] / vec3b[0], vec3a[1] / vec3b[1], vec3a[2] / vec3b[2]];
+export const range = (min, max) => Math.round(((Math.random() * (max - min)) + min) * 100) / 100;
 
 export function mouse({ selector, onStart, onMove, onStop }) {
   function stopMouse() {

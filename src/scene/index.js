@@ -19,4 +19,4 @@ document.body.append(app.ui.el);
 
 app.didMount();
 
-app.initPromise.then(() => app.render());
+app.initPromise.then(() => app.ui.el.focus());
