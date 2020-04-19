@@ -1,13 +1,6 @@
-/* eslint-disable no-undefined */
-/* eslint-disable no-inline-comments */
-/* eslint-disable line-comment-position */
 const { join } = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CleanWebpackPlugin = require('clean-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const LiveReloadPlugin = require('webpack-livereload-plugin');
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
-const autoprefixer = require('autoprefixer');
 const packageJson = require('./package.json');
 
 const { argv } = require('yargs').options({
@@ -46,98 +39,103 @@ module.exports = {
     pathinfo: false
   },
   resolve: {
-    extensions: ['.js', '.css', '.scss', '.svg'],
+    extensions: ['.js', '.css', '.scss'],
     modules: [
       sourcePath,
       'node_modules'
     ]
   },
   module: {
-    rules: [{
-      test: /\.js$/,
-      exclude: /node_modules/,
-      loader: 'babel-loader',
-      query: {
-        presets: ['es2015'],
-        plugins: ['transform-object-rest-spread']
-      }
-    }, {
-      test: /\.(ttf|eot|woff)$/i,
-      exclude: /node_modules/,
-      use: {
-        loader: 'file-loader',
-        options: {
-          name: 'fonts/[name].[ext]'
+    strictExportPresence: true,
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: [/node_modules/],
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: ['@babel/preset-env'],
+            plugins: [
+              '@babel/plugin-syntax-dynamic-import',
+              '@babel/plugin-proposal-optional-chaining',
+              '@babel/plugin-proposal-nullish-coalescing-operator'
+            ]
+          }
         }
-      }
-    },
-    {
-      test: /\.(fsh|vsh|html)$/i,
-      use: 'raw-loader'
-    },
-    {
-      test: /\.(jpg|gif|txt)$/i,
-      exclude: /node_modules/,
-      use: {
-        loader: 'file-loader',
-        options: {
-          name: '[name].[ext]'
+      },
+      {
+        test: /\.(fsh|vsh|html)$/i,
+        use: 'raw-loader'
+      },
+      {
+        test: /\.(ttf|eot|woff)$/i,
+        use: {
+          loader: 'file-loader',
+          options: {
+            name: 'fonts/[name].[ext]'
+          }
         }
+      },
+      {
+        test: /\.(jpg|gif|png)$/i,
+        use: {
+          loader: 'file-loader',
+          options: {
+            name: 'images/[name].[ext]'
+          }
+        }
+      },
+      {
+        test: /\.(txt)$/i,
+        use: {
+          loader: 'file-loader',
+          options: {
+            name: 'assets/[name].[ext]'
+          }
+        }
+      },
+      {
+        test: /\.s?css$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          {
+            loader: 'css-loader'
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              plugins: () => [require('autoprefixer')({
+                cascade: false
+              })]
+            }
+          },
+          {
+            loader: 'sass-loader'
+          }
+        ]
       }
-    }, {
-      test: /\.s?css$/,
-      use: [
-        MiniCssExtractPlugin.loader,
-        {
-          loader: 'css-loader',
-          options: {
-            minimize: argv.production,
-            sourceMap: !argv.production
-          }
-        }, {
-          loader: 'postcss-loader',
-          options: {
-            sourceMap: !argv.production,
-            plugins: () => [autoprefixer({
-              browsers: ['last 2 versions'],
-              cascade: false
-            })]
-          }
-        }, {
-          loader: 'sass-loader',
-          options: {
-            sourceMap: !argv.production
-          }
-        }]
-    }]
+    ]
   },
   plugins: [
-    new CleanWebpackPlugin([join('docs', '*')], {
-      root: projectPath,
-      verbose: false,
-      dry: false
+    new CleanWebpackPlugin({
+      exclude: ['index.html', 'images/*', 'fonts/*']
     }),
     new MiniCssExtractPlugin({
-      filename: `files/main${nameSuffix}.css`
+      filename: `files/[name]${nameSuffix}.css`
     }),
-    new HtmlWebpackPlugin({
+    new (require('html-webpack-plugin'))({
       template: join(sourcePath, 'index.html'),
-      filename: 'index.html'
+      filename: `index.html`,
+      hash: !argv.production
     }),
-    argv.watch ? new LiveReloadPlugin({
+    argv.watch ? new (require('webpack-livereload-plugin'))({
       appendScriptTag: true,
       ignore: /.(config|ico|js|json|html|template|woff)$/
     }) : undefined,
-    new (require('webpack-bundle-analyzer').BundleAnalyzerPlugin)({
-      analyzerMode: 'static',
-      reportFilename: `bundle.report${argv.production ? '.min' : ''}.html`,
-      openAnalyzer: false,
-      logLevel: 'error'
-    }),
-    argv.production ? new UglifyJsPlugin({
+    argv.production ? new (require('uglifyjs-webpack-plugin'))({
       sourceMap: false
     }) : undefined
-  ].filter((plugin) => plugin !== undefined),
+  ].filter(Boolean),
   stats: {
     assetsSort: 'size',
     children: false,
