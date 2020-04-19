@@ -32,13 +32,7 @@ export default class Earth {
   }
 
   render(colorLocation, positionLocation) {
-    const isColorUniform = colorLocation instanceof WebGLUniformLocation;
-
-    if (isColorUniform) {
-      this.context.uniform4fv(colorLocation, COLOR);
-    } else {
-      this.color.fillBuffer(colorLocation);
-    }
+    this.color.fillBuffer(colorLocation);
 
     this.position.fillBuffer(positionLocation);
     this.context.drawArrays(this.context.TRIANGLE_STRIP, 0, this.position.count);

@@ -39,14 +39,7 @@ export default class Lawn {
       matrix.rotateY(bunch.rotateY);
 
       matrix.scale([bunch.scale, bunch.scale, bunch.scale]);
-
-      const isColorUniform = colorLocation instanceof WebGLUniformLocation;
-
-      if (isColorUniform) {
-        this.context.uniform4fv(colorLocation, this.rawColor);
-      } else {
-        bunch.colorBuffer.fillBuffer(colorLocation);
-      }
+      bunch.colorBuffer.fillBuffer(colorLocation);
 
       this.bunch.render(matrix, matrixLocation, positionLocation);
       matrix.pop();

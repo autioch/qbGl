@@ -20,7 +20,7 @@ const { argv } = require('yargs').options({
 
 const projectPath = __dirname;
 const sourcePath = join(projectPath, 'src');
-const buildPath = join(projectPath, 'docs');
+const buildPath = join(projectPath, argv.production ? 'docs' : 'build');
 const nameSuffix = argv.production ? `${new Date().getTime()}.min` : '';
 
 if (argv.watch) {

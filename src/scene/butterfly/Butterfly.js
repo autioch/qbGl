@@ -1,6 +1,12 @@
-import { distance3d } from 'lib';
-import Wing from './Wing2';
+import Lib, { distance3d } from 'lib';
 import { range } from '../utils';
+import { WING_COLORS, WING_VERTICES } from './consts';
+
+function generateColors(rMod, gMod, bMod) {
+  return WING_COLORS
+    .map(([r, g, b]) => [r * rMod, g * gMod, b * bMod, 1])
+    .flat();
+}
 
 export default class Butterfly {
   constructor(context, colorMod = [1, 1, 1]) {
@@ -17,7 +23,12 @@ export default class Butterfly {
     this.d = 1.0;
 
     this.setNewDirection();
-    this.wing = new Wing(context, colorMod);
+
+    this.wing = new Lib.ColorShape(context, {
+      vertices: WING_VERTICES,
+      colors: generateColors(...colorMod),
+      mode: context.TRIANGLE_FAN
+    });
   }
 
   render(matrix, matrixLocation, colorLocation, positionLocation) {

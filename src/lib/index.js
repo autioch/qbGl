@@ -11,6 +11,7 @@ import Texture2 from './Texture2';
 import UI from './UI';
 import Matrix4 from './Matrix4';
 import Matrix3 from './Matrix3';
+import ColorShape from './ColorShape';
 import { degToRad, mouse, keyboard, loadTextures, configBuilder, loadImage, distance3d } from './utils';
 import parameters from './parameters';
 
@@ -28,6 +29,7 @@ export {
   UI,
   Matrix4,
   Matrix3,
+  ColorShape,
   degToRad,
   mouse,
   keyboard,
@@ -52,6 +54,7 @@ export default {
   UI,
   Matrix4,
   Matrix3,
+  ColorShape,
   degToRad,
   mouse,
   keyboard,

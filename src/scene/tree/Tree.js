@@ -91,25 +91,12 @@ export default class Tree {
   }
 
   render(matrix, matrixLocation, colorLocation, positionLocation) {
-    const isColorUniform = colorLocation instanceof WebGLUniformLocation;
-
-    if (isColorUniform) {
-      this.context.uniform4fv(colorLocation, BRANCH_COLOR);
-    } else {
-      this.color.fillBuffer(colorLocation);
-    }
-
+    this.color.fillBuffer(colorLocation);
     this.renderBranch(this.mainBranch, matrix, colorLocation, matrixLocation, positionLocation);
   }
 
   renderBranch(branch, matrix, colorLocation, matrixLocation, positionLocation) {
-    const isColorUniform = colorLocation instanceof WebGLUniformLocation;
-
-    if (isColorUniform) {
-      this.context.uniform4fv(colorLocation, BRANCH_COLOR);
-    } else {
-      this.color.fillBuffer(colorLocation);
-    }
+    this.color.fillBuffer(colorLocation);
 
     matrix
       .push()
@@ -117,6 +104,7 @@ export default class Tree {
       .rotateX(branch.rotateX)
       .scale([branch.scale, branch.lengthScale, branch.scale])
       .fillBuffer(matrixLocation);
+
     this.branch.render(positionLocation);
 
     if (branch.leafRotations.length) {
