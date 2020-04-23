@@ -3,12 +3,12 @@ import Branch from './Branch';
 import Leaf from './Leaf';
 import { range } from '../utils';
 
-const BRANCH_MAX_COUNT = 2000; // 4096
+const BRANCH_MAX_COUNT = 1000; // 4096
 const BRANCH_SUB = 4;
 const BRANCH_LEAF = 5;
-const BRANCH_ROTATE = 70;
-const BRANCH_RADIUS = 17;
-const BRANCH_RADIUS_DIMINISH = 3;
+const BRANCH_ROTATE = 60;
+const BRANCH_RADIUS = 5;
+const BRANCH_RADIUS_DIMINISH = 1;
 const BRANCH_LENGTH = 150;
 const BRANCH_LENGTH_DIMINISH = 4;
 const BRANCH_COLOR = [0.6, 0.2, 0, 1];
@@ -19,7 +19,7 @@ function growBranch(parentBranch, id) {
   const length = parentBranch.length - BRANCH_LENGTH_DIMINISH; // eslint-disable-line no-shadow
   const lengthScale = length / BRANCH_LENGTH;
 
-  if (radius < 4) {
+  if (radius < 1) {
     parentBranch.subBranches = [];
 
     return [];
@@ -40,7 +40,7 @@ function growBranch(parentBranch, id) {
     radius,
     length,
     rotateY: Lib.degToRad(range(0, 360)),
-    rotateX: Lib.degToRad(range(0, BRANCH_ROTATE)),
+    rotateX: Lib.degToRad(range(index === 0 ? 0 : 20, index === 0 ? 10 : BRANCH_ROTATE)),
     scale,
     lengthScale,
     leafTransform,
@@ -102,15 +102,17 @@ export default class Tree {
       .push()
       .rotateY(branch.rotateY)
       .rotateX(branch.rotateX)
+      .push()
       .scale([branch.scale, branch.lengthScale, branch.scale])
-      .fillBuffer(matrixLocation);
+      .fillBuffer(matrixLocation)
+      .pop();
 
     this.branch.render(positionLocation);
 
     if (branch.leafRotations.length) {
       matrix.push().translate([branch.radius, 0, 0]);
       branch.leafRotations.forEach((leafRotation) => {
-        matrix.translate([0, 0, branch.leafTransform]).rotateY(leafRotation).fillBuffer(matrixLocation);
+        matrix.translate([0, branch.leafTransform, 0]).rotateY(leafRotation).fillBuffer(matrixLocation);
         this.leaf.render(colorLocation, positionLocation);
       });
       matrix.pop();

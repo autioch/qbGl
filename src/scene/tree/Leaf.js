@@ -1,7 +1,8 @@
 import Lib from 'lib';
 
-// const COLOR = [0.2, 0.8, 0.2, 1];
-const COLOR = [1, 0.5, 1, 1];
+const COLOR = [0.0, 0.4, 0.0, 1];
+
+// const COLOR = [1, 0.5, 1, 1];
 
 export default class Leaf {
   constructor(context) {
@@ -35,7 +36,7 @@ export default class Leaf {
         -0.03, 0.0, 0.02,
         -0.025, 0.0, 0.02,
         0.0, 0.0, 0.0
-      ].map((val, index) => (val * 500) + (index % 3 === 1 ? 100 : 0))
+      ].map((val) => val * 200)
     });
 
     this.color = new Lib.ArrayDataBuffer(context, {
