@@ -20,6 +20,6 @@ export default class ColorShape {
   render(colorLocation, positionLocation) {
     this.color.fillBuffer(colorLocation);
     this.position.fillBuffer(positionLocation);
-    this.context.drawArrays(this.context.TRIANGLE_FAN, 0, this.position.count);
+    this.context.drawArrays(this.mode, 0, this.position.count);
   }
 }

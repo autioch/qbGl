@@ -10,8 +10,8 @@ export default class extends Lib.Scene {
     this.lawn = new Lawn(context);
     this.earth = new Earth(context);
     this.tree = new Tree(context);
-    this.butterfly1 = new Butterfly(context, [1.0, 0.5, 0.25]);
-    this.butterfly2 = new Butterfly(context, [0.0, 0.5, 0.5]);
+    this.butterfly1 = new Butterfly(context, [1.0, 0.0, 1.0]);
+    this.butterfly2 = new Butterfly(context, [1.0, 1.0, 0.0]);
 
     this.rotationDegrees = 0;
     this.rotation = [0, 0, 0];

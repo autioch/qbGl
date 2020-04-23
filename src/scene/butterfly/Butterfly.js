@@ -2,11 +2,10 @@ import Lib from 'lib';
 import { WING_COLORS, WING_VERTICES } from './consts';
 import { GARDEN_SIZE } from '../grass/consts';
 import Travel from './Travel';
+import Flap from './Flap';
 
 function generateColors(rMod, gMod, bMod) {
-  return WING_COLORS
-    .map(([r, g, b]) => [r * rMod, g * gMod, b * bMod, 1])
-    .flat();
+  return WING_COLORS.map(([r, g, b]) => [r * rMod, g * gMod, b * bMod, 1]).flat();
 }
 
 export default class Butterfly {
@@ -17,10 +16,7 @@ export default class Butterfly {
       [GARDEN_SIZE, GARDEN_SIZE, GARDEN_SIZE]
     );
 
-    this.rotateY = 0;
-    this.wingsRotateY = 0;
-    this.wingStep = -0.1;
-
+    this.flap = new Flap();
     this.wing = new Lib.ColorShape(context, {
       vertices: WING_VERTICES,
       colors: generateColors(...colorMod),
@@ -29,34 +25,19 @@ export default class Butterfly {
   }
 
   render(matrix, matrixLocation, colorLocation, positionLocation) {
-    matrix.push().translate(this.travel.current).rotateX(this.rotateY - 90);
+    matrix.push().translate(this.travel.current).rotateY(this.travel.rotateY);
 
-    matrix
-      .push()
-      .rotateY(this.wingsRotateY)
-      .fillBuffer(matrixLocation)
-      .pop();
+    matrix.push().rotateZ(this.flap.radians).fillBuffer(matrixLocation).pop();
     this.wing.render(colorLocation, positionLocation);
 
-    matrix
-      .push()
-      .rotateY(180 - this.wingsRotateY)
-      .fillBuffer(matrixLocation)
-      .pop();
+    matrix.push().rotateZ(Math.PI - this.flap.radians).fillBuffer(matrixLocation).pop();
     this.wing.render(colorLocation, positionLocation);
 
     matrix.pop();
   }
 
   update() {
-    if (this.travel.update()) {
-      this.rotateY = Math.atan2(this.travel.step[1], this.travel.step[0]) * 180 / Math.PI;
-    }
-    this.wingsRotateY += this.wingStep;
-    if (this.wingsRotateY > 60) {
-      this.wingStep *= -1;
-    } else if (this.wingsRotateY < -30) {
-      this.wingStep *= -1;
-    }
+    this.travel.update();
+    this.flap.update();
   }
 }
