@@ -11,6 +11,7 @@ export default class ArrayDataBuffer {
     this.context = context;
     this.buffer = context.createBuffer();
 
+    this.id = options.id;
     this.size = options.size;
     this.normalize = options.normalize || false;
     this.type = options.type || this.context.FLOAT;
