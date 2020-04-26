@@ -8,6 +8,8 @@ const COLOR_MIN = 0.3;
 const COLOR_MAX = 0.7;
 const COLOR_RANGE = 10;
 
+const { makeArr } = Lib;
+
 // const randomIndex = (arr) => Math.floor(Math.random() * arr.length);
 const randomColor = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
@@ -27,13 +29,13 @@ export default class Lawn {
     const colorStep = (COLOR_MAX - COLOR_MIN) / COLOR_RANGE;
     const bladeIndiceCount = 7;
 
-    this.colors = new Array(COLOR_RANGE).fill(null).map((_, index) => new Lib.ArrayDataBuffer(context, {
+    this.colors = makeArr(COLOR_RANGE, (_, index) => new Lib.ArrayDataBuffer(context, { // eslint-disable-line no-unused-vars
       id: index,
       size: 4,
-      data: new Array(bladeIndiceCount).fill([0, COLOR_MIN + (colorStep * index), 0, 1]).flat()
+      data: makeArr(bladeIndiceCount, [0, COLOR_MIN + (colorStep * index), 0, 1]).flat()
     }));
 
-    this.bunches = new Array(BUNCH_COUNT).fill(null).map(() => ({
+    this.bunches = makeArr(BUNCH_COUNT, () => ({
       translate: [range(-GARDEN_SIZE, GARDEN_SIZE), 0, range(-GARDEN_SIZE, GARDEN_SIZE)],
       rotateY: range(0, 360),
       scale: range(0.4, 1),

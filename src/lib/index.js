@@ -13,7 +13,7 @@ import Matrix4 from './Matrix4';
 import Matrix3 from './Matrix3';
 import Vec3 from './Vec3';
 import ColorShape from './ColorShape';
-import { degToRad, mouse, keyboard, loadTextures, configBuilder, loadImage, distance3d, vec3Add, vec3Substract, vec3Divide } from './utils';
+import { makeArr, degToRad, mouse, keyboard, loadTextures, configBuilder, loadImage, distance3d, vec3Add, vec3Substract, vec3Divide } from './utils';
 import parameters from './parameters';
 
 export {
@@ -32,6 +32,7 @@ export {
   Matrix3,
   Vec3,
   ColorShape,
+  makeArr,
   degToRad,
   mouse,
   keyboard,
@@ -61,6 +62,7 @@ export default {
   Matrix3,
   Vec3,
   ColorShape,
+  makeArr,
   degToRad,
   mouse,
   keyboard,

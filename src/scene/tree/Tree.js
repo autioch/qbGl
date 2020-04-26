@@ -1,6 +1,5 @@
 import Lib from 'lib';
 import Branch from './Branch';
-import Leaf from './Leaf';
 import { range } from '../utils';
 
 const BRANCH_MAX_COUNT = 1000; // 4096
@@ -12,6 +11,10 @@ const BRANCH_RADIUS_DIMINISH = 1;
 const BRANCH_LENGTH = 150;
 const BRANCH_LENGTH_DIMINISH = 4;
 const BRANCH_COLOR = [0.6, 0.2, 0, 1];
+
+const LEAF_COLOR = [0.0, 0.4, 0.0, 1];
+
+// const FLOWER_COLOR = [1, 0.5, 1, 1];
 
 function growBranch(parentBranch, id) {
   const radius = parentBranch.radius - BRANCH_RADIUS_DIMINISH;
@@ -36,7 +39,7 @@ function growBranch(parentBranch, id) {
   if (leafCount === 1) {
     leafTransform = length / 2;
   }
-  const subBranches = new Array(BRANCH_SUB).fill(null).map((_, index) => ({ // eslint-disable-line no-unused-vars
+  const subBranches = Lib.makeArr(BRANCH_SUB, (_, index) => ({ // eslint-disable-line no-unused-vars
     radius,
     length,
     rotateY: Lib.degToRad(range(0, 360)),
@@ -44,7 +47,7 @@ function growBranch(parentBranch, id) {
     scale,
     lengthScale,
     leafTransform,
-    leafRotations: new Array(leafCount).fill(null).map(() => Lib.degToRad(range(0, 360))),
+    leafRotations: Lib.makeArr(leafCount, () => Lib.degToRad(range(0, 360))),
     subBranches: [],
     id: id + index
   }));
@@ -70,7 +73,38 @@ export default class Tree {
   constructor(context) {
     this.context = context;
     this.branch = new Branch(context);
-    this.leaf = new Leaf(context);
+
+    this.leaf = new Lib.ColorShape(context, {
+      vertices: [
+        0, 0, 0,
+        5, 0, 4,
+        6, 0, 4,
+        8, 0, 4,
+        10, 0, 5,
+        12, 0, 6,
+        14, 0, 12,
+        16, 2, 18,
+        16, 4, 20,
+        14, 6, 24,
+        10, 8, 30,
+        6, 10, 36,
+        0, 12, 40,
+
+        -6, 10, 36,
+        -10, 8, 30,
+        -14, 6, 24,
+        -16, 4, 20,
+        -16, 2, 18,
+        -14, 0, 12,
+        -12, 0, 6,
+        -8, 0, 4,
+        -6, 0, 4,
+        -5, 0, 4,
+        0, 0, 0
+      ],
+      colors: Lib.makeArr(24, LEAF_COLOR).flat(),
+      mode: context.TRIANGLE_FAN
+    });
 
     this.mainBranch = growTree({
       radius: BRANCH_RADIUS,
@@ -86,7 +120,7 @@ export default class Tree {
 
     this.color = new Lib.ArrayDataBuffer(this.context, {
       size: 4,
-      data: new Array(this.branch.position.count).fill(BRANCH_COLOR).flat()
+      data: Lib.makeArr(this.branch.position.count, BRANCH_COLOR).flat()
     });
   }
 

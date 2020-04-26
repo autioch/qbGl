@@ -19,15 +19,7 @@ export default class Earth {
 
     this.color = new Lib.ArrayDataBuffer(context, {
       size: 4,
-      data: [
-        ...COLOR,
-        ...COLOR,
-        ...COLOR,
-        ...COLOR,
-        ...COLOR,
-        ...COLOR,
-        ...COLOR
-      ]
+      data: Lib.makeArr(this.position.count, COLOR).flat()
     });
   }
 
