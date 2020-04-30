@@ -1,73 +1,39 @@
 import Bunch from './Bunch';
 import Lib from 'lib';
-import { GARDEN_SIZE } from './consts';
-import { range } from '../utils';
-
-const BUNCH_COUNT = 600;
-const COLOR_MIN = 0.3;
-const COLOR_MAX = 0.7;
-const COLOR_RANGE = 10;
-const EARTH_COLOR = [0.3, 0.2, 0, 1];
-
-const { makeArr } = Lib;
-
-// const randomIndex = (arr) => Math.floor(Math.random() * arr.length);
-const randomColor = (arr) => arr[Math.floor(Math.random() * arr.length)];
-
-// const setDict = (obj, key, value) => {
-//   if (obj[key]) {
-//     obj[key].push(value);
-//   } else {
-//     obj[key] = [value];
-//   }
-//
-//   return obj;
-// };
+import { BLADE_VERTICES, BUNCH_COLOR_MIN, BUNCH_COLOR_RANGE, BUNCH_COLOR_STEP, BUNCH_COUNT, EARTH_COLOR, EARTH_NORMAL, EARTH_VERTICES } from './consts';
+import { GARDEN_SIZE } from '../consts';
+import { range, arrRandom } from '../utils';
 
 export default class Lawn {
   constructor(context) {
-    this.bunch = new Bunch(context, [0, range(0.3, 0.7), 0, 1]);
-    const colorStep = (COLOR_MAX - COLOR_MIN) / COLOR_RANGE;
-    const bladeIndiceCount = 7;
+    this.bunch = new Bunch(context);
 
-    this.colors = makeArr(COLOR_RANGE, (_, index) => new Lib.ArrayDataBuffer(context, { // eslint-disable-line no-unused-vars
-      id: index,
+    this.colors = Lib.makeArr(BUNCH_COLOR_RANGE, (_, index) => new Lib.ArrayDataBuffer(context, { // eslint-disable-line no-unused-vars
       size: 4,
-      data: makeArr(bladeIndiceCount, [0, COLOR_MIN + (colorStep * index), 0, 1]).flat()
+      data: Lib.makeArr(BLADE_VERTICES.length / 3, [0, BUNCH_COLOR_MIN + (BUNCH_COLOR_STEP * index), 0, 1]).flat()
     }));
 
-    this.bunches = makeArr(BUNCH_COUNT, () => ({
+    this.bunches = Lib.makeArr(BUNCH_COUNT, () => ({
       translate: [range(-GARDEN_SIZE, GARDEN_SIZE), 0, range(-GARDEN_SIZE, GARDEN_SIZE)],
       rotateY: range(0, 360),
-      scale: range(0.4, 1),
-      colorBuffer: randomColor(this.colors)
+      scale: Lib.makeArr(3, range(0.4, 1)),
+      colorBuffer: arrRandom(this.colors)
     }));
 
     this.earth = new Lib.ColorShape(context, {
-      vertices: [
-        -GARDEN_SIZE, 0, -GARDEN_SIZE,
-        GARDEN_SIZE, 0, -GARDEN_SIZE,
-        -GARDEN_SIZE, 0, GARDEN_SIZE,
-        GARDEN_SIZE, 0, GARDEN_SIZE
-      ],
-      colors: Lib.makeArr(4, EARTH_COLOR).flat(),
-      normals: Lib.makeArr(4, [0, 1, 0]).flat(),
+      vertices: EARTH_VERTICES,
+      colors: Lib.makeArr(EARTH_VERTICES.length / 3, EARTH_COLOR).flat(),
+      normals: Lib.makeArr(EARTH_VERTICES.length / 3, EARTH_NORMAL).flat(),
       mode: context.TRIANGLE_STRIP
     });
-
-    // this.buncheGroupsByColor = this.bunches.reduce((obj, bunch) => setDict(obj, bunch.colorBufferIndex, bunch), {});
   }
 
   render(matrix, matrixLocation, colorLocation, positionLocation, normalLocation) {
+    matrix.fillBuffer(matrixLocation);
     this.earth.render(colorLocation, positionLocation, normalLocation);
     this.bunches.forEach((bunch) => {
-      matrix.push();
-      matrix.translate(bunch.translate);
-      matrix.rotateY(bunch.rotateY);
-
-      matrix.scale([bunch.scale, bunch.scale, bunch.scale]);
+      matrix.push().translate(bunch.translate).rotateY(bunch.rotateY).scale(bunch.scale);
       bunch.colorBuffer.fillBuffer(colorLocation);
-
       this.bunch.render(matrix, matrixLocation, positionLocation, normalLocation);
       matrix.pop();
     });

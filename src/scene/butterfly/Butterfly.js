@@ -1,6 +1,6 @@
 import Lib from 'lib';
 import { WING_COLORS, WING_VERTICES } from './consts';
-import { GARDEN_SIZE } from '../grass/consts';
+import { GARDEN_SIZE } from '../consts';
 import Travel from './Travel';
 import Flap from './Flap';
 

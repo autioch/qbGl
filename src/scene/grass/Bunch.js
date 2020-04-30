@@ -1,26 +1,22 @@
-import Blade from './Blade';
+import Lib from 'lib';
+import { BLADE_VERTICES, BLADE_NORMAL, BLADE_ROTATIONS } from './consts';
 
 export default class Bunch {
-  constructor(context, color) {
-    this.blade = new Blade(context, color);
+  constructor(context) {
+    this.blade = new Lib.ColorShape(context, {
+      vertices: BLADE_VERTICES,
+      normals: Lib.makeArr(BLADE_VERTICES.length / 3, BLADE_NORMAL).flat(),
+      mode: context.TRIANGLE_STRIP
+    });
 
-    this.rotations = [
-      null,
-      [45, [0, 1, 0] ],
-      [75, [0, 1, 0] ],
-      [60, [0, 1, 0] ],
-      [30, [0, 1, 0] ],
-      [90, [0, 1, 0] ]
-    ];
+    this.rotations = BLADE_ROTATIONS;
   }
 
   render(matrix, matrixLocation, positionLocation, normalLocation) {
     matrix.push();
     this.rotations.forEach((rotation) => {
-      rotation && matrix.rotate(...rotation);
-      matrix.fillBuffer(matrixLocation);
-
-      this.blade.render(positionLocation, normalLocation);
+      matrix.rotateY(rotation).fillBuffer(matrixLocation);
+      this.blade.render(undefined, positionLocation, normalLocation);
     });
     matrix.pop();
   }

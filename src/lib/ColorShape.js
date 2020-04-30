@@ -24,7 +24,7 @@ export default class ColorShape {
 
   render(colorLocation, positionLocation, normalLocation) {
     this.normals && normalLocation && this.normals.fillBuffer(normalLocation);
-    this.color && this.color.fillBuffer(colorLocation);
+    this.color && colorLocation && this.color.fillBuffer(colorLocation);
     this.position.fillBuffer(positionLocation);
     this.context.drawArrays(this.mode, 0, this.position.count);
   }
