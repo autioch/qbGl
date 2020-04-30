@@ -1,5 +1,5 @@
 import Lib from 'lib';
-import '../leaves.jpg';
+import leavesUrl from '../leaves.jpg';
 import { computeKernelWeight, setupTextFrameBuffer } from './utils';
 import { kernels, effectsToApply } from './consts';
 
@@ -11,7 +11,7 @@ export default class extends Lib.Scene {
     });
 
     this.texture = new Lib.Texture2(context, {
-      url: 'leaves.jpg',
+      url: leavesUrl,
       MAG_FILTER: context.NEAREST,
       MIN_FILTER: context.NEAREST,
       WRAP_S: context.CLAMP_TO_EDGE,
