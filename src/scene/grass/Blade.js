@@ -15,9 +15,15 @@ export default class Blade {
         0, 50, 45
       ]
     });
+
+    this.normal = new Lib.ArrayDataBuffer(context, {
+      size: 3,
+      data: Lib.makeArr(this.position.count, [0, 1, 0]).flat()
+    });
   }
 
-  render(positionLocation) {
+  render(positionLocation, normalLocation) {
+    // this.normal.fillBuffer(normalLocation);
     this.position.fillBuffer(positionLocation);
     this.context.drawArrays(this.context.TRIANGLE_STRIP, 0, this.position.count);
   }

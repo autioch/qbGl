@@ -1,6 +1,6 @@
 import Lib from 'lib';
 
-import Earth from './grass/Earth';
+// import Earth from './grass/Earth';
 import Lawn from './grass/Lawn';
 import Tree from './tree/Tree';
 import Butterfly from './butterfly/Butterfly';
@@ -8,7 +8,8 @@ import Butterfly from './butterfly/Butterfly';
 export default class extends Lib.Scene {
   initialize({ context }) {
     this.lawn = new Lawn(context);
-    this.earth = new Earth(context);
+
+    // this.earth = new Earth(context);
     this.tree = new Tree(context);
     this.butterfly1 = new Butterfly(context, [1.0, 0.0, 1.0]);
     this.butterfly2 = new Butterfly(context, [1.0, 1.0, 0.0]);
@@ -40,7 +41,7 @@ export default class extends Lib.Scene {
 
     // this.axes.render(attributes.a_color, attributes.a_position);
 
-    this.earth.render(attributes.a_color, attributes.a_position);
+    // this.earth.render(attributes.a_color, attributes.a_position);
     this.lawn.render(this.uMatrix, uniforms.u_matrix, attributes.a_color, attributes.a_position);
 
     this.tree.render(this.uMatrix, uniforms.u_matrix, attributes.a_color, attributes.a_position);

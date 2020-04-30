@@ -1,6 +1,10 @@
 import Lib from 'lib';
-import Branch from './Branch';
 import { range } from '../utils';
+import cylinder from './cylinder';
+import leaf from './leaf';
+
+const CYLINDER_BRANCH_RADIUS = 17;
+const CYLINDER_BRANCH_LENGTH = 150;
 
 const BRANCH_MAX_COUNT = 1000; // 4096
 const BRANCH_SUB = 4;
@@ -72,38 +76,24 @@ function growTree(mainBranch) {
 export default class Tree {
   constructor(context) {
     this.context = context;
-    this.branch = new Branch(context);
+
+    const cylinderVertices = cylinder(CYLINDER_BRANCH_LENGTH, CYLINDER_BRANCH_RADIUS, 20);
+
+    this.branch = new Lib.ColorShape(context, {
+      vertices: cylinderVertices,
+      normals: Lib.makeArr(cylinderVertices.length / 3, [0, 1, 0]).flat(),
+      mode: context.TRIANGLE_STRIP
+    });
 
     this.leaf = new Lib.ColorShape(context, {
-      vertices: [
-        0, 0, 0,
-        5, 0, 4,
-        6, 0, 4,
-        8, 0, 4,
-        10, 0, 5,
-        12, 0, 6,
-        14, 0, 12,
-        16, 2, 18,
-        16, 4, 20,
-        14, 6, 24,
-        10, 8, 30,
-        6, 10, 36,
-        0, 12, 40,
-
-        -6, 10, 36,
-        -10, 8, 30,
-        -14, 6, 24,
-        -16, 4, 20,
-        -16, 2, 18,
-        -14, 0, 12,
-        -12, 0, 6,
-        -8, 0, 4,
-        -6, 0, 4,
-        -5, 0, 4,
-        0, 0, 0
-      ],
+      vertices: leaf,
       colors: Lib.makeArr(24, LEAF_COLOR).flat(),
       mode: context.TRIANGLE_FAN
+    });
+
+    this.leafNormal = new Lib.ArrayDataBuffer(context, {
+      size: 3,
+      data: Lib.makeArr(this.leaf.position.count, [0, 1, 0]).flat()
     });
 
     this.mainBranch = growTree({

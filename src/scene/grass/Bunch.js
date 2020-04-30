@@ -14,13 +14,13 @@ export default class Bunch {
     ];
   }
 
-  render(matrix, matrixLocation, positionLocation) {
+  render(matrix, matrixLocation, positionLocation, normalLocation) {
     matrix.push();
     this.rotations.forEach((rotation) => {
       rotation && matrix.rotate(...rotation);
       matrix.fillBuffer(matrixLocation);
 
-      this.blade.render(positionLocation);
+      this.blade.render(positionLocation, normalLocation);
     });
     matrix.pop();
   }

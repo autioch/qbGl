@@ -7,6 +7,7 @@ const BUNCH_COUNT = 600;
 const COLOR_MIN = 0.3;
 const COLOR_MAX = 0.7;
 const COLOR_RANGE = 10;
+const EARTH_COLOR = [0.3, 0.2, 0, 1];
 
 const { makeArr } = Lib;
 
@@ -42,10 +43,23 @@ export default class Lawn {
       colorBuffer: randomColor(this.colors)
     }));
 
+    this.earth = new Lib.ColorShape(context, {
+      vertices: [
+        -GARDEN_SIZE, 0, -GARDEN_SIZE,
+        GARDEN_SIZE, 0, -GARDEN_SIZE,
+        -GARDEN_SIZE, 0, GARDEN_SIZE,
+        GARDEN_SIZE, 0, GARDEN_SIZE
+      ],
+      colors: Lib.makeArr(4, EARTH_COLOR).flat(),
+      normals: Lib.makeArr(4, [0, 1, 0]).flat(),
+      mode: context.TRIANGLE_STRIP
+    });
+
     // this.buncheGroupsByColor = this.bunches.reduce((obj, bunch) => setDict(obj, bunch.colorBufferIndex, bunch), {});
   }
 
   render(matrix, matrixLocation, colorLocation, positionLocation, normalLocation) {
+    this.earth.render(colorLocation, positionLocation, normalLocation);
     this.bunches.forEach((bunch) => {
       matrix.push();
       matrix.translate(bunch.translate);

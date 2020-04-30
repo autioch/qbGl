@@ -20,6 +20,7 @@ export default class Butterfly {
     this.wing = new Lib.ColorShape(context, {
       vertices: WING_VERTICES,
       colors: generateColors(...colorMod),
+      normals: Lib.makeArr(WING_VERTICES.length / 3, [0, 1, 0]).flat(),
       mode: context.TRIANGLE_FAN
     });
   }
