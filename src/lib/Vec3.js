@@ -109,4 +109,10 @@ export default class Vec3 extends Array {
   distance(vec3) {
     return Math.hypot(this[0] - vec3[0], this[1] - vec3[1], this[2] - vec3[2]);
   }
+
+  normalize() {
+    const len = Math.hypot(...this);
+
+    return this.divideNum(len);
+  }
 }

@@ -33,6 +33,10 @@ export default class Matrix {
     return this;
   }
 
+  clone() {
+    return new this.constructor(this.context, mat4.clone(this.current));
+  }
+
   /* Operations */
 
   identity() {
@@ -115,6 +119,12 @@ export default class Matrix {
 
   invert() {
     mat4.invert(this.current, this.current);
+
+    return this;
+  }
+
+  transpose() {
+    mat4.transpose(this.current, this.current);
 
     return this;
   }
