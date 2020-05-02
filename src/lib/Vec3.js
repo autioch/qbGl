@@ -115,4 +115,8 @@ export default class Vec3 extends Array {
 
     return this.divideNum(len);
   }
+
+  fillUniform(context, uniformLocation) {
+    context.uniform3fv(uniformLocation, this);
+  }
 }
