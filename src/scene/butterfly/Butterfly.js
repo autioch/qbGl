@@ -25,14 +25,14 @@ export default class Butterfly {
     });
   }
 
-  render(matrix, matrixLocation, colorLocation, positionLocation) {
+  render(matrix, matrixLocation, colorLocation, positionLocation, normalLocation) {
     matrix.push().translate(this.travel.current).rotateY(this.travel.rotateY);
 
     matrix.push().rotateZ(this.flap.radians).fillBuffer(matrixLocation).pop();
-    this.wing.render(colorLocation, positionLocation);
+    this.wing.render(colorLocation, positionLocation, normalLocation);
 
     matrix.push().rotateZ(Math.PI - this.flap.radians).fillBuffer(matrixLocation).pop();
-    this.wing.render(colorLocation, positionLocation);
+    this.wing.render(colorLocation, positionLocation, normalLocation);
 
     matrix.pop();
   }

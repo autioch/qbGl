@@ -31,6 +31,7 @@ export default class Lawn {
   render(matrix, matrixLocation, colorLocation, positionLocation, normalLocation) {
     matrix.fillBuffer(matrixLocation);
     this.earth.render(colorLocation, positionLocation, normalLocation);
+
     this.bunches.forEach((bunch) => {
       matrix.push().translate(bunch.translate).rotateY(bunch.rotateY).scale(bunch.scale);
       bunch.colorBuffer.fillBuffer(colorLocation);

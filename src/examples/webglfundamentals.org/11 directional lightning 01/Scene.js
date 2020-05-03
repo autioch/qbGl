@@ -22,7 +22,6 @@ export default class extends Lib.Scene {
 
     this.colorVec = new Lib.Vec4(0.2, 1, 0.2, 1);
     this.lightVec = new Lib.Vec3(0.5, 0.7, 1).normalize();
-    this.worldMatrix = new Lib.Matrix4(context);
   }
 
   render({ context, uniforms, attributes }) {

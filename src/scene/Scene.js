@@ -15,24 +15,34 @@ export default class extends Lib.Scene {
     this.scale = [1, 1, 1];
   }
 
-  ready({ context, canvas }) {
-    this.uMatrix = new Lib.Matrix4(context).perspective(Lib.degToRad(70), canvas.clientWidth / canvas.clientHeight, 1, 2000);
+  ready({ context, canvas, uniforms }) {
+    this.pMatrix = new Lib.Matrix4(context).perspective(Lib.degToRad(70), canvas.clientWidth / canvas.clientHeight, 1, 2000).fillBuffer(uniforms.uPMatrix);
+    this.uMatrix = new Lib.Matrix4(context);
+    this.lightDirectionVec = new Lib.Vec3(1, 1, 1);
+    this.directionColorVec = new Lib.Vec3(0.8, 0.8, 0.8);
+    this.ambientColorVec = new Lib.Vec3(0.2, 0.2, 0.2);
   }
 
-  render({ attributes, uniforms }) {
+  render({ context, attributes, uniforms }) {
+    this.lightDirectionVec.fillUniform(context, uniforms.uLightingDirection);
+    this.directionColorVec.fillUniform(context, uniforms.uDirectionalColor);
+    this.ambientColorVec.fillUniform(context, uniforms.uAmbientColor);
+
     this.uMatrix
       .push()
       .translate(this.translation)
       .scale(this.scale)
       .rotateY(Lib.degToRad(this.rotateY));
 
-    this.lawn.render(this.uMatrix, uniforms.u_matrix, attributes.a_color, attributes.a_position);
-    this.tree.render(this.uMatrix, uniforms.u_matrix, attributes.a_color, attributes.a_position);
+    context.uniformMatrix3fv(uniforms.uNMatrix, false, this.uMatrix.toInvTraMat3());
+
+    this.lawn.render(this.uMatrix, uniforms.uMVMatrix, attributes.a_color, attributes.a_position, attributes.a_normal);
+    this.tree.render(this.uMatrix, uniforms.uMVMatrix, attributes.a_color, attributes.a_position, attributes.a_normal);
 
     this.uMatrix.translate([200, 200, 200]);
-    this.butterfly1.render(this.uMatrix, uniforms.u_matrix, attributes.a_color, attributes.a_position);
+    this.butterfly1.render(this.uMatrix, uniforms.uMVMatrix, attributes.a_color, attributes.a_position, attributes.a_normal);
     this.uMatrix.rotateY(Lib.degToRad(90));
-    this.butterfly2.render(this.uMatrix, uniforms.u_matrix, attributes.a_color, attributes.a_position);
+    this.butterfly2.render(this.uMatrix, uniforms.uMVMatrix, attributes.a_color, attributes.a_position, attributes.a_normal);
 
     this.uMatrix.pop();
   }

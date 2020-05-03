@@ -2,9 +2,9 @@ import Lib from 'lib';
 import { GARDEN_SIZE } from '../consts';
 
 export const EARTH_COLOR = [0.3, 0.2, 0, 1];
-export const EARTH_NORMAL = [0, 1, 0];
+export const EARTH_NORMAL = [1, 0, 0];
 
-export const BLADE_NORMAL = [0, 1, 0];
+export const BLADE_NORMAL = [1, 0, 0];
 export const BLADE_ROTATIONS = [0, 45, 75, 60, 30, 90].map(Lib.degToRad);
 export const BLADE_VERTICES = [
   10, 0, 0,

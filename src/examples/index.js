@@ -22,8 +22,8 @@ function setupExamples(examples) {
 
 const allExamples = [
   ...require('./openGl'),
-  ...require('./webglfundamentals.org'),
-  ...require('./tests')
+  ...require('./tests'),
+  ...require('./webglfundamentals.org')
 ];
 
-setupExamples(allExamples.slice(0, 16)); // There can be only 16 webGL contexts at once
+setupExamples(allExamples.slice(-16)); // There can be only 16 webGL contexts at once
