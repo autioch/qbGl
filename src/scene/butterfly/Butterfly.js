@@ -2,7 +2,7 @@ import Lib from 'lib';
 import { WING_COLORS, WING_VERTICES } from './consts';
 import { GARDEN_SIZE } from '../consts';
 import Travel from './Travel';
-import Flap from './Flap';
+import Oscillate from '../Oscillate';
 
 function generateColors(rMod, gMod, bMod) {
   return WING_COLORS.map(([r, g, b]) => [r * rMod, g * gMod, b * bMod, 1]).flat();
@@ -16,7 +16,11 @@ export default class Butterfly {
       [GARDEN_SIZE, GARDEN_SIZE, GARDEN_SIZE]
     );
 
-    this.flap = new Flap();
+    this.flap = new Oscillate({
+      min: -Math.PI / 4,
+      max: Math.PI / 2,
+      step: Math.PI / 600
+    });
     this.wing = new Lib.ColorShape(context, {
       vertices: WING_VERTICES,
       colors: generateColors(...colorMod),
@@ -28,17 +32,19 @@ export default class Butterfly {
   render(matrix, matrixLocation, colorLocation, positionLocation, normalLocation) {
     matrix.push().translate(this.travel.current).rotateY(this.travel.rotateY);
 
-    matrix.push().rotateZ(this.flap.radians).fillBuffer(matrixLocation).pop();
+    matrix.push().rotateZ(this.flap.value).fillBuffer(matrixLocation).pop();
     this.wing.render(colorLocation, positionLocation, normalLocation);
 
-    matrix.push().rotateZ(Math.PI - this.flap.radians).fillBuffer(matrixLocation).pop();
+    matrix.push().rotateZ(Math.PI - this.flap.value).fillBuffer(matrixLocation).pop();
     this.wing.render(colorLocation, positionLocation, normalLocation);
 
     matrix.pop();
   }
 
-  update() {
+  update({ pulse }) {
     this.travel.update();
-    this.flap.update();
+    this.flap.update({
+      pulse
+    });
   }
 }

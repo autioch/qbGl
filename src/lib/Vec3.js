@@ -39,11 +39,11 @@ export default class Vec3 extends Array {
   }
 
   set y(y) {
-    this[0] = y;
+    this[1] = y;
   }
 
   set z(z) {
-    this[0] = z;
+    this[2] = z;
   }
 
   setComponents(x, y, z) {

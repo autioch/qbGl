@@ -4,6 +4,17 @@ import { BLADE_VERTICES, BUNCH_COLOR_MIN, BUNCH_COLOR_RANGE, BUNCH_COLOR_STEP, B
 import { GARDEN_SIZE } from '../consts';
 import { range, arrRandom } from '../utils';
 
+// const randomOnCircle = (radius) => {
+//   const angle = Math.random() * Math.PI * 2;
+//   const r = Math.sqrt(Math.random());
+//
+//   return [
+//     r * Math.cos(angle) * radius,
+//     0,
+//     r * Math.sin(angle) * radius
+//   ];
+// };
+
 export default class Lawn {
   constructor(context) {
     this.bunch = new Bunch(context);
@@ -14,6 +25,8 @@ export default class Lawn {
     }));
 
     this.bunches = Lib.makeArr(BUNCH_COUNT, () => ({
+      // translate: randomOnCircle(GARDEN_SIZE),
+
       translate: [range(-GARDEN_SIZE, GARDEN_SIZE), 0, range(-GARDEN_SIZE, GARDEN_SIZE)],
       rotateY: range(0, 360),
       scale: Lib.makeArr(3, range(0.4, 1)),
