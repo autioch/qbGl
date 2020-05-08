@@ -9,6 +9,7 @@ export default class Travel {
     this.rotateY = 0;
 
     this.getRandomPoint = Vec3.randomizer(min, max);
+    this.end.set(this.getRandomPoint());
     this.setNewDirection();
   }
 
@@ -32,6 +33,6 @@ export default class Travel {
     this.step
       .set(this.end)
       .substract(this.start)
-      .divideNum(this.end.distance(this.start));
+      .divideNum(this.end.distance(this.start) / 2);
   }
 }

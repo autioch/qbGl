@@ -14,7 +14,7 @@ import Matrix3 from './Matrix3';
 import Vec3 from './Vec3';
 import Vec4 from './Vec4';
 import ColorShape from './ColorShape';
-import { makeArr, degToRad, mouse, keyboard, loadTextures, configBuilder, loadImage, distance3d, vec3Add, vec3Substract, vec3Divide } from './utils';
+import { makeArr, range, degToRad, mouse, keyboard, loadTextures, configBuilder, loadImage, distance3d, vec3Add, vec3Substract, vec3Divide } from './utils';
 import parameters from './parameters';
 
 export {
@@ -45,7 +45,8 @@ export {
   distance3d,
   vec3Add,
   vec3Substract,
-  vec3Divide
+  vec3Divide,
+  range
 };
 
 export default {
@@ -76,5 +77,6 @@ export default {
   distance3d,
   vec3Add,
   vec3Substract,
-  vec3Divide
+  vec3Divide,
+  range
 };

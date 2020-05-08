@@ -13,18 +13,18 @@ export default class Butterfly {
     this.context = context;
     this.travel = new Travel(
       [-GARDEN_SIZE, 0, -GARDEN_SIZE],
-      [GARDEN_SIZE, GARDEN_SIZE, GARDEN_SIZE]
+      [GARDEN_SIZE, GARDEN_SIZE / 2, GARDEN_SIZE]
     );
 
     this.flap = new Oscillate({
       min: -Math.PI / 4,
       max: Math.PI / 2,
-      step: Math.PI / 600
+      step: Math.PI / 400
     });
     this.wing = new Lib.ColorShape(context, {
       vertices: WING_VERTICES,
       colors: generateColors(...colorMod),
-      normals: Lib.makeArr(WING_VERTICES.length / 3, [0, 1, 0]).flat(),
+      normals: Lib.makeArr(WING_VERTICES.length / 3, [1, 0, 0]).flat(),
       mode: context.TRIANGLE_FAN
     });
   }

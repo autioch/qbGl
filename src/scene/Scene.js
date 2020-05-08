@@ -8,8 +8,12 @@ export default class extends Lib.Scene {
   initialize({ context }) {
     this.lawn = new Lawn(context);
     this.tree = new Tree(context);
-    this.butterfly1 = new Butterfly(context, [1.0, 0.0, 1.0]);
-    this.butterfly2 = new Butterfly(context, [1.0, 1.0, 0.0]);
+    this.butterflies = [
+      [1.0, 1.0, 1.0],
+      [0.0, 1.0, 1.0],
+      [1.0, 0.0, 1.0],
+      [1.0, 1.0, 0.0]
+    ].map((color) => new Butterfly(context, color));
 
     this.rotateY = 0;
     this.translation = [0, -250, -1000];
@@ -18,7 +22,7 @@ export default class extends Lib.Scene {
   }
 
   ready({ context, canvas, uniforms }) {
-    this.pMatrix = new Lib.Matrix4(context).perspective(Lib.degToRad(70), canvas.clientWidth / canvas.clientHeight, 300, 2000).fillBuffer(uniforms.uPMatrix);
+    this.pMatrix = new Lib.Matrix4(context).perspective(Lib.degToRad(70), canvas.clientWidth / canvas.clientHeight, 300, 2000).fillBuffer(uniforms.u_worldViewProjection);
     this.uMatrix = new Lib.Matrix4(context);
     this.lightDirectionVec = new Lib.Vec3(1, 1, 1);
     this.directionColorVec = new Lib.Vec3(0.8, 0.8, 0.8);
@@ -37,31 +41,26 @@ export default class extends Lib.Scene {
       .scale(this.scale)
       .rotateY(Lib.degToRad(this.rotateY));
 
-    context.uniformMatrix3fv(uniforms.uNMatrix, false, this.uMatrix.toInvTraMat3());
+    context.uniformMatrix3fv(uniforms.u_worldInverseTranspose, false, this.uMatrix.toInvTraMat3());
 
     this.lawn.render(this.uMatrix, uniforms.uMVMatrix, attributes.a_color, attributes.a_position, attributes.a_normal);
     this.tree.render(this.uMatrix, uniforms.uMVMatrix, attributes.a_color, attributes.a_position, attributes.a_normal);
 
-    this.uMatrix.translate([200, 200, 200]);
-    this.butterfly1.render(this.uMatrix, uniforms.uMVMatrix, attributes.a_color, attributes.a_position, attributes.a_normal);
-    this.uMatrix.rotateY(Lib.degToRad(90));
-    this.butterfly2.render(this.uMatrix, uniforms.uMVMatrix, attributes.a_color, attributes.a_position, attributes.a_normal);
+    this.butterflies.forEach((butterfly) => {
+      butterfly.render(this.uMatrix, uniforms.uMVMatrix, attributes.a_color, attributes.a_position, attributes.a_normal);
+    });
 
     this.uMatrix.pop();
   }
 
   update({ pulse }) {
-    this.butterfly1.update({
+    this.butterflies.forEach((butterfly) => butterfly.update({
       pulse
-    });
-
-    this.butterfly2.update({
-      pulse
-    });
+    }));
     this.lightDirection.update({
       pulse
     });
 
-    this.rotateY += pulse / 50;
+    // this.rotateY += pulse / 50;
   }
 }
