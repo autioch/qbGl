@@ -53,7 +53,7 @@
     "chai": "4.2.0",
     "eslint": "6.8.0",
     "eslint-config-qb": "1.0.0",
-    "mocha": "7.1.1",
+    "mocha": "10.2.0",
     "serve-local": "1.0.1"
   }
 }
